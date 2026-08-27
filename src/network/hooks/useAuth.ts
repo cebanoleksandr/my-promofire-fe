@@ -1,6 +1,7 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { authService } from '../../services';
 import { queryKeys } from '../_types';
+import queryClient from '../queryClient';
 import type { ApiError } from '../../types/api-error';
 import type {
   AcceptInviteDto,
@@ -23,37 +24,31 @@ export function useCurrentUser() {
 }
 
 export function useRegister() {
-  const qc = useQueryClient();
-
   return useMutation<AuthResponse, ApiError, RegisterDto>({
     mutationFn: (dto) => authService.register(dto),
     onSuccess: (res) => {
-      qc.setQueryData(queryKeys.currentUser(), res.user);
-      qc.invalidateQueries();
+      queryClient.setQueryData(queryKeys.currentUser(), res.user);
+      queryClient.invalidateQueries();
     },
   });
 }
 
 export function useLogin() {
-  const qc = useQueryClient();
-
   return useMutation<AuthResponse, ApiError, LoginDto>({
     mutationFn: (dto) => authService.login(dto),
     onSuccess: (res) => {
-      qc.setQueryData(queryKeys.currentUser(), res.user);
-      qc.invalidateQueries();
+      queryClient.setQueryData(queryKeys.currentUser(), res.user);
+      queryClient.invalidateQueries();
     },
   });
 }
 
 export function useAcceptInvite() {
-  const qc = useQueryClient();
-
   return useMutation<AuthResponse, ApiError, AcceptInviteDto>({
     mutationFn: (dto) => authService.acceptInvite(dto),
     onSuccess: (res) => {
-      qc.setQueryData(queryKeys.currentUser(), res.user);
-      qc.invalidateQueries();
+      queryClient.setQueryData(queryKeys.currentUser(), res.user);
+      queryClient.invalidateQueries();
     },
   });
 }
@@ -77,13 +72,11 @@ export function useResetPassword() {
 }
 
 export function useLogout() {
-  const qc = useQueryClient();
-
   return useMutation<void, ApiError, void>({
     mutationFn: async () => authService.logout(),
     onSuccess: () => {
-      qc.setQueryData(queryKeys.currentUser(), null);
-      qc.clear();
+      queryClient.setQueryData(queryKeys.currentUser(), null);
+      queryClient.clear();
     },
   });
 }

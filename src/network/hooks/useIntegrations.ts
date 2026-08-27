@@ -1,6 +1,7 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { integrationsService } from '../../services';
 import { queryKeys } from '../_types';
+import queryClient from '../queryClient';
 import type { ApiError } from '../../types/api-error';
 import type {
   CreateIntegrationDto,
@@ -17,23 +18,19 @@ export function useIntegrations() {
 
 // В ответе приходит полный apiKey — показать пользователю один раз, второй раз не отдаётся
 export function useCreateIntegration() {
-  const qc = useQueryClient();
-
   return useMutation<CreateIntegrationResponse, ApiError, CreateIntegrationDto>({
     mutationFn: (dto) => integrationsService.create(dto),
     onSuccess: () => {
-      qc.invalidateQueries({ queryKey: queryKeys.integrations() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.integrations() });
     },
   });
 }
 
 export function useDeleteIntegration() {
-  const qc = useQueryClient();
-
   return useMutation<void, ApiError, string>({
     mutationFn: (id) => integrationsService.remove(id),
     onSuccess: () => {
-      qc.invalidateQueries({ queryKey: queryKeys.integrations() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.integrations() });
     },
   });
 }

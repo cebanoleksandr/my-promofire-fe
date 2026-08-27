@@ -1,11 +1,7 @@
-import {
-  keepPreviousData,
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from '@tanstack/react-query';
+import { keepPreviousData, useMutation, useQuery } from '@tanstack/react-query';
 import { promoCodesService } from '../../services';
 import { EQueries, queryKeys } from '../_types';
+import queryClient from '../queryClient';
 import type { ApiError } from '../../types/api-error';
 import type { GeneratePromoCodesDto, PromoCode } from '../../types/promo-code';
 import type { PaginatedResult, PaginationParams } from '../../types/pagination';
@@ -32,16 +28,14 @@ export function usePromoCodesForCampaign(
 }
 
 export function useGeneratePromoCodes() {
-  const qc = useQueryClient();
-
   return useMutation<PromoCode[], ApiError, GeneratePromoCodesDto>({
     mutationFn: (dto) => promoCodesService.generate(dto),
     onSuccess: (_codes, dto) => {
-      qc.invalidateQueries({ queryKey: [EQueries.PROMO_CODES_MINE] });
-      qc.invalidateQueries({
+      queryClient.invalidateQueries({ queryKey: [EQueries.PROMO_CODES_MINE] });
+      queryClient.invalidateQueries({
         queryKey: [EQueries.PROMO_CODES_CAMPAIGN, dto.campaignId],
       });
-      qc.invalidateQueries({ queryKey: queryKeys.statsOverview() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.statsOverview() });
     },
   });
 }
