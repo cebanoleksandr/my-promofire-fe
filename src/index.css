@@ -1,1 +1,41 @@
 @import "tailwindcss";
+
+/**
+ * Fixel Display — локальные веб-шрифты.
+ * Положи .woff2 в public/fonts/:
+ *   FixelDisplay-Regular.woff2   (400)
+ *   FixelDisplay-Medium.woff2    (500)
+ *   FixelDisplay-SemiBold.woff2  (600)
+ *   FixelDisplay-Bold.woff2      (700)
+ * Скачать: https://fixel.everest.ua (бесплатный, OFL).
+ * Пути абсолютные (/fonts/...), поэтому Vite не падает, если файлов ещё нет —
+ * до их добавления просто используется фолбэк (Inter / system).
+ */
+@font-face {
+  font-family: "Fixel Display";
+  src: url("/fonts/FixelDisplay-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Fixel Display";
+  src: url("/fonts/FixelDisplay-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Fixel Display";
+  src: url("/fonts/FixelDisplay-SemiBold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Fixel Display";
+  src: url("/fonts/FixelDisplay-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
