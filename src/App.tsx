@@ -1,19 +1,9 @@
-import Button from '@mui/material/Button';
+import MainLayout from './components/layouts/MainLayout';
 
+// Router монтирует App как корневой Component с вложенным <Outlet/>.
+// Auth-страницы (/login, /register) при необходимости вынести под отдельный layout.
 function App() {
-  return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-      <div className="bg-white p-8 rounded-xl shadow-md">
-        <h1 className="text-3xl font-bold mb-4">
-          Vite + React + Tailwind + MUI
-        </h1>
-
-        <Button variant="contained">
-          MUI Button
-        </Button>
-      </div>
-    </div>
-  );
+  return <MainLayout />;
 }
 
 export default App;

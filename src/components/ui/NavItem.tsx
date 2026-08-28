@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { ElementType, ReactNode } from 'react';
 import {
   ListItemButton,
   ListItemIcon,
@@ -11,6 +11,9 @@ export interface NavItemProps extends Omit<ListItemButtonProps, 'children'> {
   label: string;
   icon?: ReactNode;
   active?: boolean;
+  /** Полиморфный рендер — например `component={RouterLink} to="/codes"`. */
+  component?: ElementType;
+  to?: string;
 }
 
 /**

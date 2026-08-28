@@ -1,0 +1,29 @@
+import * as yup from 'yup';
+
+const email = yup
+  .string()
+  .trim()
+  .required('Enter your email')
+  .email('Invalid email address');
+
+const password = yup
+  .string()
+  .required('Enter your password')
+  .min(8, 'At least 8 characters');
+
+export const loginSchema = yup.object({
+  email,
+  password: yup.string().required('Enter your password'),
+});
+
+export const registerSchema = yup.object({
+  email,
+  password,
+  confirmPassword: yup
+    .string()
+    .required('Repeat your password')
+    .oneOf([yup.ref('password')], 'Passwords do not match'),
+});
+
+export type LoginFormValues = yup.InferType<typeof loginSchema>;
+export type RegisterFormValues = yup.InferType<typeof registerSchema>;

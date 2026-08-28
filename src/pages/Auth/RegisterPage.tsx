@@ -1,19 +1,82 @@
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { Link } from '@mui/material';
+import { useRegister } from '../../network/hooks';
+import { Button, TextField } from '../../components/ui';
+import { AuthCard } from './AuthCard';
+import { PasswordField } from './PasswordField';
+import { registerSchema, type RegisterFormValues } from './schema';
+
 const RegisterPage = () => {
+  const navigate = useNavigate();
+  const registerMutation = useRegister();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<RegisterFormValues>({
+    resolver: yupResolver(registerSchema),
+    defaultValues: { email: '', password: '', confirmPassword: '' },
+  });
+
+  const onSubmit = handleSubmit(({ email, password }) => {
+    registerMutation.mutate(
+      { email: email!, password: password! },
+      { onSuccess: () => navigate('/', { replace: true }) },
+    );
+  });
+
   return (
-    <div>
-      <h1>Register</h1>
-      <form>
-        <div>
-          <label>Email:</label>
-          <input type="email" />
-        </div>
-        <div>
-          <label>Password:</label>
-          <input type="password" />
-        </div>
-        <button type="submit">Register</button>
-      </form>
-    </div>
+    <AuthCard
+      title="Create account"
+      subtitle="Start using Promofire"
+      error={registerMutation.error?.message}
+      onSubmit={onSubmit}
+      footer={
+        <>
+          Already have an account?{' '}
+          <Link component={RouterLink} to="/login" underline="hover">
+            Log in
+          </Link>
+        </>
+      }
+    >
+      <TextField
+        label="Email"
+        type="email"
+        autoComplete="email"
+        placeholder="you@company.com"
+        error={!!errors.email}
+        helperText={errors.email?.message}
+        {...register('email')}
+      />
+      <PasswordField
+        label="Password"
+        autoComplete="new-password"
+        placeholder="At least 8 characters"
+        error={!!errors.password}
+        helperText={errors.password?.message}
+        {...register('password')}
+      />
+      <PasswordField
+        label="Repeat password"
+        autoComplete="new-password"
+        placeholder="••••••••"
+        error={!!errors.confirmPassword}
+        helperText={errors.confirmPassword?.message}
+        {...register('confirmPassword')}
+      />
+      <Button
+        type="submit"
+        fullWidth
+        loading={registerMutation.isPending}
+        sx={{ mt: 1 }}
+      >
+        Create account
+      </Button>
+    </AuthCard>
   );
 };
 
