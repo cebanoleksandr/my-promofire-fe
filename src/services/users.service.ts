@@ -1,7 +1,7 @@
 import { apiClient } from '../lib/api-client';
 import type { User } from '../types/user';
-import type { InviteDto } from '../types/auth';
 import type { PaginatedResult, PaginationParams } from '../types/pagination';
+import type { InviteDto } from '../types';
 
 export const usersService = {
   // Owner приглашает Admin'ов, Admin приглашает Distributor'ов —

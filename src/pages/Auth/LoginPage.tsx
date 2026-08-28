@@ -3,6 +3,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Link as RouterLink, useLocation, useNavigate } from 'react-router-dom';
 import { Link } from '@mui/material';
 import { useLogin } from '../../network/hooks';
+import { isWorkspaceAuthResponse } from '../../types/auth';
 import { Button, TextField } from '../../components/ui';
 import { AuthCard } from './AuthCard';
 import { PasswordField } from './PasswordField';
@@ -28,7 +29,15 @@ const LoginPage = () => {
   const onSubmit = handleSubmit(({ email, password }) => {
     login.mutate(
       { email: email!, password: password! },
-      { onSuccess: () => navigate(redirectTo, { replace: true }) },
+      {
+        onSuccess: (res) => {
+          // Один воркспейс или бэкенд сам вернул последний активный —
+          // заходим сразу. Иначе показываем выбор воркспейса.
+          navigate(isWorkspaceAuthResponse(res) ? redirectTo : '/select-workspace', {
+            replace: true,
+          });
+        },
+      },
     );
   });
 

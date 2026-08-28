@@ -8,8 +8,9 @@ import StorefrontOutlinedIcon from '@mui/icons-material/StorefrontOutlined';
 import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import { colors } from '../../theme';
-import { NavItem, WorkspaceItem } from '../ui';
+import { NavItem } from '../ui';
 import { LogoutNavItem } from './LogoutNavItem';
+import { WorkspaceSwitcher } from './WorkspaceSwitcher';
 
 export const SIDEBAR_WIDTH = 260;
 
@@ -42,17 +43,7 @@ function SidebarLink({ to, label, icon, end }: NavLinkDef) {
   );
 }
 
-export interface SidebarProps {
-  workspaceName?: string;
-  workspaceRole?: string;
-  onWorkspaceClick?: () => void;
-}
-
-export function Sidebar({
-  workspaceName = 'Workspace name and more',
-  workspaceRole = 'Distributor',
-  onWorkspaceClick,
-}: SidebarProps) {
+export function Sidebar() {
   return (
     <Box
       component="aside"
@@ -68,12 +59,7 @@ export function Sidebar({
         borderRight: `1px solid ${colors.interface.grey3}`,
       }}
     >
-      <WorkspaceItem
-        name={workspaceName}
-        caption={workspaceRole}
-        variant="main"
-        onClick={onWorkspaceClick}
-      />
+      <WorkspaceSwitcher />
 
       <List disablePadding sx={{ flex: 1, mt: 1, '& > * + *': { mt: 0.5 } }}>
         {mainLinks.map((link) => (

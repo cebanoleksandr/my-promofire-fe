@@ -11,7 +11,7 @@ export interface PromoCode {
   id: string;
   code: string;
   campaignId: string;
-  distributorId: string;
+  distributorMembershipId: string;
   maxRedemptions: number;
   redemptionsCount: number;
   status: PromoCodeStatus;

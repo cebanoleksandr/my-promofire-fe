@@ -1,21 +1,27 @@
+import type { PaginationParams } from '../../types';
+
 export const EQueries = {
-  CURRENT_USER: 'current-user',
+  CURRENT_ACCOUNT: 'current-account',
+  CURRENT_WORKSPACE: 'current-workspace',
+  WORKSPACES_MINE: 'workspaces-mine',
+  MY_TEAM: 'my-team',
   CAMPAIGNS: 'campaigns',
   CAMPAIGN: 'campaign',
   PROMO_CODES_MINE: 'promo-codes-mine',
   PROMO_CODES_CAMPAIGN: 'promo-codes-campaign',
   INTEGRATIONS: 'integrations',
-  MY_TEAM: 'my-team',
   STATS_OVERVIEW: 'stats-overview',
 } as const;
 
 export type EQueries = (typeof EQueries)[keyof typeof EQueries];
 
-import type { PaginationParams } from '../../types';
-
 // Централизованные query-ключи: используем и для useQuery, и для invalidateQueries
 export const queryKeys = {
-  currentUser: () => [EQueries.CURRENT_USER] as const,
+  currentAccount: () => [EQueries.CURRENT_ACCOUNT] as const,
+  currentWorkspace: () => [EQueries.CURRENT_WORKSPACE] as const,
+  workspacesMine: () => [EQueries.WORKSPACES_MINE] as const,
+
+  myTeam: (params?: PaginationParams) => [EQueries.MY_TEAM, params ?? {}] as const,
 
   campaigns: (params?: PaginationParams) =>
     [EQueries.CAMPAIGNS, params ?? {}] as const,
@@ -27,8 +33,6 @@ export const queryKeys = {
     [EQueries.PROMO_CODES_CAMPAIGN, campaignId, params ?? {}] as const,
 
   integrations: () => [EQueries.INTEGRATIONS] as const,
-
-  myTeam: (params?: PaginationParams) => [EQueries.MY_TEAM, params ?? {}] as const,
 
   statsOverview: () => [EQueries.STATS_OVERVIEW] as const,
 };

@@ -24,6 +24,10 @@ apiClient.interceptors.response.use(
       window.location.href = '/login';
     }
 
+    // WorkspaceGuard возвращает 403 "Сначала выберите воркспейс", если токен
+    // ещё не привязан к конкретному воркспейсу — распознаётся по error.message
+    // на уровне UI (например, редирект на экран выбора воркспейса)
+
     // Приводим ошибку к нашему формату (единый message/statusCode из HttpExceptionFilter)
     if (error.response?.data) {
       return Promise.reject(new ApiError(error.response.data));

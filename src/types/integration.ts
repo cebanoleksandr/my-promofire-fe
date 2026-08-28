@@ -1,7 +1,8 @@
 export interface Integration {
   id: string;
   name: string;
-  distributorId: string;
+  workspaceId: string;
+  distributorMembershipId: string;
   apiKeyPrefix: string;
   isActive: boolean;
   createdAt: string;

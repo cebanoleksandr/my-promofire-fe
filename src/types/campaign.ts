@@ -7,6 +7,7 @@ export type DiscountType = (typeof DiscountType)[keyof typeof DiscountType];
 
 export interface Campaign {
   id: string;
+  workspaceId: string;
   name: string;
   discountType: DiscountType;
   // numeric-поле из Postgres/TypeORM сериализуется в JSON как строка, не число
@@ -16,7 +17,7 @@ export interface Campaign {
   totalCodesLimit: number | null;
   perCustomerLimit: number;
   isActive: boolean;
-  adminId: string;
+  adminMembershipId: string;
   createdAt: string;
   updatedAt: string;
 }

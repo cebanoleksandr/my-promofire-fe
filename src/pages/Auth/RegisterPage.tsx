@@ -18,12 +18,17 @@ const RegisterPage = () => {
     formState: { errors },
   } = useForm<RegisterFormValues>({
     resolver: yupResolver(registerSchema),
-    defaultValues: { email: '', password: '', confirmPassword: '' },
+    defaultValues: {
+      workspaceName: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+    },
   });
 
-  const onSubmit = handleSubmit(({ email, password }) => {
+  const onSubmit = handleSubmit(({ workspaceName, email, password }) => {
     registerMutation.mutate(
-      { email: email!, password: password! },
+      { workspaceName: workspaceName!, email: email!, password: password! },
       { onSuccess: () => navigate('/', { replace: true }) },
     );
   });
@@ -43,6 +48,13 @@ const RegisterPage = () => {
         </>
       }
     >
+      <TextField
+        label="Workspace name"
+        placeholder="Acme Inc."
+        error={!!errors.workspaceName}
+        helperText={errors.workspaceName?.message}
+        {...register('workspaceName')}
+      />
       <TextField
         label="Email"
         type="email"

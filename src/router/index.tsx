@@ -6,6 +6,7 @@ import GuestOnly from '../components/routing/GuestOnly';
 import HomePage from '../pages/HomePage';
 import LoginPage from '../pages/Auth/LoginPage';
 import RegisterPage from '../pages/Auth/RegisterPage';
+import SelectWorkspacePage from '../pages/Auth/SelectWorkspacePage';
 import CampaignDetailPage from '../pages/CampaignDetailPage';
 import CampaignsPage from '../pages/CampaignsPage';
 import CodeDetailPage from '../pages/CodeDetailPage';
@@ -37,6 +38,7 @@ export const routes: RouteObject[] = [
     path: '/',
     Component: RequireAuth,
     children: [
+      { path: 'select-workspace', Component: SelectWorkspacePage },
       {
         Component: MainLayout,
         children: [

@@ -1,23 +1,23 @@
 import { keepPreviousData, useMutation, useQuery } from '@tanstack/react-query';
-import { usersService } from '../../services';
+import { membershipsService } from '../../services';
 import { EQueries, queryKeys } from '../_types';
 import queryClient from '../queryClient';
 import type { ApiError } from '../../types/api-error';
-import type { InviteDto } from '../../types/auth';
+import type { Membership, TeamMember, InviteDto } from '../../types/membership';
 import type { PaginatedResult, PaginationParams } from '../../types/pagination';
-import type { User } from '../../types/user';
 
+/** Команда текущего воркспейса (единственный эндпоинт с email). */
 export function useMyTeam(params: PaginationParams = {}) {
-  return useQuery<PaginatedResult<User>, ApiError>({
+  return useQuery<PaginatedResult<TeamMember>, ApiError>({
     queryKey: queryKeys.myTeam(params),
-    queryFn: () => usersService.getMyTeam(params),
+    queryFn: () => membershipsService.getMyTeam(params),
     placeholderData: keepPreviousData,
   });
 }
 
-export function useInviteUser() {
-  return useMutation<User, ApiError, InviteDto>({
-    mutationFn: (dto) => usersService.invite(dto),
+export function useInviteMember() {
+  return useMutation<Membership, ApiError, InviteDto>({
+    mutationFn: (dto) => membershipsService.invite(dto),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [EQueries.MY_TEAM] });
       queryClient.invalidateQueries({ queryKey: queryKeys.statsOverview() });
@@ -26,35 +26,35 @@ export function useInviteUser() {
 }
 
 export function useResendInvite() {
-  return useMutation<User, ApiError, string>({
-    mutationFn: (userId) => usersService.resendInvite(userId),
+  return useMutation<Membership, ApiError, string>({
+    mutationFn: (membershipId) => membershipsService.resendInvite(membershipId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [EQueries.MY_TEAM] });
     },
   });
 }
 
-export function useDeactivateUser() {
-  return useMutation<User, ApiError, string>({
-    mutationFn: (userId) => usersService.deactivate(userId),
+export function useDeactivateMember() {
+  return useMutation<Membership, ApiError, string>({
+    mutationFn: (membershipId) => membershipsService.deactivate(membershipId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [EQueries.MY_TEAM] });
     },
   });
 }
 
-export function useActivateUser() {
-  return useMutation<User, ApiError, string>({
-    mutationFn: (userId) => usersService.activate(userId),
+export function useActivateMember() {
+  return useMutation<Membership, ApiError, string>({
+    mutationFn: (membershipId) => membershipsService.activate(membershipId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [EQueries.MY_TEAM] });
     },
   });
 }
 
-export function useDeleteUser() {
+export function useRemoveMember() {
   return useMutation<void, ApiError, string>({
-    mutationFn: (userId) => usersService.remove(userId),
+    mutationFn: (membershipId) => membershipsService.remove(membershipId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [EQueries.MY_TEAM] });
       queryClient.invalidateQueries({ queryKey: queryKeys.statsOverview() });

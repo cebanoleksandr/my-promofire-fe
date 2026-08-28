@@ -17,6 +17,11 @@ export const loginSchema = yup.object({
 });
 
 export const registerSchema = yup.object({
+  workspaceName: yup
+    .string()
+    .trim()
+    .required('Enter a workspace name')
+    .min(2, 'At least 2 characters'),
   email,
   password,
   confirmPassword: yup
