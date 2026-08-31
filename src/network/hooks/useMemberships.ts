@@ -5,9 +5,12 @@ import queryClient from '../queryClient';
 import type { ApiError } from '../../types/api-error';
 import type { Membership, TeamMember, InviteDto } from '../../types/membership';
 import type { PaginatedResult, PaginationParams } from '../../types/pagination';
+import type { DateRangeParams } from '../../types/date-range';
+
+type MyTeamParams = PaginationParams & DateRangeParams;
 
 /** Команда текущего воркспейса (единственный эндпоинт с email). */
-export function useMyTeam(params: PaginationParams = {}) {
+export function useMyTeam(params: MyTeamParams = {}) {
   return useQuery<PaginatedResult<TeamMember>, ApiError>({
     queryKey: queryKeys.myTeam(params),
     queryFn: () => membershipsService.getMyTeam(params),

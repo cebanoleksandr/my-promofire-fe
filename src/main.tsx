@@ -7,18 +7,20 @@ import queryClient from './network/queryClient'
 import { RouterProvider } from 'react-router-dom'
 import router from './router'
 import theme from './theme'
+import { Provider } from 'react-redux'
+import { store } from './store/store'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Suspense fallback={null}>
-      {/* <Provider store={store}> */}
+      <Provider store={store}>
         <QueryClientProvider client={queryClient}>
           <ThemeProvider theme={theme}>
             <CssBaseline />
             <RouterProvider router={router} />
           </ThemeProvider>
         </QueryClientProvider>
-      {/* </Provider> */}
+      </Provider>
     </Suspense>
   </StrictMode>,
 )

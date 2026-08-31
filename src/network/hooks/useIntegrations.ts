@@ -1,6 +1,6 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useMutation, useQuery } from '@tanstack/react-query';
 import { integrationsService } from '../../services';
-import { queryKeys } from '../_types';
+import { EQueries, queryKeys } from '../_types';
 import queryClient from '../queryClient';
 import type { ApiError } from '../../types/api-error';
 import type {
@@ -8,11 +8,13 @@ import type {
   CreateIntegrationResponse,
   Integration,
 } from '../../types/integration';
+import type { DateRangeParams } from '../../types/date-range';
 
-export function useIntegrations() {
+export function useIntegrations(params: DateRangeParams = {}) {
   return useQuery<Integration[], ApiError>({
-    queryKey: queryKeys.integrations(),
-    queryFn: () => integrationsService.findMine(),
+    queryKey: queryKeys.integrations(params),
+    queryFn: () => integrationsService.findMine(params),
+    placeholderData: keepPreviousData,
   });
 }
 
@@ -21,7 +23,7 @@ export function useCreateIntegration() {
   return useMutation<CreateIntegrationResponse, ApiError, CreateIntegrationDto>({
     mutationFn: (dto) => integrationsService.create(dto),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.integrations() });
+      queryClient.invalidateQueries({ queryKey: [EQueries.INTEGRATIONS] });
     },
   });
 }
@@ -30,7 +32,7 @@ export function useDeleteIntegration() {
   return useMutation<void, ApiError, string>({
     mutationFn: (id) => integrationsService.remove(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.integrations() });
+      queryClient.invalidateQueries({ queryKey: [EQueries.INTEGRATIONS] });
     },
   });
 }

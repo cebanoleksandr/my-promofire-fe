@@ -4,6 +4,7 @@ import type {
   CreateIntegrationDto,
   CreateIntegrationResponse,
 } from '../types/integration';
+import type { DateRangeParams } from '../types/date-range';
 
 export const integrationsService = {
   // apiKey в ответе отдаётся ровно один раз — сразу покажи его пользователю
@@ -16,8 +17,8 @@ export const integrationsService = {
     return data;
   },
 
-  async findMine(): Promise<Integration[]> {
-    const { data } = await apiClient.get<Integration[]>('/integrations');
+  async findMine(params: DateRangeParams = {}): Promise<Integration[]> {
+    const { data } = await apiClient.get<Integration[]>('/integrations', { params });
     return data;
   },
 

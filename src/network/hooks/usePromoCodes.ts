@@ -5,8 +5,11 @@ import queryClient from '../queryClient';
 import type { ApiError } from '../../types/api-error';
 import type { GeneratePromoCodesDto, PromoCode } from '../../types/promo-code';
 import type { PaginatedResult, PaginationParams } from '../../types/pagination';
+import type { DateRangeParams } from '../../types/date-range';
 
-export function usePromoCodesMine(params: PaginationParams = {}) {
+type PromoCodesParams = PaginationParams & DateRangeParams;
+
+export function usePromoCodesMine(params: PromoCodesParams = {}) {
   return useQuery<PaginatedResult<PromoCode>, ApiError>({
     queryKey: queryKeys.promoCodesMine(params),
     queryFn: () => promoCodesService.findMine(params),
@@ -16,7 +19,7 @@ export function usePromoCodesMine(params: PaginationParams = {}) {
 
 export function usePromoCodesForCampaign(
   campaignId: string | undefined,
-  params: PaginationParams = {},
+  params: PromoCodesParams = {},
 ) {
   return useQuery<PaginatedResult<PromoCode>, ApiError>({
     queryKey: queryKeys.promoCodesForCampaign(campaignId ?? '', params),

@@ -3,11 +3,8 @@ import { Outlet } from 'react-router-dom';
 import { colors } from '../../theme';
 import { Sidebar } from './Sidebar';
 import { Header } from './Header';
+import CustomAlert from '../ui/CustomAlert';
 
-/**
- * Основной каркас приложения по макету дашборда:
- * фиксированный Sidebar слева, Header сверху, прокручиваемая область контента.
- */
 export function MainLayout() {
   return (
     <Box sx={{ display: 'flex', height: '100vh', bgcolor: colors.interface.grey4 }}>
@@ -28,6 +25,8 @@ export function MainLayout() {
           <Outlet />
         </Box>
       </Box>
+
+      <CustomAlert />
     </Box>
   );
 }

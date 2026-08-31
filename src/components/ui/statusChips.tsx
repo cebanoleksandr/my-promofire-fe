@@ -1,6 +1,6 @@
 import { StatusChip, type StatusChipProps } from './StatusChip';
 import { PromoCodeStatus } from '../../types/promo-code';
-import { UserStatus } from '../../types/user';
+import { MembershipStatus } from '../../types/membership';
 
 type Mapped = { label: string; tone: StatusChipProps['tone'] };
 
@@ -25,14 +25,14 @@ export function PromoCodeStatusChip({ status, ...rest }: PromoCodeStatusChipProp
 // ── Участники команды (дистрибьюторы / пользователи) ───────────────────
 export interface MemberStatusChipProps
   extends Omit<StatusChipProps, 'label' | 'tone'> {
-  status: UserStatus;
+  status: MembershipStatus;
   isActive: boolean;
 }
 
 export function MemberStatusChip({ status, isActive, ...rest }: MemberStatusChipProps) {
   let mapped: Mapped;
   if (!isActive) mapped = { label: 'Deactivated', tone: 'neutral' };
-  else if (status === UserStatus.PENDING)
+  else if (status === MembershipStatus.PENDING)
     mapped = { label: 'Invite sent', tone: 'info' };
   else mapped = { label: 'Active', tone: 'success' };
 

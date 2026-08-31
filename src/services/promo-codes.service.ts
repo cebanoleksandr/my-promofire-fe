@@ -1,6 +1,7 @@
 import { apiClient } from '../lib/api-client';
 import type { PromoCode, GeneratePromoCodesDto } from '../types/promo-code';
 import type { PaginatedResult, PaginationParams } from '../types/pagination';
+import type { DateRangeParams } from '../types/date-range';
 
 export const promoCodesService = {
   async generate(dto: GeneratePromoCodesDto): Promise<PromoCode[]> {
@@ -8,7 +9,10 @@ export const promoCodesService = {
     return data;
   },
 
-  async findMine(params: PaginationParams = {}): Promise<PaginatedResult<PromoCode>> {
+  // Без params.period — вернутся все коды без фильтра по дате
+  async findMine(
+    params: PaginationParams & DateRangeParams = {},
+  ): Promise<PaginatedResult<PromoCode>> {
     const { data } = await apiClient.get<PaginatedResult<PromoCode>>(
       '/promo-codes/mine',
       { params },
@@ -18,7 +22,7 @@ export const promoCodesService = {
 
   async findForCampaign(
     campaignId: string,
-    params: PaginationParams = {},
+    params: PaginationParams & DateRangeParams = {},
   ): Promise<PaginatedResult<PromoCode>> {
     const { data } = await apiClient.get<PaginatedResult<PromoCode>>(
       `/promo-codes/campaign/${campaignId}`,

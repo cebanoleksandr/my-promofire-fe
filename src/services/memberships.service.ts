@@ -1,6 +1,7 @@
 import { apiClient } from '../lib/api-client';
 import type { Membership, TeamMember, InviteDto } from '../types/membership';
 import type { PaginatedResult, PaginationParams } from '../types/pagination';
+import type { DateRangeParams } from '../types/date-range';
 
 export const membershipsService = {
   // Owner приглашает Admin'ов, Admin приглашает Distributor'ов —
@@ -10,8 +11,11 @@ export const membershipsService = {
     return data;
   },
 
-  // Единственный эндпоинт, который возвращает email (через join с Account на бэке)
-  async getMyTeam(params: PaginationParams = {}): Promise<PaginatedResult<TeamMember>> {
+  // Единственный эндпоинт, который возвращает email (через join с Account на бэке).
+  // Без params.period — вернутся все участники команды без фильтра по дате приглашения.
+  async getMyTeam(
+    params: PaginationParams & DateRangeParams = {},
+  ): Promise<PaginatedResult<TeamMember>> {
     const { data } = await apiClient.get<PaginatedResult<TeamMember>>(
       '/memberships/my-team',
       { params },
