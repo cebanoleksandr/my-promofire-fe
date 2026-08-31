@@ -9,6 +9,16 @@ export const promoCodesService = {
     return data;
   },
 
+  // Owner видит все коды воркспейса, Admin — коды своих кампаний, Distributor — свои
+  async findAll(
+    params: PaginationParams & DateRangeParams = {},
+  ): Promise<PaginatedResult<PromoCode>> {
+    const { data } = await apiClient.get<PaginatedResult<PromoCode>>('/promo-codes', {
+      params,
+    });
+    return data;
+  },
+
   // Без params.period — вернутся все коды без фильтра по дате
   async findMine(
     params: PaginationParams & DateRangeParams = {},

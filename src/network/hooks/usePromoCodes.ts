@@ -9,6 +9,15 @@ import type { DateRangeParams } from '../../types/date-range';
 
 type PromoCodesParams = PaginationParams & DateRangeParams;
 
+// Все коды воркспейса (скоуп по роли решает бэкенд)
+export function usePromoCodes(params: PromoCodesParams = {}) {
+  return useQuery<PaginatedResult<PromoCode>, ApiError>({
+    queryKey: queryKeys.promoCodes(params),
+    queryFn: () => promoCodesService.findAll(params),
+    placeholderData: keepPreviousData,
+  });
+}
+
 export function usePromoCodesMine(params: PromoCodesParams = {}) {
   return useQuery<PaginatedResult<PromoCode>, ApiError>({
     queryKey: queryKeys.promoCodesMine(params),
@@ -34,6 +43,7 @@ export function useGeneratePromoCodes() {
   return useMutation<PromoCode[], ApiError, GeneratePromoCodesDto>({
     mutationFn: (dto) => promoCodesService.generate(dto),
     onSuccess: (_codes, dto) => {
+      queryClient.invalidateQueries({ queryKey: [EQueries.PROMO_CODES] });
       queryClient.invalidateQueries({ queryKey: [EQueries.PROMO_CODES_MINE] });
       queryClient.invalidateQueries({
         queryKey: [EQueries.PROMO_CODES_CAMPAIGN, dto.campaignId],

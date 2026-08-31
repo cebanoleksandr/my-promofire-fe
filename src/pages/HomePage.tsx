@@ -8,7 +8,7 @@ import {
   useCodesStats,
   useCountriesBreakdown,
   useDevicesBreakdown,
-  usePromoCodesMine,
+  usePromoCodes,
   useUsersStats,
 } from '../network/hooks';
 import {
@@ -46,7 +46,7 @@ const HomePage = () => {
   const usersStats = useUsersStats(period);
   const countries = useCountriesBreakdown(period);
   const devices = useDevicesBreakdown(period);
-  const codes = usePromoCodesMine({ ...period, limit: 5 });
+  const codes = usePromoCodes({ ...period, limit: 5 });
   const campaigns = useCampaigns({ limit: 6 });
 
   const refetchAll = () => {

@@ -11,6 +11,7 @@ export const EQueries = {
   MY_TEAM: 'my-team',
   CAMPAIGNS: 'campaigns',
   CAMPAIGN: 'campaign',
+  PROMO_CODES: 'promo-codes',
   PROMO_CODES_MINE: 'promo-codes-mine',
   PROMO_CODES_CAMPAIGN: 'promo-codes-campaign',
   INTEGRATIONS: 'integrations',
@@ -35,6 +36,8 @@ export const queryKeys = {
     [EQueries.CAMPAIGNS, params ?? {}] as const,
   campaign: (id: string) => [EQueries.CAMPAIGN, id] as const,
 
+  promoCodes: (params?: ListParams) =>
+    [EQueries.PROMO_CODES, params ?? {}] as const,
   promoCodesMine: (params?: ListParams) =>
     [EQueries.PROMO_CODES_MINE, params ?? {}] as const,
   promoCodesForCampaign: (campaignId: string, params?: ListParams) =>
