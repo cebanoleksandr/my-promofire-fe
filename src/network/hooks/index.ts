@@ -1,4 +1,5 @@
 export * from './useAuth';
+export * from './useAccount';
 export * from './useWorkspaces';
 export * from './useMemberships';
 export * from './useCampaigns';

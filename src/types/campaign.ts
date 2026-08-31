@@ -71,6 +71,36 @@ export interface AssignDistributorDto {
 export interface AssignedDistributor {
   membershipId: string;
   email: string;
+  firstName: string | null;
+  lastName: string | null;
+  displayName: string;
   isActive: boolean;
   assignedAt: string;
+}
+
+export const CampaignStatusFilter = {
+  ACTIVE: 'active',
+  DEACTIVATED: 'deactivated',
+  ARCHIVED: 'archived',
+} as const;
+
+export type CampaignStatusFilter = (typeof CampaignStatusFilter)[keyof typeof CampaignStatusFilter];
+
+export interface CampaignDistributorSummary {
+  membershipId: string;
+  // "Имя Фамилия", либо email как фолбэк, если участник не заполнил имя
+  name: string;
+}
+
+// То, что реально отдаёт GET /campaigns — Campaign + агрегаты, посчитанные на бэке
+// одним набором запросов (не N+1 на каждую строку списка)
+export interface CampaignListItem extends Campaign {
+  generated: number;
+  // Все обращения к кодам кампании (validate + redeem), не только успешные погашения
+  actions: number;
+  redeemed: number;
+  // Клиенты, чья самая первая активность за всю историю воркспейса пришлась
+  // на код именно этой кампании
+  newUsers: number;
+  distributors: CampaignDistributorSummary[];
 }

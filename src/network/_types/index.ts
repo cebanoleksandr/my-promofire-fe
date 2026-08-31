@@ -1,11 +1,14 @@
 import type { PaginationParams } from '../../types';
 import type { DateRangeParams } from '../../types/date-range';
 import type { StatsRangeParams } from '../../types/stats';
+import type { CampaignStatusFilter } from '../../types/campaign';
 
 type ListParams = PaginationParams & DateRangeParams;
+type CampaignListParams = PaginationParams & { status?: CampaignStatusFilter };
 
 export const EQueries = {
   CURRENT_ACCOUNT: 'current-account',
+  ACCOUNT_PROFILE: 'account-profile',
   CURRENT_WORKSPACE: 'current-workspace',
   WORKSPACES_MINE: 'workspaces-mine',
   MY_TEAM: 'my-team',
@@ -28,12 +31,13 @@ export type EQueries = (typeof EQueries)[keyof typeof EQueries];
 // Централизованные query-ключи: используем и для useQuery, и для invalidateQueries
 export const queryKeys = {
   currentAccount: () => [EQueries.CURRENT_ACCOUNT] as const,
+  accountProfile: () => [EQueries.ACCOUNT_PROFILE] as const,
   currentWorkspace: () => [EQueries.CURRENT_WORKSPACE] as const,
   workspacesMine: () => [EQueries.WORKSPACES_MINE] as const,
 
   myTeam: (params?: ListParams) => [EQueries.MY_TEAM, params ?? {}] as const,
 
-  campaigns: (params?: PaginationParams) =>
+  campaigns: (params?: CampaignListParams) =>
     [EQueries.CAMPAIGNS, params ?? {}] as const,
   campaign: (id: string) => [EQueries.CAMPAIGN, id] as const,
   campaignDistributors: (campaignId: string) =>

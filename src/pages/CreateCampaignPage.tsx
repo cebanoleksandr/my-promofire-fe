@@ -105,7 +105,7 @@ const emptyValues: FormValues = {
   defaultMaxRedemptions: undefined,
   payloadText: '',
   payloadMutable: false,
-  isActive: false,
+  isActive: true,
   description: '',
 };
 

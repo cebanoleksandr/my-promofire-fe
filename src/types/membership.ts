@@ -26,9 +26,12 @@ export interface Membership {
   updatedAt: string;
 }
 
-// То, что возвращает GET /memberships/my-team — Membership + email из связанного Account
+// То, что возвращает GET /memberships/my-team — Membership + данные из связанного Account
 export interface TeamMember extends Membership {
   email: string;
+  firstName: string | null;
+  lastName: string | null;
+  displayName: string;
 }
 
 export interface InviteDto {

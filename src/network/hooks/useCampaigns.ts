@@ -5,13 +5,17 @@ import queryClient from '../queryClient';
 import type { ApiError } from '../../types/api-error';
 import type {
   Campaign,
+  CampaignListItem,
+  CampaignStatusFilter,
   CreateCampaignDto,
   AssignedDistributor,
 } from '../../types/campaign';
 import type { PaginatedResult, PaginationParams } from '../../types/pagination';
 
-export function useCampaigns(params: PaginationParams = {}) {
-  return useQuery<PaginatedResult<Campaign>, ApiError>({
+type CampaignListParams = PaginationParams & { status?: CampaignStatusFilter };
+
+export function useCampaigns(params: CampaignListParams = {}) {
+  return useQuery<PaginatedResult<CampaignListItem>, ApiError>({
     queryKey: queryKeys.campaigns(params),
     queryFn: () => campaignsService.findAll(params),
     placeholderData: keepPreviousData,
@@ -100,11 +104,24 @@ export function useUnassignDistributor() {
   });
 }
 
+// Архивирует кампанию (soft-delete). Строка уедет в список status=archived,
+// откуда её возвращает useRestoreCampaign
 export function useDeleteCampaign() {
   return useMutation<void, ApiError, string>({
     mutationFn: (id) => campaignsService.remove(id),
     onSuccess: (_data, id) => {
       queryClient.removeQueries({ queryKey: queryKeys.campaign(id) });
+      queryClient.invalidateQueries({ queryKey: [EQueries.CAMPAIGNS] });
+      queryClient.invalidateQueries({ queryKey: queryKeys.statsOverview() });
+    },
+  });
+}
+
+export function useRestoreCampaign() {
+  return useMutation<Campaign, ApiError, string>({
+    mutationFn: (id) => campaignsService.restore(id),
+    onSuccess: (campaign) => {
+      queryClient.setQueryData(queryKeys.campaign(campaign.id), campaign);
       queryClient.invalidateQueries({ queryKey: [EQueries.CAMPAIGNS] });
       queryClient.invalidateQueries({ queryKey: queryKeys.statsOverview() });
     },

@@ -43,6 +43,9 @@ export interface RegisterDto {
   email: string;
   password: string;
   workspaceName: string;
+  // Можно указать сразу при регистрации, или потом на странице Profile
+  firstName?: string;
+  lastName?: string;
 }
 
 export interface LoginDto {

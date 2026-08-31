@@ -1,6 +1,8 @@
 import { apiClient } from '../lib/api-client';
 import type {
   Campaign,
+  CampaignListItem,
+  CampaignStatusFilter,
   CreateCampaignDto,
   AssignDistributorDto,
   AssignedDistributor,
@@ -15,9 +17,12 @@ export const campaignsService = {
 
   // Owner видит все кампании воркспейса. Admin — свои + кампании Owner'а.
   // Distributor не видит НИЧЕГО автоматически — только кампании, на которые
-  // его явно назначили (см. assignDistributor/getAssignedDistributors ниже)
-  async findAll(params: PaginationParams = {}): Promise<PaginatedResult<Campaign>> {
-    const { data } = await apiClient.get<PaginatedResult<Campaign>>('/campaigns', {
+  // его явно назначили (см. assignDistributor/getAssignedDistributors ниже).
+  // status — таб в UI: active (по умолчанию на бэке) | deactivated | archived
+  async findAll(
+    params: PaginationParams & { status?: CampaignStatusFilter } = {},
+  ): Promise<PaginatedResult<CampaignListItem>> {
+    const { data } = await apiClient.get<PaginatedResult<CampaignListItem>>('/campaigns', {
       params,
     });
     return data;
@@ -38,8 +43,15 @@ export const campaignsService = {
     return data;
   },
 
+  // Переносит кампанию в архив (soft-delete) — из списка status=archived её можно
+  // будет восстановить через restore()
   async remove(id: string): Promise<void> {
     await apiClient.delete(`/campaigns/${id}`);
+  },
+
+  async restore(id: string): Promise<Campaign> {
+    const { data } = await apiClient.post<Campaign>(`/campaigns/${id}/restore`);
+    return data;
   },
 
   // Owner может назначить любого Distributor'а воркспейса, Admin — только своих

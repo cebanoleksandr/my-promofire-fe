@@ -1,6 +1,7 @@
 export * from './pagination';
 export * from './date-range';
 export * from './api-error';
+export * from './account';
 export * from './membership';
 export * from './workspace';
 export * from './auth';

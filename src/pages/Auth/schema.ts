@@ -16,12 +16,21 @@ export const loginSchema = yup.object({
   password: yup.string().required('Enter your password'),
 });
 
+const optionalName = yup
+  .string()
+  .trim()
+  .max(50, 'At most 50 characters')
+  .optional()
+  .transform((value: string) => value || undefined);
+
 export const registerSchema = yup.object({
   workspaceName: yup
     .string()
     .trim()
     .required('Enter a workspace name')
     .min(2, 'At least 2 characters'),
+  firstName: optionalName,
+  lastName: optionalName,
   email,
   password,
   confirmPassword: yup

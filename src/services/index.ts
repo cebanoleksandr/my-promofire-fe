@@ -1,4 +1,5 @@
 export * from './auth.service';
+export * from './accounts.service';
 export * from './workspaces.service';
 export * from './memberships.service';
 export * from './campaigns.service';

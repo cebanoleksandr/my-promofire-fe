@@ -20,18 +20,28 @@ const RegisterPage = () => {
     resolver: yupResolver(registerSchema),
     defaultValues: {
       workspaceName: '',
+      firstName: '',
+      lastName: '',
       email: '',
       password: '',
       confirmPassword: '',
     },
   });
 
-  const onSubmit = handleSubmit(({ workspaceName, email, password }) => {
-    registerMutation.mutate(
-      { workspaceName: workspaceName!, email: email!, password: password! },
-      { onSuccess: () => navigate('/', { replace: true }) },
-    );
-  });
+  const onSubmit = handleSubmit(
+    ({ workspaceName, firstName, lastName, email, password }) => {
+      registerMutation.mutate(
+        {
+          workspaceName: workspaceName!,
+          email: email!,
+          password: password!,
+          firstName,
+          lastName,
+        },
+        { onSuccess: () => navigate('/', { replace: true }) },
+      );
+    },
+  );
 
   return (
     <AuthCard
@@ -54,6 +64,22 @@ const RegisterPage = () => {
         error={!!errors.workspaceName}
         helperText={errors.workspaceName?.message}
         {...register('workspaceName')}
+      />
+      <TextField
+        label="First name"
+        autoComplete="given-name"
+        placeholder="Jane"
+        error={!!errors.firstName}
+        helperText={errors.firstName?.message}
+        {...register('firstName')}
+      />
+      <TextField
+        label="Last name"
+        autoComplete="family-name"
+        placeholder="Doe"
+        error={!!errors.lastName}
+        helperText={errors.lastName?.message}
+        {...register('lastName')}
       />
       <TextField
         label="Email"
