@@ -33,6 +33,7 @@ export function TemplateCard({
         minHeight: 76,
         display: 'flex',
         alignItems: 'center',
+        justifyContent: 'flex-start',
         gap: 2,
         p: 1.5,
         textAlign: 'left',
@@ -54,7 +55,7 @@ export function TemplateCard({
         <Radio checked={selected} disableRipple tabIndex={-1} sx={{ p: 0, flexShrink: 0 }} />
       )}
 
-      <Box sx={{ minWidth: 0 }}>
+      <Box sx={{ flex: 1, minWidth: 0 }}>
         <Typography
           sx={{
             fontSize: 16,

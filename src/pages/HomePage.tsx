@@ -239,7 +239,7 @@ const HomePage = () => {
                 {
                   id: 'limit',
                   header: 'Max redemptions',
-                  cell: (r) => (r.maxRedemptions === 0 ? '∞' : r.maxRedemptions),
+                  cell: (r) => (r.maxRedemptions == null ? '∞' : r.maxRedemptions),
                 },
               ]}
             />

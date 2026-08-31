@@ -12,8 +12,13 @@ export interface PromoCode {
   code: string;
   campaignId: string;
   distributorMembershipId: string;
-  maxRedemptions: number;
+  // null = безлимитный код (Unlimited)
+  maxRedemptions: number | null;
   redemptionsCount: number;
+  // Собственный срок жизни кода — заполнен, только если кампания использует TTL
+  // (см. Campaign.ttlAmount/ttlUnit). Если null — действует campaign.expiresAt
+  expiresAt: string | null;
+  payload: Record<string, unknown> | null;
   status: PromoCodeStatus;
   createdAt: string;
   updatedAt: string;
@@ -22,5 +27,12 @@ export interface PromoCode {
 export interface GeneratePromoCodesDto {
   campaignId: string;
   count?: number; // сколько кодов сгенерировать, по умолчанию 1
-  maxRedemptions?: number; // по умолчанию 1 (одноразовый код)
+  // Override дефолта кампании (Campaign.defaultMaxRedemptions).
+  // Явный null тоже работает — это override "сделать именно эти коды безлимитными",
+  // даже если у кампании задан конечный defaultMaxRedemptions
+  maxRedemptions?: number | null;
+}
+
+export interface UpdatePromoCodePayloadDto {
+  payload: Record<string, unknown>;
 }

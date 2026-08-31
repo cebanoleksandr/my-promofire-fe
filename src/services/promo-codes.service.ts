@@ -1,11 +1,21 @@
 import { apiClient } from '../lib/api-client';
-import type { PromoCode, GeneratePromoCodesDto } from '../types/promo-code';
+import type {
+  PromoCode,
+  GeneratePromoCodesDto,
+  UpdatePromoCodePayloadDto,
+} from '../types/promo-code';
 import type { PaginatedResult, PaginationParams } from '../types/pagination';
 import type { DateRangeParams } from '../types/date-range';
 
 export const promoCodesService = {
   async generate(dto: GeneratePromoCodesDto): Promise<PromoCode[]> {
     const { data } = await apiClient.post<PromoCode[]>('/promo-codes', dto);
+    return data;
+  },
+
+  // Работает, только если у кампании кода payloadMutable === true — иначе 403
+  async updatePayload(id: string, dto: UpdatePromoCodePayloadDto): Promise<PromoCode> {
+    const { data } = await apiClient.patch<PromoCode>(`/promo-codes/${id}/payload`, dto);
     return data;
   },
 

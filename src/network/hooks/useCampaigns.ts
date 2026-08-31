@@ -3,7 +3,11 @@ import { campaignsService } from '../../services';
 import { EQueries, queryKeys } from '../_types';
 import queryClient from '../queryClient';
 import type { ApiError } from '../../types/api-error';
-import type { Campaign, CreateCampaignDto } from '../../types/campaign';
+import type {
+  Campaign,
+  CreateCampaignDto,
+  AssignedDistributor,
+} from '../../types/campaign';
 import type { PaginatedResult, PaginationParams } from '../../types/pagination';
 
 export function useCampaigns(params: PaginationParams = {}) {
@@ -51,6 +55,47 @@ export function useDeactivateCampaign() {
       queryClient.setQueryData(queryKeys.campaign(campaign.id), campaign);
       queryClient.invalidateQueries({ queryKey: [EQueries.CAMPAIGNS] });
       queryClient.invalidateQueries({ queryKey: queryKeys.statsOverview() });
+    },
+  });
+}
+
+// ── Назначенные на кампанию дистрибьюторы ─────────────────────────────
+export function useCampaignDistributors(campaignId: string | undefined) {
+  return useQuery<AssignedDistributor[], ApiError>({
+    queryKey: queryKeys.campaignDistributors(campaignId ?? ''),
+    queryFn: () => campaignsService.getAssignedDistributors(campaignId as string),
+    enabled: !!campaignId,
+  });
+}
+
+export function useAssignDistributor() {
+  return useMutation<
+    void,
+    ApiError,
+    { campaignId: string; distributorMembershipId: string }
+  >({
+    mutationFn: ({ campaignId, distributorMembershipId }) =>
+      campaignsService.assignDistributor(campaignId, { distributorMembershipId }),
+    onSuccess: (_data, { campaignId }) => {
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.campaignDistributors(campaignId),
+      });
+    },
+  });
+}
+
+export function useUnassignDistributor() {
+  return useMutation<
+    void,
+    ApiError,
+    { campaignId: string; distributorMembershipId: string }
+  >({
+    mutationFn: ({ campaignId, distributorMembershipId }) =>
+      campaignsService.unassignDistributor(campaignId, distributorMembershipId),
+    onSuccess: (_data, { campaignId }) => {
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.campaignDistributors(campaignId),
+      });
     },
   });
 }

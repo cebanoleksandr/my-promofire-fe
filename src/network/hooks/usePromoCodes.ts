@@ -3,7 +3,11 @@ import { promoCodesService } from '../../services';
 import { EQueries, queryKeys } from '../_types';
 import queryClient from '../queryClient';
 import type { ApiError } from '../../types/api-error';
-import type { GeneratePromoCodesDto, PromoCode } from '../../types/promo-code';
+import type {
+  GeneratePromoCodesDto,
+  PromoCode,
+  UpdatePromoCodePayloadDto,
+} from '../../types/promo-code';
 import type { PaginatedResult, PaginationParams } from '../../types/pagination';
 import type { DateRangeParams } from '../../types/date-range';
 
@@ -36,6 +40,26 @@ export function usePromoCodesForCampaign(
       promoCodesService.findForCampaign(campaignId as string, params),
     enabled: !!campaignId,
     placeholderData: keepPreviousData,
+  });
+}
+
+function invalidatePromoCodeLists() {
+  queryClient.invalidateQueries({ queryKey: [EQueries.PROMO_CODES] });
+  queryClient.invalidateQueries({ queryKey: [EQueries.PROMO_CODES_MINE] });
+  queryClient.invalidateQueries({ queryKey: [EQueries.PROMO_CODES_CAMPAIGN] });
+}
+
+// payload редактируется, только если у кампании payloadMutable === true (иначе 403)
+export function useUpdatePromoCodePayload() {
+  return useMutation<
+    PromoCode,
+    ApiError,
+    { id: string; dto: UpdatePromoCodePayloadDto }
+  >({
+    mutationFn: ({ id, dto }) => promoCodesService.updatePayload(id, dto),
+    onSuccess: () => {
+      invalidatePromoCodeLists();
+    },
   });
 }
 
