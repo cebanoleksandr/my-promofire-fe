@@ -1,6 +1,6 @@
 import { apiClient } from '../lib/api-client';
 import type {
-  Integration,
+  IntegrationListItem,
   CreateIntegrationDto,
   CreateIntegrationResponse,
 } from '../types/integration';
@@ -17,8 +17,9 @@ export const integrationsService = {
     return data;
   },
 
-  async findMine(params: DateRangeParams = {}): Promise<Integration[]> {
-    const { data } = await apiClient.get<Integration[]>('/integrations', { params });
+  // Каждая строка уже содержит actions/generated — считать самому на фронте не нужно
+  async findMine(params: DateRangeParams = {}): Promise<IntegrationListItem[]> {
+    const { data } = await apiClient.get<IntegrationListItem[]>('/integrations', { params });
     return data;
   },
 

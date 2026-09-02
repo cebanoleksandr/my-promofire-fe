@@ -37,6 +37,9 @@ export interface Campaign {
   payload: Record<string, unknown> | null;
   // Можно ли менять payload кода уже после генерации (PATCH /promo-codes/:id/payload)
   payloadMutable: boolean;
+  // "Availability" в UI — разрешено ли SDK самому генерировать себе коды на лету
+  // через POST /sdk/codes/generate. Отдельно от isActive — разные переключатели
+  selfServeEnabled: boolean;
   isActive: boolean;
   adminMembershipId: string;
   createdAt: string;
@@ -59,7 +62,26 @@ export interface CreateCampaignDto {
   defaultMaxRedemptions?: number;
   payload?: Record<string, unknown>;
   payloadMutable?: boolean;
+  selfServeEnabled?: boolean;
   isActive?: boolean;
+}
+
+// isActive намеренно не включён — для него activate()/deactivate()
+export interface UpdateCampaignDto {
+  name?: string;
+  description?: string;
+  discountType?: DiscountType;
+  discountValue?: number;
+  startsAt?: string;
+  expiresAt?: string;
+  ttlAmount?: number;
+  ttlUnit?: TtlUnit;
+  totalCodesLimit?: number;
+  perCustomerLimit?: number;
+  defaultMaxRedemptions?: number;
+  payload?: Record<string, unknown>;
+  payloadMutable?: boolean;
+  selfServeEnabled?: boolean;
 }
 
 export interface AssignDistributorDto {
@@ -95,6 +117,8 @@ export interface CampaignDistributorSummary {
 // То, что реально отдаёт GET /campaigns — Campaign + агрегаты, посчитанные на бэке
 // одним набором запросов (не N+1 на каждую строку списка)
 export interface CampaignListItem extends Campaign {
+  // Вычислено на бэке: archived (soft-deleted) > deactivated (isActive=false) > active
+  displayStatus: CampaignStatusFilter;
   generated: number;
   // Все обращения к кодам кампании (validate + redeem), не только успешные погашения
   actions: number;
@@ -103,4 +127,18 @@ export interface CampaignListItem extends Campaign {
   // на код именно этой кампании
   newUsers: number;
   distributors: CampaignDistributorSummary[];
+}
+
+export interface CampaignCreatorInfo {
+  membershipId: string;
+  email: string;
+  firstName: string | null;
+  lastName: string | null;
+  displayName: string;
+}
+
+// То, что реально отдаёт GET /campaigns/:id — Campaign + вычисленный статус + автор
+export interface CampaignDetail extends Campaign {
+  displayStatus: CampaignStatusFilter;
+  creator: CampaignCreatorInfo;
 }

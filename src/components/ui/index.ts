@@ -1,5 +1,6 @@
 export * from './Table';
 export * from './TableCard';
+export * from './Pagination';
 export * from './TextField';
 export * from './SearchInput';
 export * from './Textarea';

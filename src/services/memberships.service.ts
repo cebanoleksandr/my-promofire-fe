@@ -1,7 +1,12 @@
 import { apiClient } from '../lib/api-client';
-import type { Membership, TeamMember, InviteDto } from '../types/membership';
+import type { Membership, TeamMember, InviteDto, Role } from '../types/membership';
 import type { PaginatedResult, PaginationParams } from '../types/pagination';
 import type { DateRangeParams } from '../types/date-range';
+
+export interface GetMyTeamParams extends PaginationParams, DateRangeParams {
+  // Показать только конкретную роль — например, для секции Team на странице Profile
+  role?: Role;
+}
 
 export const membershipsService = {
   // Owner приглашает Admin'ов, Admin приглашает Distributor'ов —
@@ -12,10 +17,9 @@ export const membershipsService = {
   },
 
   // Единственный эндпоинт, который возвращает email (через join с Account на бэке).
-  // Без params.period — вернутся все участники команды без фильтра по дате приглашения.
-  async getMyTeam(
-    params: PaginationParams & DateRangeParams = {},
-  ): Promise<PaginatedResult<TeamMember>> {
+  // Без params.period — вернутся все участники без фильтра по дате приглашения.
+  // Без params.role — вернутся все роли вперемешку (Admin'ы и Distributor'ы разом)
+  async getMyTeam(params: GetMyTeamParams = {}): Promise<PaginatedResult<TeamMember>> {
     const { data } = await apiClient.get<PaginatedResult<TeamMember>>(
       '/memberships/my-team',
       { params },

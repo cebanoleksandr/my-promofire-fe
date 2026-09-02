@@ -1,5 +1,5 @@
 import { StatusChip, type StatusChipProps } from './StatusChip';
-import { PromoCodeStatus } from '../../types/promo-code';
+import { PromoCodeStatus, PromoCodeDisplayStatus } from '../../types/promo-code';
 import { MembershipStatus } from '../../types/membership';
 
 type Mapped = { label: string; tone: StatusChipProps['tone'] };
@@ -19,6 +19,27 @@ export interface PromoCodeStatusChipProps
 
 export function PromoCodeStatusChip({ status, ...rest }: PromoCodeStatusChipProps) {
   const { label, tone } = promoCodeMap[status];
+  return <StatusChip label={label} tone={tone} {...rest} />;
+}
+
+// Вычисляемый на бэке статус для листинга кодов (учитывает истечение срока)
+const promoCodeDisplayMap: Record<PromoCodeDisplayStatus, Mapped> = {
+  [PromoCodeDisplayStatus.ACTIVE]: { label: 'Active', tone: 'info' },
+  [PromoCodeDisplayStatus.DEACTIVATED]: { label: 'Deactivated', tone: 'neutral' },
+  [PromoCodeDisplayStatus.REDEEMED]: { label: 'Redeemed', tone: 'success' },
+  [PromoCodeDisplayStatus.EXPIRED]: { label: 'Expired', tone: 'error' },
+};
+
+export interface PromoCodeDisplayStatusChipProps
+  extends Omit<StatusChipProps, 'label' | 'tone'> {
+  status: PromoCodeDisplayStatus;
+}
+
+export function PromoCodeDisplayStatusChip({
+  status,
+  ...rest
+}: PromoCodeDisplayStatusChipProps) {
+  const { label, tone } = promoCodeDisplayMap[status];
   return <StatusChip label={label} tone={tone} {...rest} />;
 }
 

@@ -5,6 +5,7 @@ import type {
   CodesStatsResponse,
   UsersStatsResponse,
   BreakdownResponse,
+  DistributorBreakdown,
 } from '../types/stats';
 
 export const statsService = {
@@ -14,7 +15,7 @@ export const statsService = {
     return data;
   },
 
-  // Графики Generated/Redeemed/Expired + итоги с % изменения к предыдущему периоду
+  // Графики Generated/Redeemed/Expired/Actions + итоги с % изменения к предыдущему периоду
   async getCodesStats(params: StatsRangeParams = {}): Promise<CodesStatsResponse> {
     const { data } = await apiClient.get<CodesStatsResponse>('/stats/codes', { params });
     return data;
@@ -35,6 +36,17 @@ export const statsService = {
   // Донат-чарт по устройствам (ios/android/web) — аналогично, зависит от SDK
   async getDevicesBreakdown(params: StatsRangeParams = {}): Promise<BreakdownResponse> {
     const { data } = await apiClient.get<BreakdownResponse>('/stats/devices', { params });
+    return data;
+  },
+
+  // Для каждого Distributor'а — разбивка по его кампаниям. Owner видит всех
+  // Distributor'ов воркспейса, Admin — только своих. 403 для роли Distributor.
+  async getDistributorsBreakdown(
+    params: StatsRangeParams = {},
+  ): Promise<DistributorBreakdown[]> {
+    const { data } = await apiClient.get<DistributorBreakdown[]>('/stats/distributors', {
+      params,
+    });
     return data;
   },
 };

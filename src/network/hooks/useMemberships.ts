@@ -1,16 +1,14 @@
 import { keepPreviousData, useMutation, useQuery } from '@tanstack/react-query';
 import { membershipsService } from '../../services';
+import type { GetMyTeamParams } from '../../services/memberships.service';
 import { EQueries, queryKeys } from '../_types';
 import queryClient from '../queryClient';
 import type { ApiError } from '../../types/api-error';
 import type { Membership, TeamMember, InviteDto } from '../../types/membership';
-import type { PaginatedResult, PaginationParams } from '../../types/pagination';
-import type { DateRangeParams } from '../../types/date-range';
-
-type MyTeamParams = PaginationParams & DateRangeParams;
+import type { PaginatedResult } from '../../types/pagination';
 
 /** Команда текущего воркспейса (единственный эндпоинт с email). */
-export function useMyTeam(params: MyTeamParams = {}) {
+export function useMyTeam(params: GetMyTeamParams = {}) {
   return useQuery<PaginatedResult<TeamMember>, ApiError>({
     queryKey: queryKeys.myTeam(params),
     queryFn: () => membershipsService.getMyTeam(params),

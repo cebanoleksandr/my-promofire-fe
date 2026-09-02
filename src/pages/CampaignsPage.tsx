@@ -1,8 +1,8 @@
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Box, Pagination, Tab, Tabs, Typography } from '@mui/material';
+import { Box, Tab, Tabs, Typography } from '@mui/material';
 import { useCampaigns } from '../network/hooks';
-import { Button, Table, type TableSort } from '../components/ui';
+import { Button, Pagination, Table, type TableSort } from '../components/ui';
 import { colors } from '../theme';
 import {
   CampaignStatusFilter,
@@ -170,12 +170,7 @@ const CampaignsPage = () => {
 
       {totalPages > 1 && (
         <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
-          <Pagination
-            count={totalPages}
-            page={page}
-            onChange={(_, p) => setPage(p)}
-            shape="rounded"
-          />
+          <Pagination count={totalPages} page={page} onChange={setPage} />
         </Box>
       )}
     </Box>

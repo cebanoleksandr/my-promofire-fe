@@ -8,6 +8,7 @@ import type {
   CodesStatsResponse,
   UsersStatsResponse,
   BreakdownResponse,
+  DistributorBreakdown,
 } from '../../types/stats';
 
 // Форма ответа зависит от роли — сужать по полю scope (discriminant union)
@@ -50,6 +51,16 @@ export function useDevicesBreakdown(params: StatsRangeParams = {}) {
   return useQuery<BreakdownResponse, ApiError>({
     queryKey: queryKeys.statsDevices(params),
     queryFn: () => statsService.getDevicesBreakdown(params),
+    placeholderData: keepPreviousData,
+  });
+}
+
+// Разбивка по Distributor'ам и их кампаниям. 403 для роли Distributor —
+// вызывать только для Owner/Admin
+export function useDistributorsBreakdown(params: StatsRangeParams = {}) {
+  return useQuery<DistributorBreakdown[], ApiError>({
+    queryKey: queryKeys.statsDistributors(params),
+    queryFn: () => statsService.getDistributorsBreakdown(params),
     placeholderData: keepPreviousData,
   });
 }

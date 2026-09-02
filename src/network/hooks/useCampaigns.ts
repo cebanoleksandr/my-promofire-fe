@@ -5,9 +5,11 @@ import queryClient from '../queryClient';
 import type { ApiError } from '../../types/api-error';
 import type {
   Campaign,
+  CampaignDetail,
   CampaignListItem,
   CampaignStatusFilter,
   CreateCampaignDto,
+  UpdateCampaignDto,
   AssignedDistributor,
 } from '../../types/campaign';
 import type { PaginatedResult, PaginationParams } from '../../types/pagination';
@@ -23,10 +25,21 @@ export function useCampaigns(params: CampaignListParams = {}) {
 }
 
 export function useCampaign(id: string | undefined) {
-  return useQuery<Campaign, ApiError>({
+  return useQuery<CampaignDetail, ApiError>({
     queryKey: queryKeys.campaign(id ?? ''),
     queryFn: () => campaignsService.findOne(id as string),
     enabled: !!id,
+  });
+}
+
+// Редактирование полей кампании. Для isActive — useActivate/useDeactivateCampaign
+export function useUpdateCampaign() {
+  return useMutation<Campaign, ApiError, { id: string; dto: UpdateCampaignDto }>({
+    mutationFn: ({ id, dto }) => campaignsService.update(id, dto),
+    onSuccess: (campaign) => {
+      queryClient.setQueryData(queryKeys.campaign(campaign.id), campaign);
+      queryClient.invalidateQueries({ queryKey: [EQueries.CAMPAIGNS] });
+    },
   });
 }
 

@@ -6,12 +6,12 @@ import type { ApiError } from '../../types/api-error';
 import type {
   CreateIntegrationDto,
   CreateIntegrationResponse,
-  Integration,
+  IntegrationListItem,
 } from '../../types/integration';
 import type { DateRangeParams } from '../../types/date-range';
 
 export function useIntegrations(params: DateRangeParams = {}) {
-  return useQuery<Integration[], ApiError>({
+  return useQuery<IntegrationListItem[], ApiError>({
     queryKey: queryKeys.integrations(params),
     queryFn: () => integrationsService.findMine(params),
     placeholderData: keepPreviousData,

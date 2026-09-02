@@ -1,9 +1,11 @@
 import { apiClient } from '../lib/api-client';
 import type {
   Campaign,
+  CampaignDetail,
   CampaignListItem,
   CampaignStatusFilter,
   CreateCampaignDto,
+  UpdateCampaignDto,
   AssignDistributorDto,
   AssignedDistributor,
 } from '../types/campaign';
@@ -28,8 +30,16 @@ export const campaignsService = {
     return data;
   },
 
-  async findOne(id: string): Promise<Campaign> {
-    const { data } = await apiClient.get<Campaign>(`/campaigns/${id}`);
+  // Для страницы деталей — с вычисленным displayStatus и именем создателя (creator)
+  async findOne(id: string): Promise<CampaignDetail> {
+    const { data } = await apiClient.get<CampaignDetail>(`/campaigns/${id}`);
+    return data;
+  },
+
+  // Редактирование полей после создания (name/description/payload/discount и т.д.).
+  // Для isActive используй activate()/deactivate() ниже, не update()
+  async update(id: string, dto: UpdateCampaignDto): Promise<Campaign> {
+    const { data } = await apiClient.patch<Campaign>(`/campaigns/${id}`, dto);
     return data;
   },
 

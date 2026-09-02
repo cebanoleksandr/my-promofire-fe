@@ -1,7 +1,9 @@
-import { useState, type ReactNode } from 'react';
+import { useState, type FormEvent, type ReactNode } from 'react';
 import { Avatar, Box } from '@mui/material';
+import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { colors } from '../../theme';
-import { SearchInput } from '../ui';
+import { Button, SearchInput } from '../ui';
 
 export const HEADER_HEIGHT = 64;
 
@@ -21,9 +23,19 @@ export function Header({
   actions,
   userName = 'User',
 }: HeaderProps) {
-  const [localSearch, setLocalSearch] = useState('');
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const [localSearch, setLocalSearch] = useState(searchParams.get('q') ?? '');
+
   const value = search ?? localSearch;
   const handleChange = onSearchChange ?? setLocalSearch;
+  const trimmed = value.trim();
+
+  const submit = (e: FormEvent) => {
+    e.preventDefault();
+    if (!trimmed) return;
+    navigate(`/search?q=${encodeURIComponent(trimmed)}`);
+  };
 
   return (
     <Box
@@ -39,12 +51,26 @@ export function Header({
         borderBottom: `1px solid ${colors.interface.grey3}`,
       }}
     >
-      <Box sx={{ width: '100%', maxWidth: 560 }}>
+      <Box
+        component="form"
+        onSubmit={submit}
+        sx={{ display: 'flex', alignItems: 'center', gap: 1, width: '100%', maxWidth: 600 }}
+      >
         <SearchInput
           value={value}
           onChange={handleChange}
           placeholder={searchPlaceholder}
         />
+        {trimmed && (
+          <Button
+            type="submit"
+            size="M"
+            aria-label="Search"
+            sx={{ flexShrink: 0, px: 1.5 }}
+          >
+            <ArrowForwardRoundedIcon sx={{ fontSize: 18 }} />
+          </Button>
+        )}
       </Box>
 
       <Box sx={{ flex: 1 }} />

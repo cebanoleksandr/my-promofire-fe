@@ -12,6 +12,9 @@ export interface PromoCode {
   code: string;
   campaignId: string;
   distributorMembershipId: string;
+  // Заполнено, только если код сгенерирован самим SDK через self-serve
+  // (POST /sdk/codes/generate), а не вручную Distributor'ом через панель
+  generatedByIntegrationId: string | null;
   // null = безлимитный код (Unlimited)
   maxRedemptions: number | null;
   redemptionsCount: number;
@@ -35,4 +38,32 @@ export interface GeneratePromoCodesDto {
 
 export interface UpdatePromoCodePayloadDto {
   payload: Record<string, unknown>;
+}
+
+// Отдельно от PromoCodeStatus (то, что хранится в БД как есть) — этот вычисляется
+// на бэке при листинге и учитывает истечение срока, которое в саму колонку status
+// никогда не записывается
+export const PromoCodeDisplayStatus = {
+  ACTIVE: 'active',
+  DEACTIVATED: 'deactivated',
+  // Полностью исчерпан лимит (maxRedemptions). Безлимитный код (maxRedemptions: null)
+  // никогда не станет "redeemed", даже если его гасили много раз — навсегда "active"
+  REDEEMED: 'redeemed',
+  EXPIRED: 'expired',
+} as const;
+
+export type PromoCodeDisplayStatus =
+  (typeof PromoCodeDisplayStatus)[keyof typeof PromoCodeDisplayStatus];
+
+// То, что реально отдаёт GET /promo-codes/* — PromoCode + агрегаты, посчитанные
+// на бэке одним набором запросов (не N+1 на каждую строку списка)
+export interface PromoCodeListItem extends PromoCode {
+  displayStatus: PromoCodeDisplayStatus;
+  // Все обращения к коду (validate + redeem), не только успешные погашения
+  actions: number;
+  // Клиенты, чья самая первая активность за всю историю воркспейса пришлась
+  // именно на этот код
+  newUsers: number;
+  // "До какого момента код живёт" — свой expiresAt, а если его нет — от кампании
+  lifetime: string | null;
 }

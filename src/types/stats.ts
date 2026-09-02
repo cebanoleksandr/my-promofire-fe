@@ -15,6 +15,9 @@ export interface StatsRangeParams {
   // Обязателен, только если period === 'custom'. Формат YYYY-MM-DD.
   from?: string;
   to?: string;
+  // Сузить статистику до одной конкретной кампании (страница деталей кампании).
+  // Не передан = агрегат по всем доступным кампаниям
+  campaignId?: string;
 }
 
 export interface CodesStatsPoint {
@@ -22,6 +25,8 @@ export interface CodesStatsPoint {
   generated: number;
   redeemed: number;
   expired: number;
+  // Все обращения к кодам (validate + redeem), не только успешные погашения
+  actions: number;
 }
 
 export interface CodesStatsResponse {
@@ -32,6 +37,8 @@ export interface CodesStatsResponse {
     redeemedChangePct: number;
     expired: number;
     expiredChangePct: number;
+    actions: number;
+    actionsChangePct: number;
   };
   series: CodesStatsPoint[];
 }
@@ -65,6 +72,27 @@ export interface BreakdownItem {
 export interface BreakdownResponse {
   items: BreakdownItem[];
   total: number;
+}
+
+// GET /stats/distributors — для каждого Distributor'а разбивка по его кампаниям.
+// Owner видит всех Distributor'ов воркспейса, Admin — только своих
+export interface DistributorCampaignBreakdown {
+  campaignId: string;
+  name: string;
+  generated: number;
+  redeemed: number;
+  actions: number;
+  newUsers: number;
+}
+
+export interface DistributorBreakdown {
+  membershipId: string;
+  email: string;
+  firstName: string | null;
+  lastName: string | null;
+  displayName: string;
+  isActive: boolean;
+  campaigns: DistributorCampaignBreakdown[];
 }
 
 export interface OwnerOverview {

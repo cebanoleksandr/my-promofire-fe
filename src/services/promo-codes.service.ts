@@ -1,6 +1,7 @@
 import { apiClient } from '../lib/api-client';
 import type {
   PromoCode,
+  PromoCodeListItem,
   GeneratePromoCodesDto,
   UpdatePromoCodePayloadDto,
 } from '../types/promo-code';
@@ -19,11 +20,22 @@ export const promoCodesService = {
     return data;
   },
 
+  async disable(id: string): Promise<PromoCode> {
+    const { data } = await apiClient.patch<PromoCode>(`/promo-codes/${id}/disable`);
+    return data;
+  },
+
+  // Работает, только если код был именно вручную отключён (не исчерпан, не истёк)
+  async enable(id: string): Promise<PromoCode> {
+    const { data } = await apiClient.patch<PromoCode>(`/promo-codes/${id}/enable`);
+    return data;
+  },
+
   // Owner видит все коды воркспейса, Admin — коды своих кампаний, Distributor — свои
   async findAll(
     params: PaginationParams & DateRangeParams = {},
-  ): Promise<PaginatedResult<PromoCode>> {
-    const { data } = await apiClient.get<PaginatedResult<PromoCode>>('/promo-codes', {
+  ): Promise<PaginatedResult<PromoCodeListItem>> {
+    const { data } = await apiClient.get<PaginatedResult<PromoCodeListItem>>('/promo-codes', {
       params,
     });
     return data;
@@ -32,8 +44,8 @@ export const promoCodesService = {
   // Без params.period — вернутся все коды без фильтра по дате
   async findMine(
     params: PaginationParams & DateRangeParams = {},
-  ): Promise<PaginatedResult<PromoCode>> {
-    const { data } = await apiClient.get<PaginatedResult<PromoCode>>(
+  ): Promise<PaginatedResult<PromoCodeListItem>> {
+    const { data } = await apiClient.get<PaginatedResult<PromoCodeListItem>>(
       '/promo-codes/mine',
       { params },
     );
@@ -43,8 +55,8 @@ export const promoCodesService = {
   async findForCampaign(
     campaignId: string,
     params: PaginationParams & DateRangeParams = {},
-  ): Promise<PaginatedResult<PromoCode>> {
-    const { data } = await apiClient.get<PaginatedResult<PromoCode>>(
+  ): Promise<PaginatedResult<PromoCodeListItem>> {
+    const { data } = await apiClient.get<PaginatedResult<PromoCodeListItem>>(
       `/promo-codes/campaign/${campaignId}`,
       { params },
     );

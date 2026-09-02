@@ -36,4 +36,7 @@ export interface TeamMember extends Membership {
 
 export interface InviteDto {
   email: string;
+  // Обязателен только для Owner'а — у него есть выбор (Admin или Distributor
+  // напрямую). Admin может не передавать — у него выбора нет, всегда Distributor
+  role?: Role;
 }
