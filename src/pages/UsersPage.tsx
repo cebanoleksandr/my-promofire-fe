@@ -1,34 +1,47 @@
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, Typography } from '@mui/material';
-import { StatsPeriod, type DateRangeParams } from '../types';
-import { useIntegrations } from '../network/hooks';
-import { PeriodControl, Table, type TableSort } from '../components/ui';
+import { useCustomers } from '../network/hooks';
+import { DateLabel, Pagination, Table, type TableSort } from '../components/ui';
 import { colors } from '../theme';
-import type { IntegrationListItem } from '../types/integration';
+import type { CustomerListItem } from '../types/customer';
 
-const numberFmt = new Intl.NumberFormat('en-US');
+const PAGE_SIZE = 20;
 
 const UsersPage = () => {
   const navigate = useNavigate();
 
-  const [period, setPeriod] = useState<DateRangeParams>({
-    period: StatsPeriod.MONTH,
-  });
+  const [page, setPage] = useState(1);
   const [sort, setSort] = useState<TableSort | null>(null);
 
-  const { data, isPending, refetch } = useIntegrations(period);
+  const { data, isPending } = useCustomers({ page, limit: PAGE_SIZE });
 
   const rows = useMemo(() => {
-    const list = data ?? [];
+    const list = data?.data ?? [];
     if (!sort) return list;
     const dir = sort.direction === 'asc' ? 1 : -1;
     return [...list].sort((a, b) => {
-      if (sort.columnId === 'name') return a.name.localeCompare(b.name) * dir;
-      const key = sort.columnId as 'actions' | 'generated';
-      return (a[key] - b[key]) * dir;
+      switch (sort.columnId) {
+        case 'name':
+          return (a.name ?? a.externalCustomerId).localeCompare(
+            b.name ?? b.externalCustomerId,
+          ) * dir;
+        case 'email':
+          return (a.email ?? '').localeCompare(b.email ?? '') * dir;
+        case 'firstSeenAt':
+          return (
+            (new Date(a.firstSeenAt).getTime() - new Date(b.firstSeenAt).getTime()) * dir
+          );
+        default: {
+          return (
+            (new Date(a.lastSeenAt).getTime() - new Date(b.lastSeenAt).getTime()) * dir
+          );
+        }
+      }
     });
-  }, [data, sort]);
+  }, [data?.data, sort]);
+
+  const totalPages = data?.meta.totalPages ?? 1;
 
   return (
     <Box sx={{ maxWidth: 1200, mx: 'auto' }}>
@@ -38,15 +51,7 @@ const UsersPage = () => {
         Users
       </Typography>
 
-      <Box sx={{ mb: 3 }}>
-        <PeriodControl
-          value={period}
-          onChange={setPeriod}
-          onRefresh={() => refetch()}
-        />
-      </Box>
-
-      <Table<IntegrationListItem>
+      <Table<CustomerListItem>
         rows={rows}
         getRowKey={(r) => r.id}
         loading={isPending}
@@ -67,28 +72,38 @@ const UsersPage = () => {
                   color: colors.interface.black,
                 }}
               >
-                {r.name}
+                {r.name || r.externalCustomerId}
               </Typography>
             ),
           },
           {
-            id: 'actions',
-            header: 'Actions',
-            align: 'right',
+            id: 'email',
+            header: 'Email',
             sortable: true,
-            help: 'All SDK calls through this integration (validate + redeem)',
-            cell: (r) => numberFmt.format(r.actions),
+            cell: (r) => r.email ?? '—',
           },
           {
-            id: 'generated',
-            header: 'Generated',
+            id: 'firstSeenAt',
+            header: 'Joined',
             align: 'right',
             sortable: true,
-            help: 'Codes this integration generated itself (self-serve), not codes handed to it manually',
-            cell: (r) => numberFmt.format(r.generated),
+            cell: (r) => <DateLabel from={r.firstSeenAt} withIcon={false} />,
+          },
+          {
+            id: 'lastSeenAt',
+            header: 'Last session',
+            align: 'right',
+            sortable: true,
+            cell: (r) => <DateLabel from={r.lastSeenAt} withIcon={false} />,
           },
         ]}
       />
+
+      {totalPages > 1 && (
+        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
+          <Pagination count={totalPages} page={page} onChange={setPage} />
+        </Box>
+      )}
     </Box>
   );
 };

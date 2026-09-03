@@ -1,13 +1,14 @@
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, Tab, Tabs, Typography } from '@mui/material';
-import { useCampaigns } from '../network/hooks';
+import { useCampaigns, useCurrentWorkspace } from '../network/hooks';
 import { Button, Pagination, Table, type TableSort } from '../components/ui';
 import { colors } from '../theme';
 import {
   CampaignStatusFilter,
   type CampaignListItem,
 } from '../types/campaign';
+import { Role } from '../types/membership';
 
 const TABS: { value: CampaignStatusFilter; label: string }[] = [
   { value: CampaignStatusFilter.ACTIVE, label: 'Active' },
@@ -26,6 +27,8 @@ function distributorNames(row: CampaignListItem): string {
 
 const CampaignsPage = () => {
   const navigate = useNavigate();
+  const workspace = useCurrentWorkspace();
+  const canCreate = workspace.data?.role !== Role.DISTRIBUTOR;
 
   const [status, setStatus] = useState<CampaignStatusFilter>(
     CampaignStatusFilter.ACTIVE,
@@ -69,7 +72,9 @@ const CampaignsPage = () => {
         <Typography sx={{ fontSize: 24, fontWeight: 700, lineHeight: '32px' }}>
           Campaigns
         </Typography>
-        <Button onClick={() => navigate('/campaigns/create')}>Create campaign</Button>
+        {canCreate && (
+          <Button onClick={() => navigate('/campaigns/create')}>Create campaign</Button>
+        )}
       </Box>
 
       <Tabs

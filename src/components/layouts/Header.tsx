@@ -80,6 +80,7 @@ export function Header({
       {actions ?? (
         <>
           <Avatar
+            data-discovery-target="header-avatar"
             onClick={(e) => setAvatarAnchor(e.currentTarget)}
             sx={{
               width: 32,

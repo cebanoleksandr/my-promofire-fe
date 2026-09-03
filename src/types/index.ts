@@ -8,4 +8,5 @@ export * from './auth';
 export * from './campaign';
 export * from './promo-code';
 export * from './integration';
+export * from './customer';
 export * from './stats';

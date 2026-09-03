@@ -392,7 +392,7 @@ const CodeDetailPage = () => {
             action={
               <Typography
                 sx={{ fontSize: 14, fontWeight: 500, color: colors.brand.main, cursor: 'pointer' }}
-                onClick={() => navigate('/users')}
+                onClick={() => navigate(`/codes/${c.id}/users`)}
               >
                 See all
               </Typography>
@@ -401,7 +401,6 @@ const CodeDetailPage = () => {
             <Table<PromoCodeIntegrationBreakdown>
               rows={c.integrations}
               getRowKey={(r) => r.integrationId}
-              onRowClick={(r) => navigate(`/users/${r.integrationId}`)}
               emptyContent="No activity yet"
               columns={[
                 { id: 'name', header: 'Name', cell: (r) => r.name },

@@ -5,4 +5,5 @@ export * from './memberships.service';
 export * from './campaigns.service';
 export * from './promo-codes.service';
 export * from './integrations.service';
+export * from './customers.service';
 export * from './stats.service';

@@ -403,7 +403,7 @@ const DistributorDetailPage = () => {
             action={
               <Typography
                 sx={{ fontSize: 14, fontWeight: 500, color: colors.brand.main, cursor: 'pointer' }}
-                onClick={() => navigate('/campaigns')}
+                onClick={() => navigate(`/distributors/${d.id}/campaigns`)}
               >
                 See all
               </Typography>
@@ -454,7 +454,7 @@ const DistributorDetailPage = () => {
             action={
               <Typography
                 sx={{ fontSize: 14, fontWeight: 500, color: colors.brand.main, cursor: 'pointer' }}
-                onClick={() => navigate('/codes')}
+                onClick={() => navigate(`/distributors/${d.id}/codes`)}
               >
                 See all
               </Typography>

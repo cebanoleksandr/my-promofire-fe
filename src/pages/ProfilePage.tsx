@@ -15,9 +15,11 @@ import {
   useUpdateProfile,
 } from '../network/hooks';
 import { Button, TextField } from '../components/ui';
+import { ConfirmPopup } from '../components/popups/ConfirmPopup';
 import { setAlertAC } from '../store/alertSlice';
 import { Role } from '../types/membership';
 import { colors } from '../theme';
+import type { TeamMember } from '../types/membership';
 
 function Row({
   label,
@@ -153,6 +155,7 @@ const ProfilePage = () => {
 
   const [inviteOpen, setInviteOpen] = useState(false);
   const [inviteEmail, setInviteEmail] = useState('');
+  const [adminToRemove, setAdminToRemove] = useState<TeamMember | null>(null);
 
   const save = (dto: { firstName?: string; lastName?: string }) => {
     updateProfile.mutate(dto, {
@@ -249,13 +252,7 @@ const ProfilePage = () => {
                   <IconButton
                     size="small"
                     aria-label={`Remove ${m.displayName}`}
-                    disabled={removeMember.isPending}
-                    onClick={() =>
-                      removeMember.mutate(m.id, {
-                        onError: (e) =>
-                          dispatch(setAlertAC({ text: e.message, mode: 'error' })),
-                      })
-                    }
+                    onClick={() => setAdminToRemove(m)}
                   >
                     <DeleteOutlineRoundedIcon
                       sx={{ fontSize: 18, color: colors.interface.grey }}
@@ -306,6 +303,27 @@ const ProfilePage = () => {
           </Row>
         </>
       )}
+
+      <ConfirmPopup
+        isVisible={!!adminToRemove}
+        title="Remove admin?"
+        description={
+          adminToRemove
+            ? `${adminToRemove.displayName} will lose access to this workspace.`
+            : undefined
+        }
+        confirmLabel="Remove"
+        tone="danger"
+        loading={removeMember.isPending}
+        onClose={() => setAdminToRemove(null)}
+        onConfirm={() => {
+          if (!adminToRemove) return;
+          removeMember.mutate(adminToRemove.id, {
+            onSuccess: () => setAdminToRemove(null),
+            onError: (e) => dispatch(setAlertAC({ text: e.message, mode: 'error' })),
+          });
+        }}
+      />
     </Box>
   );
 };

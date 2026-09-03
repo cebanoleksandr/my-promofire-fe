@@ -4,6 +4,7 @@ import { colors } from '../../theme';
 import { Sidebar } from './Sidebar';
 import { Header } from './Header';
 import CustomAlert from '../ui/CustomAlert';
+import { DiscoveryGate } from '../discovery/DiscoveryGate';
 
 export function MainLayout() {
   return (
@@ -27,6 +28,7 @@ export function MainLayout() {
       </Box>
 
       <CustomAlert />
+      <DiscoveryGate />
     </Box>
   );
 }

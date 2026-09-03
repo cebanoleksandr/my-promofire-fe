@@ -50,12 +50,14 @@ import {
   Textarea,
 } from '../components/ui';
 import { GenerateCodePopup } from '../components/popups/GenerateCodePopup';
+import { ConfirmPopup } from '../components/popups/ConfirmPopup';
 import { DonutCard, StatTile } from '../components/dashboard';
 import { CampaignStatusFilter } from '../types/campaign';
 import { Role } from '../types/membership';
 import { colors, customShadows } from '../theme';
 import type { StatusTone } from '../components/ui';
 import type { PromoCodeListItem } from '../types/promo-code';
+import type { AssignedDistributor } from '../types/campaign';
 
 const numberFmt = new Intl.NumberFormat('en-US');
 const PAGE_SIZE = 8;
@@ -167,6 +169,7 @@ const CampaignDetailPage = () => {
   const [page, setPage] = useState(1);
   const [menuAnchor, setMenuAnchor] = useState<HTMLElement | null>(null);
   const [generateOpen, setGenerateOpen] = useState(false);
+  const [distributorToRemove, setDistributorToRemove] = useState<AssignedDistributor | null>(null);
 
   const campaign = useCampaign(campaignId);
   const codesStats = useCodesStats(period);
@@ -197,6 +200,7 @@ const CampaignDetailPage = () => {
 
   const toastErr = (e: { message: string }) =>
     dispatch(setAlertAC({ text: e.message, mode: 'error' }));
+  const toastOk = (text: string) => dispatch(setAlertAC({ text, mode: 'success' }));
 
   if (campaign.isPending) {
     return (
@@ -263,7 +267,12 @@ const CampaignDetailPage = () => {
           {isArchived ? (
             <MenuItem
               onClick={() =>
-                runMenu(() => restore.mutate(c.id, { onError: toastErr }))
+                runMenu(() =>
+                  restore.mutate(c.id, {
+                    onSuccess: () => toastOk('Campaign restored'),
+                    onError: toastErr,
+                  }),
+                )
               }
             >
               Restore
@@ -274,7 +283,12 @@ const CampaignDetailPage = () => {
                 <MenuItem
                   key="deact"
                   onClick={() =>
-                    runMenu(() => deactivate.mutate(c.id, { onError: toastErr }))
+                    runMenu(() =>
+                      deactivate.mutate(c.id, {
+                        onSuccess: () => toastOk('Campaign deactivated'),
+                        onError: toastErr,
+                      }),
+                    )
                   }
                 >
                   Deactivate
@@ -283,7 +297,12 @@ const CampaignDetailPage = () => {
                 <MenuItem
                   key="act"
                   onClick={() =>
-                    runMenu(() => activate.mutate(c.id, { onError: toastErr }))
+                    runMenu(() =>
+                      activate.mutate(c.id, {
+                        onSuccess: () => toastOk('Campaign activated'),
+                        onError: toastErr,
+                      }),
+                    )
                   }
                 >
                   Activate
@@ -294,7 +313,10 @@ const CampaignDetailPage = () => {
                 onClick={() =>
                   runMenu(() =>
                     archive.mutate(c.id, {
-                      onSuccess: () => navigate('/campaigns'),
+                      onSuccess: () => {
+                        toastOk('Campaign archived');
+                        navigate('/campaigns');
+                      },
                       onError: toastErr,
                     }),
                   )
@@ -351,6 +373,30 @@ const CampaignDetailPage = () => {
             },
           )
         }
+      />
+
+      <ConfirmPopup
+        isVisible={!!distributorToRemove}
+        title="Remove distributor?"
+        description={
+          distributorToRemove
+            ? `${distributorToRemove.displayName} will lose access to this campaign.`
+            : undefined
+        }
+        confirmLabel="Remove"
+        tone="danger"
+        loading={unassign.isPending}
+        onClose={() => setDistributorToRemove(null)}
+        onConfirm={() => {
+          if (!distributorToRemove) return;
+          unassign.mutate(
+            { campaignId: c.id, distributorMembershipId: distributorToRemove.membershipId },
+            {
+              onSuccess: () => setDistributorToRemove(null),
+              onError: toastErr,
+            },
+          );
+        }}
       />
 
       <Box sx={{ display: 'flex', gap: 3, alignItems: 'flex-start', flexWrap: 'wrap' }}>
@@ -429,13 +475,7 @@ const CampaignDetailPage = () => {
                   <IconButton
                     size="small"
                     aria-label={`Remove ${d.displayName}`}
-                    disabled={unassign.isPending}
-                    onClick={() =>
-                      unassign.mutate(
-                        { campaignId: c.id, distributorMembershipId: d.membershipId },
-                        { onError: toastErr },
-                      )
-                    }
+                    onClick={() => setDistributorToRemove(d)}
                   >
                     <DeleteOutlineRoundedIcon sx={{ fontSize: 18, color: colors.interface.grey }} />
                   </IconButton>
@@ -494,7 +534,7 @@ const CampaignDetailPage = () => {
             action={
               <Typography
                 sx={{ fontSize: 14, fontWeight: 500, color: colors.brand.main, cursor: 'pointer' }}
-                onClick={() => navigate('/codes')}
+                onClick={() => navigate(`/campaigns/${c.id}/codes`)}
               >
                 See all
               </Typography>

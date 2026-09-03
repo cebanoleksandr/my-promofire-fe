@@ -3,12 +3,14 @@ import type { DateRangeParams } from '../../types/date-range';
 import type { StatsRangeParams } from '../../types/stats';
 import type { CampaignListParams as CampaignFilterParams } from '../../types/campaign';
 import type { PromoCodeListParams } from '../../types/promo-code';
+import type { CustomerRangeParams } from '../../types/customer';
 import type { Role } from '../../types/membership';
 
 type ListParams = PaginationParams & DateRangeParams;
 type CampaignListParams = PaginationParams & CampaignFilterParams;
 type PromoCodesListParams = ListParams & PromoCodeListParams;
 type MyTeamParams = ListParams & { role?: Role };
+type CustomerCodesParams = PaginationParams & CustomerRangeParams;
 
 export const EQueries = {
   CURRENT_ACCOUNT: 'current-account',
@@ -25,6 +27,11 @@ export const EQueries = {
   PROMO_CODES_MINE: 'promo-codes-mine',
   PROMO_CODES_CAMPAIGN: 'promo-codes-campaign',
   INTEGRATIONS: 'integrations',
+  CUSTOMERS: 'customers',
+  CUSTOMER: 'customer',
+  CUSTOMER_DEVICES: 'customer-devices',
+  CUSTOMER_COUNTRIES: 'customer-countries',
+  CUSTOMER_CODES: 'customer-codes',
   STATS_OVERVIEW: 'stats-overview',
   STATS_CODES: 'stats-codes',
   STATS_USERS: 'stats-users',
@@ -61,6 +68,17 @@ export const queryKeys = {
 
   integrations: (params?: DateRangeParams) =>
     [EQueries.INTEGRATIONS, params ?? {}] as const,
+
+  customers: (params?: PaginationParams) =>
+    [EQueries.CUSTOMERS, params ?? {}] as const,
+  customer: (id: string, params?: CustomerRangeParams) =>
+    [EQueries.CUSTOMER, id, params ?? {}] as const,
+  customerDevices: (id: string, params?: CustomerRangeParams) =>
+    [EQueries.CUSTOMER_DEVICES, id, params ?? {}] as const,
+  customerCountries: (id: string, params?: CustomerRangeParams) =>
+    [EQueries.CUSTOMER_COUNTRIES, id, params ?? {}] as const,
+  customerCodes: (id: string, params?: CustomerCodesParams) =>
+    [EQueries.CUSTOMER_CODES, id, params ?? {}] as const,
 
   statsOverview: () => [EQueries.STATS_OVERVIEW] as const,
   statsCodes: (params?: StatsRangeParams) =>

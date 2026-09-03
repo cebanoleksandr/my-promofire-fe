@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Box, Typography } from '@mui/material';
 import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
 import ContentCopyRoundedIcon from '@mui/icons-material/ContentCopyRounded';
-import { useCampaigns, useIntegrations, usePromoCodes } from '../network/hooks';
+import { useCampaigns, useCustomers, usePromoCodes } from '../network/hooks';
 import {
   Button,
   DateLabel,
@@ -15,7 +15,7 @@ import {
 import { colors } from '../theme';
 import type { PromoCodeListItem } from '../types/promo-code';
 import type { CampaignListItem } from '../types/campaign';
-import type { IntegrationListItem } from '../types/integration';
+import type { CustomerListItem } from '../types/customer';
 
 const numberFmt = new Intl.NumberFormat('en-US');
 
@@ -48,7 +48,7 @@ const SearchPage = () => {
 
   const codesQuery = usePromoCodes({ limit: 100 });
   const campaignsQuery = useCampaigns({ limit: 100 });
-  const usersQuery = useIntegrations();
+  const usersQuery = useCustomers({ limit: 100 });
 
   const codes = useMemo(
     () =>
@@ -75,11 +75,14 @@ const SearchPage = () => {
   const users = useMemo(
     () =>
       hasTerm
-        ? (usersQuery.data ?? []).filter((u) =>
-            u.name.toLowerCase().includes(term),
+        ? (usersQuery.data?.data ?? []).filter(
+            (u) =>
+              (u.name ?? '').toLowerCase().includes(term) ||
+              (u.email ?? '').toLowerCase().includes(term) ||
+              u.externalCustomerId.toLowerCase().includes(term),
           )
         : [],
-    [usersQuery.data, term, hasTerm],
+    [usersQuery.data?.data, term, hasTerm],
   );
 
   const data = { codes, campaigns, users };
@@ -247,7 +250,7 @@ const SearchPage = () => {
 
       {(loading || users.length > 0) && (
       <Section title="Users">
-        <Table<IntegrationListItem>
+        <Table<CustomerListItem>
           rows={data?.users ?? []}
           getRowKey={(r) => r.id}
           loading={loading}
@@ -261,23 +264,20 @@ const SearchPage = () => {
                 <Typography
                   sx={{ fontSize: 14, fontWeight: 500, color: colors.interface.black }}
                 >
-                  {r.name}
+                  {r.name || r.externalCustomerId}
                 </Typography>
               ),
             },
             {
-              id: 'actions',
-              header: 'Actions',
-              align: 'right',
-              help: 'All SDK calls through this integration (validate + redeem)',
-              cell: (r) => numberFmt.format(r.actions),
+              id: 'email',
+              header: 'Email',
+              cell: (r) => r.email ?? '—',
             },
             {
-              id: 'generated',
-              header: 'Generated',
+              id: 'lastSeenAt',
+              header: 'Last session',
               align: 'right',
-              help: 'Codes this integration generated itself (self-serve)',
-              cell: (r) => numberFmt.format(r.generated),
+              cell: (r) => <DateLabel from={r.lastSeenAt} withIcon={false} />,
             },
           ]}
         />
