@@ -7,6 +7,7 @@ import {
   Menu,
   MenuItem,
   Paper,
+  Tooltip,
   Typography,
 } from '@mui/material';
 import MoreHorizRoundedIcon from '@mui/icons-material/MoreHorizRounded';
@@ -48,6 +49,7 @@ import {
   Table,
   Textarea,
 } from '../components/ui';
+import { GenerateCodePopup } from '../components/popups/GenerateCodePopup';
 import { DonutCard, StatTile } from '../components/dashboard';
 import { CampaignStatusFilter } from '../types/campaign';
 import { Role } from '../types/membership';
@@ -84,7 +86,7 @@ function InfoRow({ label, hint, children }: { label: string; hint?: string; chil
           </Box>
         )}
       </Typography>
-      <Box sx={{ fontSize: 14, color: colors.interface.black, textAlign: 'right', flex: 1 }}>
+      <Box sx={{ fontSize: 14, color: colors.interface.black, textAlign: 'right', flex: 1, minWidth: 0 }}>
         {children}
       </Box>
     </Box>
@@ -164,6 +166,7 @@ const CampaignDetailPage = () => {
   const [period, setPeriod] = useState<DateRangeParams>({ period: StatsPeriod.MONTH });
   const [page, setPage] = useState(1);
   const [menuAnchor, setMenuAnchor] = useState<HTMLElement | null>(null);
+  const [generateOpen, setGenerateOpen] = useState(false);
 
   const campaign = useCampaign(campaignId);
   const codesStats = useCodesStats(period);
@@ -327,23 +330,28 @@ const CampaignDetailPage = () => {
             codes.refetch();
           }}
         />
-        <Button
-          loading={generate.isPending}
-          disabled={isArchived}
-          onClick={() =>
-            generate.mutate(
-              { campaignId: c.id },
-              {
-                onSuccess: () =>
-                  dispatch(setAlertAC({ text: 'Code generated', mode: 'success' })),
-                onError: toastErr,
-              },
-            )
-          }
-        >
+        <Button disabled={isArchived} onClick={() => setGenerateOpen(true)}>
           Generate code
         </Button>
       </Box>
+
+      <GenerateCodePopup
+        isVisible={generateOpen}
+        loading={generate.isPending}
+        onClose={() => setGenerateOpen(false)}
+        onGenerate={(customCode) =>
+          generate.mutate(
+            { campaignId: c.id, customCode },
+            {
+              onSuccess: () => {
+                setGenerateOpen(false);
+                dispatch(setAlertAC({ text: 'Code generated', mode: 'success' }));
+              },
+              onError: toastErr,
+            },
+          )
+        }
+      />
 
       <Box sx={{ display: 'flex', gap: 3, alignItems: 'flex-start', flexWrap: 'wrap' }}>
         {/* Левая колонка */}
@@ -359,9 +367,23 @@ const CampaignDetailPage = () => {
             }}
           >
             <InfoRow label="Creator">
-              <Box component="span" sx={{ color: colors.brand.main, fontWeight: 500 }}>
-                {c.creator.displayName}
-              </Box>
+              <Tooltip title={`${c.creator.displayName} (${c.creator.email})`}>
+                <Box
+                  component="span"
+                  sx={{
+                    display: 'inline-block',
+                    maxWidth: '100%',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                    verticalAlign: 'bottom',
+                    color: colors.brand.main,
+                    fontWeight: 500,
+                  }}
+                >
+                  {c.creator.displayName}
+                </Box>
+              </Tooltip>
             </InfoRow>
             <InfoRow label="Status">
               <StatusChip {...statusChip[c.displayStatus]} />

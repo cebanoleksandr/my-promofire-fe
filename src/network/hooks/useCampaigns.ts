@@ -37,7 +37,11 @@ export function useUpdateCampaign() {
   return useMutation<Campaign, ApiError, { id: string; dto: UpdateCampaignDto }>({
     mutationFn: ({ id, dto }) => campaignsService.update(id, dto),
     onSuccess: (campaign) => {
-      queryClient.setQueryData(queryKeys.campaign(campaign.id), campaign);
+      // update() возвращает Campaign без creator/displayStatus — мёржим поверх
+      // уже загруженного CampaignDetail, а не затираем его целиком
+      queryClient.setQueryData<CampaignDetail>(queryKeys.campaign(campaign.id), (prev) =>
+        prev ? { ...prev, ...campaign } : undefined,
+      );
       queryClient.invalidateQueries({ queryKey: [EQueries.CAMPAIGNS] });
     },
   });
@@ -49,7 +53,9 @@ export function useCreateCampaign() {
     onSuccess: (campaign) => {
       queryClient.invalidateQueries({ queryKey: [EQueries.CAMPAIGNS] });
       queryClient.invalidateQueries({ queryKey: queryKeys.statsOverview() });
-      queryClient.setQueryData(queryKeys.campaign(campaign.id), campaign);
+      // create() возвращает Campaign без creator/displayStatus — CampaignDetail
+      // ещё не в кэше, поэтому просто инвалидируем, а не подсовываем неполные данные
+      queryClient.invalidateQueries({ queryKey: queryKeys.campaign(campaign.id) });
     },
   });
 }
@@ -58,7 +64,9 @@ export function useActivateCampaign() {
   return useMutation<Campaign, ApiError, string>({
     mutationFn: (id) => campaignsService.activate(id),
     onSuccess: (campaign) => {
-      queryClient.setQueryData(queryKeys.campaign(campaign.id), campaign);
+      queryClient.setQueryData<CampaignDetail>(queryKeys.campaign(campaign.id), (prev) =>
+        prev ? { ...prev, ...campaign } : undefined,
+      );
       queryClient.invalidateQueries({ queryKey: [EQueries.CAMPAIGNS] });
       queryClient.invalidateQueries({ queryKey: queryKeys.statsOverview() });
     },
@@ -69,7 +77,9 @@ export function useDeactivateCampaign() {
   return useMutation<Campaign, ApiError, string>({
     mutationFn: (id) => campaignsService.deactivate(id),
     onSuccess: (campaign) => {
-      queryClient.setQueryData(queryKeys.campaign(campaign.id), campaign);
+      queryClient.setQueryData<CampaignDetail>(queryKeys.campaign(campaign.id), (prev) =>
+        prev ? { ...prev, ...campaign } : undefined,
+      );
       queryClient.invalidateQueries({ queryKey: [EQueries.CAMPAIGNS] });
       queryClient.invalidateQueries({ queryKey: queryKeys.statsOverview() });
     },

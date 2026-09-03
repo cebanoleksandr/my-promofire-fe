@@ -7,6 +7,7 @@ import { StatsPeriod, type DateRangeParams } from '../types';
 import {
   useCodesStats,
   useDistributorsBreakdown,
+  useInviteMember,
   useMyTeam,
   useResendInvite,
   useUsersStats,
@@ -19,9 +20,10 @@ import {
   TableCard,
   type TableSort,
 } from '../components/ui';
+import { InviteDistributorPopup } from '../components/popups/InviteDistributorPopup';
 import { StatTile } from '../components/dashboard';
 import { setAlertAC } from '../store/alertSlice';
-import { MembershipStatus } from '../types/membership';
+import { MembershipStatus, Role } from '../types/membership';
 import { colors, customShadows } from '../theme';
 import type {
   DistributorBreakdown,
@@ -142,14 +144,34 @@ function DistributorCard({
 }
 
 const DistributorsPage = () => {
+  const dispatch = useDispatch();
   const [period, setPeriod] = useState<DateRangeParams>({
     period: StatsPeriod.MONTH,
   });
+  const [inviteOpen, setInviteOpen] = useState(false);
 
   const codesStats = useCodesStats(period);
   const usersStats = useUsersStats(period);
   const distributors = useDistributorsBreakdown(period);
   const team = useMyTeam({ limit: 100 });
+  const inviteMember = useInviteMember();
+
+  const closeInvite = () => {
+    setInviteOpen(false);
+    inviteMember.reset();
+  };
+
+  const submitInvite = (email: string) => {
+    inviteMember.mutate(
+      { email, role: Role.DISTRIBUTOR },
+      {
+        onSuccess: () => {
+          dispatch(setAlertAC({ text: `Invitation sent to ${email}`, mode: 'success' }));
+          closeInvite();
+        },
+      },
+    );
+  };
 
   const statusByMembership = useMemo(() => {
     const map = new Map<string, MembershipStatus>();
@@ -223,8 +245,16 @@ const DistributorsPage = () => {
         }}
       >
         <PeriodControl value={period} onChange={setPeriod} onRefresh={refetchAll} />
-        <Button>Invite distributor</Button>
+        <Button onClick={() => setInviteOpen(true)}>Invite distributor</Button>
       </Box>
+
+      <InviteDistributorPopup
+        isVisible={inviteOpen}
+        loading={inviteMember.isPending}
+        error={inviteMember.error?.message}
+        onClose={closeInvite}
+        onInvite={submitInvite}
+      />
 
       <Box
         sx={{

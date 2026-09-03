@@ -20,6 +20,7 @@ import SearchPage from '../pages/SearchPage';
 import SettingsPage from '../pages/SettingsPage';
 import UserDetailPage from '../pages/UserDetailPage';
 import UsersPage from '../pages/UsersPage';
+import AcceptInvitation from '../pages/Auth/AcceptInvitation';
 
 export const routes: RouteObject[] = [
   {
@@ -30,6 +31,7 @@ export const routes: RouteObject[] = [
         children: [
           { path: '/login', Component: LoginPage },
           { path: '/register', Component: RegisterPage },
+          { path: '/accept-invite', Component: AcceptInvitation },
         ],
       },
     ],

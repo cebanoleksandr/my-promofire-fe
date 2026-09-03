@@ -39,5 +39,14 @@ export const registerSchema = yup.object({
     .oneOf([yup.ref('password')], 'Passwords do not match'),
 });
 
+export const acceptInviteSchema = yup.object({
+  password,
+  confirmPassword: yup
+    .string()
+    .required('Repeat your password')
+    .oneOf([yup.ref('password')], 'Passwords do not match'),
+});
+
 export type LoginFormValues = yup.InferType<typeof loginSchema>;
 export type RegisterFormValues = yup.InferType<typeof registerSchema>;
+export type AcceptInviteFormValues = yup.InferType<typeof acceptInviteSchema>;

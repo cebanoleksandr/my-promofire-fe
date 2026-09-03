@@ -11,7 +11,10 @@ export interface PromoCode {
   id: string;
   code: string;
   campaignId: string;
-  distributorMembershipId: string;
+  // null = сгенерирован напрямую Owner'ом/Admin'ом, без привязки к конкретному
+  // Distributor'у. Кто может погасить код, определяется не этим полем, а тем,
+  // назначен ли Distributor интеграции на кампанию (см. CampaignDistributor)
+  distributorMembershipId: string | null;
   // Заполнено, только если код сгенерирован самим SDK через self-serve
   // (POST /sdk/codes/generate), а не вручную Distributor'ом через панель
   generatedByIntegrationId: string | null;
@@ -34,6 +37,10 @@ export interface GeneratePromoCodesDto {
   // Явный null тоже работает — это override "сделать именно эти коды безлимитными",
   // даже если у кампании задан конечный defaultMaxRedemptions
   maxRedemptions?: number | null;
+  // "Custom" в UI — весь код целиком задаётся вручную (3-32 символа: буквы,
+  // цифры, дефис, подчёркивание). Работает только вместе с count=1 (или без count) —
+  // бэк вернёт 400 при попытке сочетать с count > 1, и 409, если такой код уже занят
+  customCode?: string;
 }
 
 export interface UpdatePromoCodePayloadDto {

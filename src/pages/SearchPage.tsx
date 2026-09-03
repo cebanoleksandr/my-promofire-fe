@@ -7,6 +7,7 @@ import { useCampaigns, useIntegrations, usePromoCodes } from '../network/hooks';
 import {
   Button,
   DateLabel,
+  EmptyState,
   PromoCodeDisplayStatusChip,
   StatusChip,
   Table,
@@ -86,6 +87,9 @@ const SearchPage = () => {
     hasTerm &&
     (codesQuery.isPending || campaignsQuery.isPending || usersQuery.isPending);
 
+  const hasResults =
+    codes.length > 0 || campaigns.length > 0 || users.length > 0;
+
   return (
     <Box sx={{ maxWidth: 1100, mx: 'auto' }}>
       <Button
@@ -106,6 +110,15 @@ const SearchPage = () => {
         sx={{ mt: 2, borderBottom: `1px solid ${colors.interface.grey3}` }}
       />
 
+      {!loading && !hasResults && (
+        <EmptyState
+          sx={{ mt: 4 }}
+          title="No results found"
+          description={`We couldn't find anything matching “${q}”`}
+        />
+      )}
+
+      {(loading || codes.length > 0) && (
       <Section title="Codes">
         <Table<PromoCodeListItem>
           rows={data?.codes ?? []}
@@ -160,7 +173,9 @@ const SearchPage = () => {
           ]}
         />
       </Section>
+      )}
 
+      {(loading || campaigns.length > 0) && (
       <Section title="Campaign">
         <Table<CampaignListItem>
           rows={data?.campaigns ?? []}
@@ -228,7 +243,9 @@ const SearchPage = () => {
           ]}
         />
       </Section>
+      )}
 
+      {(loading || users.length > 0) && (
       <Section title="Users">
         <Table<IntegrationListItem>
           rows={data?.users ?? []}
@@ -265,6 +282,7 @@ const SearchPage = () => {
           ]}
         />
       </Section>
+      )}
     </Box>
   );
 };

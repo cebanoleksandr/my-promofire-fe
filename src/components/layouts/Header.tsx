@@ -1,6 +1,7 @@
 import { useState, type FormEvent, type ReactNode } from 'react';
-import { Avatar, Box } from '@mui/material';
+import { Avatar, Box, Menu, MenuItem } from '@mui/material';
 import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
+import PersonOutlineRoundedIcon from '@mui/icons-material/PersonOutlineRounded';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { colors } from '../../theme';
 import { Button, SearchInput } from '../ui';
@@ -26,6 +27,7 @@ export function Header({
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [localSearch, setLocalSearch] = useState(searchParams.get('q') ?? '');
+  const [avatarAnchor, setAvatarAnchor] = useState<HTMLElement | null>(null);
 
   const value = search ?? localSearch;
   const handleChange = onSearchChange ?? setLocalSearch;
@@ -76,18 +78,39 @@ export function Header({
       <Box sx={{ flex: 1 }} />
 
       {actions ?? (
-        <Avatar
-          sx={{
-            width: 32,
-            height: 32,
-            fontSize: 14,
-            fontWeight: 600,
-            // акцент аватара пользователя — вне токенов дизайн-системы
-            bgcolor: '#8B7BF2',
-          }}
-        >
-          {userName.trim().charAt(0).toUpperCase() || 'U'}
-        </Avatar>
+        <>
+          <Avatar
+            onClick={(e) => setAvatarAnchor(e.currentTarget)}
+            sx={{
+              width: 32,
+              height: 32,
+              fontSize: 14,
+              fontWeight: 600,
+              cursor: 'pointer',
+              // акцент аватара пользователя — вне токенов дизайн-системы
+              bgcolor: '#8B7BF2',
+            }}
+          >
+            {userName.trim().charAt(0).toUpperCase() || 'U'}
+          </Avatar>
+          <Menu
+            anchorEl={avatarAnchor}
+            open={!!avatarAnchor}
+            onClose={() => setAvatarAnchor(null)}
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+            transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+          >
+            <MenuItem
+              onClick={() => {
+                setAvatarAnchor(null);
+                navigate('/profile');
+              }}
+            >
+              <PersonOutlineRoundedIcon sx={{ fontSize: 18, mr: 1, color: colors.interface.grey }} />
+              Profile
+            </MenuItem>
+          </Menu>
+        </>
       )}
     </Box>
   );
