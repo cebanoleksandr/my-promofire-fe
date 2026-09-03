@@ -9,7 +9,6 @@ const promoCodeMap: Record<PromoCodeStatus, Mapped> = {
   [PromoCodeStatus.ACTIVE]: { label: 'Active', tone: 'info' },
   [PromoCodeStatus.EXHAUSTED]: { label: 'Redeemed', tone: 'success' },
   [PromoCodeStatus.DISABLED]: { label: 'Deactivated', tone: 'neutral' },
-  [PromoCodeStatus.EXPIRED]: { label: 'Expired', tone: 'error' },
 };
 
 export interface PromoCodeStatusChipProps

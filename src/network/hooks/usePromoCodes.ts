@@ -6,7 +6,9 @@ import type { ApiError } from '../../types/api-error';
 import type {
   GeneratePromoCodesDto,
   PromoCode,
+  PromoCodeDetail,
   PromoCodeListItem,
+  PromoCodeListParams,
   UpdatePromoCodePayloadDto,
 } from '../../types/promo-code';
 import type { PaginatedResult, PaginationParams } from '../../types/pagination';
@@ -14,12 +16,24 @@ import type { DateRangeParams } from '../../types/date-range';
 
 type PromoCodesParams = PaginationParams & DateRangeParams;
 
-// Все коды воркспейса (скоуп по роли решает бэкенд)
-export function usePromoCodes(params: PromoCodesParams = {}) {
+// Все коды воркспейса (скоуп по роли решает бэкенд). distributorMembershipId —
+// сузить до кодов конкретного Distributor'а (страница деталей дистрибьютора)
+export function usePromoCodes(
+  params: PromoCodesParams & PromoCodeListParams = {},
+) {
   return useQuery<PaginatedResult<PromoCodeListItem>, ApiError>({
     queryKey: queryKeys.promoCodes(params),
     queryFn: () => promoCodesService.findAll(params),
     placeholderData: keepPreviousData,
+  });
+}
+
+// Детали одного кода: создатель, кампания, разбивка по интеграциям
+export function usePromoCode(id: string | undefined) {
+  return useQuery<PromoCodeDetail, ApiError>({
+    queryKey: queryKeys.promoCode(id ?? ''),
+    queryFn: () => promoCodesService.findOne(id as string),
+    enabled: !!id,
   });
 }
 
@@ -50,6 +64,14 @@ function invalidatePromoCodeLists() {
   queryClient.invalidateQueries({ queryKey: [EQueries.PROMO_CODES_CAMPAIGN] });
 }
 
+// Мутации возвращают "сырой" PromoCode без displayStatus/creator/campaign —
+// мёржим поверх уже загруженного PromoCodeDetail, а не затираем его целиком
+function patchPromoCodeDetail(code: PromoCode) {
+  queryClient.setQueryData<PromoCodeDetail>(queryKeys.promoCode(code.id), (prev) =>
+    prev ? { ...prev, ...code } : undefined,
+  );
+}
+
 // payload редактируется, только если у кампании payloadMutable === true (иначе 403)
 export function useUpdatePromoCodePayload() {
   return useMutation<
@@ -58,8 +80,9 @@ export function useUpdatePromoCodePayload() {
     { id: string; dto: UpdatePromoCodePayloadDto }
   >({
     mutationFn: ({ id, dto }) => promoCodesService.updatePayload(id, dto),
-    onSuccess: () => {
+    onSuccess: (code) => {
       invalidatePromoCodeLists();
+      patchPromoCodeDetail(code);
     },
   });
 }
@@ -68,8 +91,9 @@ export function useUpdatePromoCodePayload() {
 export function useDisablePromoCode() {
   return useMutation<PromoCode, ApiError, string>({
     mutationFn: (id) => promoCodesService.disable(id),
-    onSuccess: () => {
+    onSuccess: (code) => {
       invalidatePromoCodeLists();
+      patchPromoCodeDetail(code);
       queryClient.invalidateQueries({ queryKey: queryKeys.statsOverview() });
     },
   });
@@ -79,8 +103,9 @@ export function useDisablePromoCode() {
 export function useEnablePromoCode() {
   return useMutation<PromoCode, ApiError, string>({
     mutationFn: (id) => promoCodesService.enable(id),
-    onSuccess: () => {
+    onSuccess: (code) => {
       invalidatePromoCodeLists();
+      patchPromoCodeDetail(code);
       queryClient.invalidateQueries({ queryKey: queryKeys.statsOverview() });
     },
   });

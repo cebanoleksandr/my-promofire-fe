@@ -3,6 +3,7 @@ import { Box, IconButton, Paper, Typography } from '@mui/material';
 import MoreHorizRoundedIcon from '@mui/icons-material/MoreHorizRounded';
 import RefreshRoundedIcon from '@mui/icons-material/RefreshRounded';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { StatsPeriod, type DateRangeParams } from '../types';
 import {
   useCodesStats,
@@ -61,6 +62,7 @@ function DistributorCard({
   status: MembershipStatus | undefined;
 }) {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [sort, setSort] = useState<TableSort | null>(null);
   const resend = useResendInvite();
 
@@ -90,7 +92,22 @@ function DistributorCard({
 
   return (
     <TableCard
-      title={item.displayName}
+      title={
+        <Typography
+          component="span"
+          sx={{
+            fontSize: 16,
+            fontWeight: 600,
+            lineHeight: '26px',
+            color: colors.interface.black,
+            cursor: 'pointer',
+            '&:hover': { color: colors.brand.main },
+          }}
+          onClick={() => navigate(`/distributors/${item.membershipId}`)}
+        >
+          {item.displayName}
+        </Typography>
+      }
       meta={
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           <MemberStatusChip

@@ -3,7 +3,7 @@ import type {
   Campaign,
   CampaignDetail,
   CampaignListItem,
-  CampaignStatusFilter,
+  CampaignListParams,
   CreateCampaignDto,
   UpdateCampaignDto,
   AssignDistributorDto,
@@ -17,12 +17,10 @@ export const campaignsService = {
     return data;
   },
 
-  // Owner видит все кампании воркспейса. Admin — свои + кампании Owner'а.
-  // Distributor не видит НИЧЕГО автоматически — только кампании, на которые
-  // его явно назначили (см. assignDistributor/getAssignedDistributors ниже).
-  // status — таб в UI: active (по умолчанию на бэке) | deactivated | archived
+  // Підтримує пагінацію, фільтр за статусом (active | deactivated | archived)
+  // та необов'язковий фільтр за distributorMembershipId
   async findAll(
-    params: PaginationParams & { status?: CampaignStatusFilter } = {},
+    params: PaginationParams & CampaignListParams = {},
   ): Promise<PaginatedResult<CampaignListItem>> {
     const { data } = await apiClient.get<PaginatedResult<CampaignListItem>>('/campaigns', {
       params,
@@ -30,14 +28,11 @@ export const campaignsService = {
     return data;
   },
 
-  // Для страницы деталей — с вычисленным displayStatus и именем создателя (creator)
   async findOne(id: string): Promise<CampaignDetail> {
     const { data } = await apiClient.get<CampaignDetail>(`/campaigns/${id}`);
     return data;
   },
 
-  // Редактирование полей после создания (name/description/payload/discount и т.д.).
-  // Для isActive используй activate()/deactivate() ниже, не update()
   async update(id: string, dto: UpdateCampaignDto): Promise<Campaign> {
     const { data } = await apiClient.patch<Campaign>(`/campaigns/${id}`, dto);
     return data;
@@ -53,8 +48,6 @@ export const campaignsService = {
     return data;
   },
 
-  // Переносит кампанию в архив (soft-delete) — из списка status=archived её можно
-  // будет восстановить через restore()
   async remove(id: string): Promise<void> {
     await apiClient.delete(`/campaigns/${id}`);
   },
@@ -64,7 +57,6 @@ export const campaignsService = {
     return data;
   },
 
-  // Owner может назначить любого Distributor'а воркспейса, Admin — только своих
   async assignDistributor(campaignId: string, dto: AssignDistributorDto): Promise<void> {
     await apiClient.post(`/campaigns/${campaignId}/distributors`, dto);
   },

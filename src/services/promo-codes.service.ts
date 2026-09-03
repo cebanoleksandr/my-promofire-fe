@@ -2,6 +2,8 @@ import { apiClient } from '../lib/api-client';
 import type {
   PromoCode,
   PromoCodeListItem,
+  PromoCodeDetail,
+  PromoCodeListParams,
   GeneratePromoCodesDto,
   UpdatePromoCodePayloadDto,
 } from '../types/promo-code';
@@ -14,7 +16,6 @@ export const promoCodesService = {
     return data;
   },
 
-  // Работает, только если у кампании кода payloadMutable === true — иначе 403
   async updatePayload(id: string, dto: UpdatePromoCodePayloadDto): Promise<PromoCode> {
     const { data } = await apiClient.patch<PromoCode>(`/promo-codes/${id}/payload`, dto);
     return data;
@@ -25,15 +26,14 @@ export const promoCodesService = {
     return data;
   },
 
-  // Работает, только если код был именно вручную отключён (не исчерпан, не истёк)
   async enable(id: string): Promise<PromoCode> {
     const { data } = await apiClient.patch<PromoCode>(`/promo-codes/${id}/enable`);
     return data;
   },
 
-  // Owner видит все коды воркспейса, Admin — коды своих кампаний, Distributor — свои
+  // Підтримує пагінацію, фільтр по даті та опціональний фільтр за distributorMembershipId
   async findAll(
-    params: PaginationParams & DateRangeParams = {},
+    params: PaginationParams & DateRangeParams & PromoCodeListParams = {},
   ): Promise<PaginatedResult<PromoCodeListItem>> {
     const { data } = await apiClient.get<PaginatedResult<PromoCodeListItem>>('/promo-codes', {
       params,
@@ -41,7 +41,6 @@ export const promoCodesService = {
     return data;
   },
 
-  // Без params.period — вернутся все коды без фильтра по дате
   async findMine(
     params: PaginationParams & DateRangeParams = {},
   ): Promise<PaginatedResult<PromoCodeListItem>> {
@@ -60,6 +59,11 @@ export const promoCodesService = {
       `/promo-codes/campaign/${campaignId}`,
       { params },
     );
+    return data;
+  },
+
+  async findOne(id: string): Promise<PromoCodeDetail> {
+    const { data } = await apiClient.get<PromoCodeDetail>(`/promo-codes/${id}`);
     return data;
   },
 };

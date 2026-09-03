@@ -2,7 +2,7 @@ export const StatsPeriod = {
   DAY: 'day',
   WEEK: 'week',
   MONTH: 'month',
-  QUARTER: 'quarter', // 3 месяца
+  QUARTER: 'quarter',
   YEAR: 'year',
   ALL: 'all',
   CUSTOM: 'custom',
@@ -12,20 +12,20 @@ export type StatsPeriod = (typeof StatsPeriod)[keyof typeof StatsPeriod];
 
 export interface StatsRangeParams {
   period?: StatsPeriod;
-  // Обязателен, только если period === 'custom'. Формат YYYY-MM-DD.
   from?: string;
   to?: string;
-  // Сузить статистику до одной конкретной кампании (страница деталей кампании).
-  // Не передан = агрегат по всем доступным кампаниям
   campaignId?: string;
+  // Звузити статистику до одного коду (сторінка деталей промокоду)
+  promoCodeId?: string;
+  // Звузити статистику до промокодів конкретного Distributor'а (сторінка деталей дистриб'ютора)
+  distributorMembershipId?: string;
 }
 
 export interface CodesStatsPoint {
-  date: string; // YYYY-MM-DD
+  date: string;
   generated: number;
   redeemed: number;
   expired: number;
-  // Все обращения к кодам (validate + redeem), не только успешные погашения
   actions: number;
 }
 
@@ -62,11 +62,9 @@ export interface UsersStatsResponse {
 }
 
 export interface BreakdownItem {
-  // Код страны (ISO 3166-1 alpha-2, напр. "PL") для countries,
-  // или "ios" | "android" | "web" для devices. "unknown" — если SDK не передал значение.
   key: string;
   count: number;
-  percentage: number; // 0-100, округлено
+  percentage: number;
 }
 
 export interface BreakdownResponse {
@@ -74,8 +72,6 @@ export interface BreakdownResponse {
   total: number;
 }
 
-// GET /stats/distributors — для каждого Distributor'а разбивка по его кампаниям.
-// Owner видит всех Distributor'ов воркспейса, Admin — только своих
 export interface DistributorCampaignBreakdown {
   campaignId: string;
   name: string;
@@ -133,5 +129,4 @@ export interface DistributorOverview {
   byIntegration: DistributorIntegrationStat[];
 }
 
-// Различаем по полю scope — узкий тип сам сузится в switch/if по discriminant union
 export type StatsOverview = OwnerOverview | AdminOverview | DistributorOverview;

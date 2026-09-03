@@ -1,11 +1,13 @@
 import type { PaginationParams } from '../../types';
 import type { DateRangeParams } from '../../types/date-range';
 import type { StatsRangeParams } from '../../types/stats';
-import type { CampaignStatusFilter } from '../../types/campaign';
+import type { CampaignListParams as CampaignFilterParams } from '../../types/campaign';
+import type { PromoCodeListParams } from '../../types/promo-code';
 import type { Role } from '../../types/membership';
 
 type ListParams = PaginationParams & DateRangeParams;
-type CampaignListParams = PaginationParams & { status?: CampaignStatusFilter };
+type CampaignListParams = PaginationParams & CampaignFilterParams;
+type PromoCodesListParams = ListParams & PromoCodeListParams;
 type MyTeamParams = ListParams & { role?: Role };
 
 export const EQueries = {
@@ -14,9 +16,11 @@ export const EQueries = {
   CURRENT_WORKSPACE: 'current-workspace',
   WORKSPACES_MINE: 'workspaces-mine',
   MY_TEAM: 'my-team',
+  DISTRIBUTOR: 'distributor',
   CAMPAIGNS: 'campaigns',
   CAMPAIGN: 'campaign',
   CAMPAIGN_DISTRIBUTORS: 'campaign-distributors',
+  PROMO_CODE: 'promo-code',
   PROMO_CODES: 'promo-codes',
   PROMO_CODES_MINE: 'promo-codes-mine',
   PROMO_CODES_CAMPAIGN: 'promo-codes-campaign',
@@ -39,6 +43,7 @@ export const queryKeys = {
   workspacesMine: () => [EQueries.WORKSPACES_MINE] as const,
 
   myTeam: (params?: MyTeamParams) => [EQueries.MY_TEAM, params ?? {}] as const,
+  distributor: (id: string) => [EQueries.DISTRIBUTOR, id] as const,
 
   campaigns: (params?: CampaignListParams) =>
     [EQueries.CAMPAIGNS, params ?? {}] as const,
@@ -46,7 +51,8 @@ export const queryKeys = {
   campaignDistributors: (campaignId: string) =>
     [EQueries.CAMPAIGN_DISTRIBUTORS, campaignId] as const,
 
-  promoCodes: (params?: ListParams) =>
+  promoCode: (id: string) => [EQueries.PROMO_CODE, id] as const,
+  promoCodes: (params?: PromoCodesListParams) =>
     [EQueries.PROMO_CODES, params ?? {}] as const,
   promoCodesMine: (params?: ListParams) =>
     [EQueries.PROMO_CODES_MINE, params ?? {}] as const,

@@ -3,11 +3,14 @@ export interface AccountProfile {
   email: string;
   firstName: string | null;
   lastName: string | null;
-  // firstName+lastName, либо email как фолбэк, если имя не заполнено
+  // Назва компанії користувача, спільна для всіх воркспейсів
+  company: string | null;
+  // firstName + lastName, або email як фолбек, якщо ім'я не заповнене
   displayName: string;
 }
 
 export interface UpdateProfileDto {
   firstName?: string;
   lastName?: string;
+  company?: string;
 }

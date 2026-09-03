@@ -7,13 +7,12 @@ export const Role = {
 export type Role = (typeof Role)[keyof typeof Role];
 
 export const MembershipStatus = {
-  PENDING: 'pending', // приглашён, но ещё не принял инвайт
+  PENDING: 'pending',
   ACTIVE: 'active',
 } as const;
 
 export type MembershipStatus = (typeof MembershipStatus)[keyof typeof MembershipStatus];
 
-// "Сырое" членство — то, что возвращают invite/activate/deactivate (без email)
 export interface Membership {
   id: string;
   accountId: string;
@@ -21,12 +20,14 @@ export interface Membership {
   role: Role;
   status: MembershipStatus;
   isActive: boolean;
+  // Довільний опис / примітка про учасника
+  description: string | null;
   parentId: string | null;
   createdAt: string;
   updatedAt: string;
+  deletedAt?: string | null;
 }
 
-// То, что возвращает GET /memberships/my-team — Membership + данные из связанного Account
 export interface TeamMember extends Membership {
   email: string;
   firstName: string | null;
@@ -34,9 +35,14 @@ export interface TeamMember extends Membership {
   displayName: string;
 }
 
+// Дані деталей Distributor'а (GET /memberships/:id)
+export type DistributorDetail = TeamMember;
+
+export interface UpdateDistributorDetailDto {
+  description?: string;
+}
+
 export interface InviteDto {
   email: string;
-  // Обязателен только для Owner'а — у него есть выбор (Admin или Distributor
-  // напрямую). Admin может не передавать — у него выбора нет, всегда Distributor
   role?: Role;
 }

@@ -7,14 +7,14 @@ import type {
   Campaign,
   CampaignDetail,
   CampaignListItem,
-  CampaignStatusFilter,
+  CampaignListParams as CampaignFilterParams,
   CreateCampaignDto,
   UpdateCampaignDto,
   AssignedDistributor,
 } from '../../types/campaign';
 import type { PaginatedResult, PaginationParams } from '../../types/pagination';
 
-type CampaignListParams = PaginationParams & { status?: CampaignStatusFilter };
+type CampaignListParams = PaginationParams & CampaignFilterParams;
 
 export function useCampaigns(params: CampaignListParams = {}) {
   return useQuery<PaginatedResult<CampaignListItem>, ApiError>({
@@ -144,7 +144,9 @@ export function useRestoreCampaign() {
   return useMutation<Campaign, ApiError, string>({
     mutationFn: (id) => campaignsService.restore(id),
     onSuccess: (campaign) => {
-      queryClient.setQueryData(queryKeys.campaign(campaign.id), campaign);
+      queryClient.setQueryData<CampaignDetail>(queryKeys.campaign(campaign.id), (prev) =>
+        prev ? { ...prev, ...campaign } : undefined,
+      );
       queryClient.invalidateQueries({ queryKey: [EQueries.CAMPAIGNS] });
       queryClient.invalidateQueries({ queryKey: queryKeys.statsOverview() });
     },
