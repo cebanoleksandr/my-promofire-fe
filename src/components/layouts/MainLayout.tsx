@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Box } from '@mui/material';
 import { Outlet } from 'react-router-dom';
 import { colors } from '../../theme';
@@ -7,12 +8,14 @@ import CustomAlert from '../ui/CustomAlert';
 import { DiscoveryGate } from '../discovery/DiscoveryGate';
 
 export function MainLayout() {
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
+
   return (
-    <Box sx={{ display: 'flex', height: '100vh', bgcolor: colors.interface.grey4 }}>
-      <Sidebar />
+    <Box sx={{ display: 'flex', height: '100dvh', bgcolor: colors.interface.grey4 }}>
+      <Sidebar mobileOpen={mobileNavOpen} onMobileClose={() => setMobileNavOpen(false)} />
 
       <Box sx={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column' }}>
-        <Header />
+        <Header onMenuClick={() => setMobileNavOpen(true)} />
 
         <Box
           component="main"
@@ -20,7 +23,7 @@ export function MainLayout() {
             flex: 1,
             minHeight: 0,
             overflow: 'auto',
-            p: 3,
+            p: { xs: 1.5, sm: 2, md: 3 },
           }}
         >
           <Outlet />

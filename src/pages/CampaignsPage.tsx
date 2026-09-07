@@ -82,6 +82,9 @@ const CampaignsPage = () => {
       <Tabs
         value={status}
         onChange={(_, v) => changeStatus(v as CampaignStatusFilter)}
+        variant="scrollable"
+        scrollButtons="auto"
+        allowScrollButtonsMobile
         sx={{
           mb: 3,
           minHeight: 44,

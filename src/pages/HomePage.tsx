@@ -132,7 +132,7 @@ const HomePage = () => {
         {/* Левая колонка */}
         <Box
           sx={{
-            flex: '1 1 640px',
+            flex: { xs: '1 1 100%', md: '1 1 640px' },
             minWidth: 0,
             display: 'flex',
             flexDirection: 'column',
@@ -286,7 +286,7 @@ const HomePage = () => {
         {/* Правая колонка */}
         <Box
           sx={{
-            width: 300,
+            width: { xs: '100%', sm: 300 },
             flexShrink: 0,
             display: 'flex',
             flexDirection: 'column',

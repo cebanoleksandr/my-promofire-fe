@@ -1,5 +1,6 @@
 import { useState, type FormEvent, type ReactNode } from 'react';
-import { Avatar, Box, Menu, MenuItem } from '@mui/material';
+import { Avatar, Box, IconButton, Menu, MenuItem } from '@mui/material';
+import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
 import PersonOutlineRoundedIcon from '@mui/icons-material/PersonOutlineRounded';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -16,6 +17,8 @@ export interface HeaderProps {
   /** Правый слот — по умолчанию аватар пользователя. */
   actions?: ReactNode;
   userName?: string;
+  /** Показывает кнопку-гамбургер и вызывает её обработчик (мобильная навигация). */
+  onMenuClick?: () => void;
 }
 
 export function Header({
@@ -24,6 +27,7 @@ export function Header({
   searchPlaceholder,
   actions,
   userName = 'User',
+  onMenuClick,
 }: HeaderProps) {
   const { t } = useTranslation('layout');
   const navigate = useNavigate();
@@ -49,16 +53,26 @@ export function Header({
         flexShrink: 0,
         display: 'flex',
         alignItems: 'center',
-        gap: 2,
-        px: 3,
+        gap: { xs: 1, sm: 2 },
+        px: { xs: 1.5, sm: 3 },
         bgcolor: colors.interface.white,
         borderBottom: `1px solid ${colors.interface.grey3}`,
       }}
     >
+      {onMenuClick && (
+        <IconButton
+          onClick={onMenuClick}
+          aria-label="menu"
+          sx={{ display: { xs: 'inline-flex', md: 'none' }, color: colors.interface.grey }}
+        >
+          <MenuRoundedIcon />
+        </IconButton>
+      )}
+
       <Box
         component="form"
         onSubmit={submit}
-        sx={{ display: 'flex', alignItems: 'center', gap: 1, width: '100%', maxWidth: 600 }}
+        sx={{ display: 'flex', alignItems: 'center', gap: 1, width: '100%', maxWidth: 600, minWidth: 0 }}
       >
         <SearchInput
           value={value}

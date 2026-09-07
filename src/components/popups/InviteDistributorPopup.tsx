@@ -43,7 +43,7 @@ export function InviteDistributorPopup({
 
   return (
     <BasePopup isVisible={isVisible} onClose={handleClose}>
-      <Box sx={{ width: '100%', minWidth: 380 }}>
+      <Box sx={{ width: '100%', minWidth: { xs: 0, sm: 380 } }}>
         <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
           <Typography sx={{ fontSize: 20, fontWeight: 600, lineHeight: '28px' }}>
             {t('inviteDistributor.title')}

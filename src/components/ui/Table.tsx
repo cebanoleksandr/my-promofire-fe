@@ -10,6 +10,8 @@ import {
   TableHead,
   TableRow,
   Tooltip,
+  useMediaQuery,
+  useTheme,
   type TableProps as MuiTableProps,
 } from '@mui/material';
 import ArrowDropUpRoundedIcon from '@mui/icons-material/ArrowDropUpRounded';
@@ -105,6 +107,8 @@ export function Table<Row>({
   ...rest
 }: TableProps<Row>) {
   const { t } = useTranslation('common');
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const clickable = Boolean(onRowClick);
 
   const handleSort = (col: Column<Row>) => {
@@ -114,6 +118,97 @@ export function Table<Row>({
       isActive && sort?.direction === 'asc' ? 'desc' : 'asc';
     onSortChange({ columnId: col.id, direction });
   };
+
+  if (isMobile) {
+    const [titleCol, ...restCols] = columns;
+
+    return (
+      <Box
+        sx={{
+          borderRadius: bare ? 0 : '12px',
+          border: bare ? 'none' : `1px solid ${colors.interface.grey3}`,
+          boxShadow: bare ? 'none' : customShadows.soft,
+          bgcolor: colors.interface.white,
+          overflow: 'hidden',
+        }}
+      >
+        {loading &&
+          Array.from({ length: skeletonRows }).map((_, r) => (
+            <Box
+              key={`sk-${r}`}
+              sx={{ p: 2, borderBottom: `1px solid ${colors.interface.grey3}` }}
+            >
+              <Skeleton variant="text" width="50%" />
+              <Skeleton variant="text" width="80%" />
+            </Box>
+          ))}
+
+        {!loading && rows.length === 0 && (
+          <Box
+            sx={{
+              py: 5,
+              px: 2,
+              textAlign: 'center',
+              fontSize: 14,
+              fontWeight: 500,
+              color: colors.interface.grey2,
+            }}
+          >
+            {emptyContent ?? t('table.nothingYet')}
+          </Box>
+        )}
+
+        {!loading &&
+          rows.map((row, index) => {
+            const selected = isRowSelected?.(row, index) ?? false;
+            return (
+              <Box
+                key={getRowKey(row, index)}
+                onClick={() => onRowClick?.(row, index)}
+                sx={{
+                  p: 2,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 0.75,
+                  cursor: clickable ? 'pointer' : 'default',
+                  bgcolor: selected ? colors.interface.grey4 : 'transparent',
+                  borderBottom: `1px solid ${colors.interface.grey3}`,
+                  '&:last-of-type': { borderBottom: 'none' },
+                }}
+              >
+                {titleCol && (
+                  <Box sx={{ fontSize: 14, fontWeight: 600, color: colors.interface.black }}>
+                    {titleCol.cell(row, index)}
+                  </Box>
+                )}
+                {restCols.map((col) => (
+                  <Box
+                    key={col.id}
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'baseline',
+                      justifyContent: 'space-between',
+                      gap: 1,
+                      fontSize: 13,
+                    }}
+                  >
+                    <Box component="span" sx={{ color: colors.interface.grey, flexShrink: 0 }}>
+                      {col.header}
+                    </Box>
+                    <Box
+                      component="span"
+                      sx={{ color: colors.interface.black, textAlign: 'right', minWidth: 0 }}
+                    >
+                      {col.cell(row, index)}
+                    </Box>
+                  </Box>
+                ))}
+              </Box>
+            );
+          })}
+      </Box>
+    );
+  }
 
   return (
     <TableContainer

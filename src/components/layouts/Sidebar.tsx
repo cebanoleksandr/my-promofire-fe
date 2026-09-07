@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { Link as RouterLink, useMatch } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Box, List } from '@mui/material';
+import { Box, Drawer, List } from '@mui/material';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import CampaignOutlinedIcon from '@mui/icons-material/CampaignOutlined';
 import ConfirmationNumberOutlinedIcon from '@mui/icons-material/ConfirmationNumberOutlined';
@@ -80,14 +80,14 @@ function SidebarLink({ to, labelKey, icon, end, discoveryTarget }: NavLinkDef) {
   );
 }
 
-export function Sidebar() {
+function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
   const workspace = useCurrentWorkspace();
   const role = workspace.data?.role;
   const links = mainLinks.filter((link) => !role || !link.hideFor?.includes(role));
 
   return (
     <Box
-      component="aside"
+      onClick={onNavigate}
       sx={{
         width: SIDEBAR_WIDTH,
         flexShrink: 0,
@@ -97,7 +97,6 @@ export function Sidebar() {
         gap: 1,
         p: 1.5,
         bgcolor: colors.interface.white,
-        borderRight: `1px solid ${colors.interface.grey3}`,
       }}
     >
       <WorkspaceSwitcher />
@@ -118,6 +117,38 @@ export function Sidebar() {
         <LogoutNavItem />
       </List>
     </Box>
+  );
+}
+
+export interface SidebarProps {
+  /** Открыт ли мобильный drawer с навигацией. */
+  mobileOpen?: boolean;
+  onMobileClose?: () => void;
+}
+
+export function Sidebar({ mobileOpen = false, onMobileClose }: SidebarProps) {
+  return (
+    <>
+      <Box
+        component="aside"
+        sx={{
+          display: { xs: 'none', md: 'block' },
+          height: '100%',
+          borderRight: `1px solid ${colors.interface.grey3}`,
+        }}
+      >
+        <SidebarContent />
+      </Box>
+
+      <Drawer
+        open={mobileOpen}
+        onClose={onMobileClose}
+        ModalProps={{ keepMounted: true }}
+        sx={{ display: { xs: 'block', md: 'none' } }}
+      >
+        <SidebarContent onNavigate={onMobileClose} />
+      </Drawer>
+    </>
   );
 }
 
