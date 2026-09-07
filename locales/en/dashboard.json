@@ -1,0 +1,50 @@
+{
+  "sectionHeading": {
+    "seeAll": "See all"
+  },
+  "home": {
+    "title": "Welcome to promo updates",
+    "sections": {
+      "codes": "Codes",
+      "users": "Users",
+      "campaigns": "Campaigns",
+      "countries": "Countries",
+      "devices": "Devices"
+    },
+    "codesTiles": {
+      "generated": "Generated",
+      "redeemed": "Redeemed",
+      "expired": "Expired"
+    },
+    "usersTiles": {
+      "all": "All users",
+      "active": "Active users",
+      "new": "New users"
+    },
+    "codesTable": {
+      "name": "Name",
+      "status": "Status",
+      "redeemed": "Redeemed",
+      "maxRedemptions": "Max redemptions"
+    },
+    "campaignsTable": {
+      "name": "Name",
+      "discount": "Discount",
+      "status": "Status",
+      "active": "Active",
+      "deactivated": "Deactivated",
+      "perCustomer": "Per customer"
+    },
+    "devices": {
+      "ios": "iOS",
+      "android": "Android",
+      "web": "Web",
+      "unknown": "Unknown"
+    },
+    "emptyState": {
+      "title": "Nothing here yet",
+      "description": "Create your first campaign and generate promo codes — stats, charts and activity will show up here.",
+      "action": "Create campaign"
+    }
+  }
+}

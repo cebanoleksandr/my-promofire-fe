@@ -1,0 +1,225 @@
+{
+  "list": {
+    "title": "Campaigns",
+    "createButton": "Create campaign",
+    "tabs": {
+      "active": "Active",
+      "archived": "Archived",
+      "deactivated": "Deactivated"
+    },
+    "empty": "No campaigns here yet",
+    "distributor": "Distributor:",
+    "table": {
+      "name": "Name",
+      "generated": "Generated",
+      "generatedHelp": "Promo codes generated for this campaign",
+      "redeemed": "Redeemed",
+      "redeemedHelp": "Successfully redeemed codes",
+      "actions": "Actions",
+      "actionsHelp": "All code lookups (validate + redeem), not only successful redemptions",
+      "newUsers": "New Users",
+      "newUsersHelp": "Customers whose first-ever activity in the workspace was a code from this campaign"
+    }
+  },
+  "detail": {
+    "breadcrumb": {
+      "campaign": "Campaign"
+    },
+    "actionsAria": "Campaign actions",
+    "menu": {
+      "restore": "Restore",
+      "deactivate": "Deactivate",
+      "activate": "Activate",
+      "archive": "Archive"
+    },
+    "toast": {
+      "restored": "Campaign restored",
+      "deactivated": "Campaign deactivated",
+      "activated": "Campaign activated",
+      "archived": "Campaign archived",
+      "codeGenerated": "Code generated"
+    },
+    "generateCode": "Generate code",
+    "notFound": {
+      "title": "Campaign not found.",
+      "back": "Back to campaigns"
+    },
+    "confirmRemove": {
+      "title": "Remove distributor?",
+      "description": "{{name}} will lose access to this campaign.",
+      "confirm": "Remove"
+    },
+    "info": {
+      "creator": "Creator",
+      "status": "Status",
+      "created": "Created",
+      "codeLifetime": "Code lifetime",
+      "codeLifetimeHint": "Per-code TTL counted from generation",
+      "redemptionLimit": "Redemption limit",
+      "redemptionLimitHint": "Default max redemptions per code",
+      "mutable": "Mutable",
+      "mutableHint": "Can code payload be edited after generation",
+      "changed": "Changed"
+    },
+    "unlimited": "Unlimited",
+    "yes": "Yes",
+    "no": "No",
+    "status": {
+      "active": "Active",
+      "deactivated": "Deactivated",
+      "archived": "Archived"
+    },
+    "distributors": {
+      "title": "Distributors",
+      "removeAria": "Remove {{name}}",
+      "placeholder": "Set distributor",
+      "empty": "No distributors to add"
+    },
+    "kpi": {
+      "actions": "Actions",
+      "generated": "Generated",
+      "redeemed": "Redeemed",
+      "expired": "Expired",
+      "newUsers": "New users"
+    },
+    "codes": {
+      "title": "Codes",
+      "seeAll": "See all",
+      "empty": "No codes for this campaign yet",
+      "table": {
+        "name": "Name",
+        "status": "Status",
+        "actions": "Actions",
+        "actionsHelp": "All code lookups (validate + redeem)",
+        "newUsers": "New users",
+        "newUsersHelp": "Customers whose first-ever activity was this code",
+        "lifetime": "Lifetime"
+      }
+    },
+    "devices": {
+      "title": "Devices",
+      "unknown": "Unknown"
+    },
+    "countries": {
+      "title": "Countries"
+    },
+    "descriptions": {
+      "title": "Descriptions"
+    },
+    "payload": {
+      "title": "Initial payload",
+      "hint": "You can change the code payload after creating a template if the mutable feature is enabled",
+      "invalidJson": "Payload is not valid JSON"
+    },
+    "editable": {
+      "save": "Save",
+      "cancel": "Cancel",
+      "edit": "Edit"
+    }
+  },
+  "create": {
+    "title": "Create campaign",
+    "submit": "Create campaign",
+    "toast": {
+      "created": "Campaign created"
+    },
+    "templateCards": {
+      "scratch": {
+        "title": "Create a new campaign",
+        "description": "Build template from scratch"
+      },
+      "template": {
+        "title": "Set campaign",
+        "description": "Choose an existing template to base your new one on",
+        "descriptionEmpty": "No campaigns to use as a template yet"
+      }
+    },
+    "baseCampaign": {
+      "label": "Base campaign",
+      "placeholder": "Select a campaign",
+      "empty": "No campaigns"
+    },
+    "fields": {
+      "name": {
+        "label": "Campaign name",
+        "hint": "This will appear on your profile",
+        "placeholder": "30% discount"
+      },
+      "discount": {
+        "label": "Discount",
+        "hint": "Value applied when the code is redeemed",
+        "percentLabel": "%",
+        "fixedLabel": "Fixed",
+        "placeholder": "30"
+      },
+      "ttl": {
+        "label": "Time to live",
+        "hint": "Choose how long the code will be active after generation",
+        "placeholder": "Leave empty to use campaign end date",
+        "units": {
+          "minute": "Minute",
+          "hour": "Hour",
+          "day": "Day",
+          "month": "Month"
+        }
+      },
+      "redemption": {
+        "label": "Redemption limit",
+        "hint": "Choose how many times the code can be used",
+        "unlimited": "Unlimited",
+        "custom": "Custom",
+        "placeholder": "e.g. 100"
+      },
+      "payload": {
+        "label": "Initial payload",
+        "hint": "Code properties can be adjusted after creating the template",
+        "placeholder": "{\n  \"discount\": \"20%\",\n  \"product\": \"Monthly subscription\"\n}"
+      },
+      "mutable": {
+        "label": "Mutable payload",
+        "hint": "Code properties can be updated after the template is created",
+        "checkboxLabel": "Mutable"
+      },
+      "availability": {
+        "label": "Availability",
+        "hint": "Allow users to generate codes",
+        "checkboxLabel": "Available"
+      },
+      "description": {
+        "label": "Description",
+        "hint": "Provide details about the campaign; this description is visible only in Promofire",
+        "placeholder": "Campaign description"
+      }
+    },
+    "validation": {
+      "nameRequired": "Enter a campaign name",
+      "numberRequired": "Enter a number",
+      "mustBePositive": "Must be greater than 0",
+      "wholeNumbersOnly": "Whole numbers only",
+      "discountValueRequired": "Enter a discount value",
+      "limitRequired": "Enter a limit",
+      "validJson": "Must be a valid JSON object"
+    }
+  },
+  "codes": {
+    "breadcrumb": {
+      "campaign": "Campaign",
+      "codes": "Codes"
+    },
+    "notFound": {
+      "title": "Campaign not found.",
+      "back": "Back to campaigns"
+    },
+    "empty": "No codes here yet",
+    "table": {
+      "name": "Name",
+      "status": "Status",
+      "actions": "Actions",
+      "actionsHelp": "All code lookups (validate + redeem), not only successful redemptions",
+      "newUsers": "New users",
+      "newUsersHelp": "Customers whose first-ever activity in the workspace was this code",
+      "lifetime": "Lifetime",
+      "lifetimeHelp": "When the code stops working — its own expiry, or the campaign default"
+    }
+  }
+}

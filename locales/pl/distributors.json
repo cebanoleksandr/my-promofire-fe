@@ -1,0 +1,81 @@
+{
+  "title": "Dystrybutorzy",
+  "notFound": "Nie znaleziono dystrybutora.",
+  "breadcrumbs": {
+    "distributors": "Dystrybutorzy",
+    "campaigns": "Kampanie",
+    "codes": "Kody"
+  },
+  "actions": {
+    "resendInvitation": "Wyślij zaproszenie ponownie",
+    "inviteDistributor": "Zaproś dystrybutora",
+    "backToDistributors": "Powrót do dystrybutorów",
+    "deactivate": "Dezaktywuj",
+    "activate": "Aktywuj",
+    "remove": "Usuń",
+    "seeAll": "Zobacz wszystkie"
+  },
+  "aria": {
+    "distributorActions": "Działania dystrybutora",
+    "save": "Zapisz",
+    "cancel": "Anuluj",
+    "edit": "Edytuj"
+  },
+  "alerts": {
+    "invitationResent": "Zaproszenie wysłano ponownie na {{email}}",
+    "invitationSent": "Zaproszenie wysłano na {{email}}"
+  },
+  "kpis": {
+    "actions": "Działania",
+    "generated": "Wygenerowane",
+    "redeemed": "Zrealizowane",
+    "expired": "Wygasłe",
+    "newUsers": "Nowi użytkownicy"
+  },
+  "columns": {
+    "generated": "Wygenerowane",
+    "redeemed": "Zrealizowane",
+    "actions": "Działania",
+    "newUsers": "Nowi użytkownicy",
+    "campaign": "Kampania",
+    "name": "Nazwa",
+    "status": "Status",
+    "newUsersLower": "Nowi użytkownicy",
+    "lifetime": "Ważność"
+  },
+  "help": {
+    "generated": "Wygenerowane kody promocyjne",
+    "redeemed": "Pomyślnie zrealizowane kody",
+    "actions": "Wszystkie odwołania do kodów (walidacja + realizacja), nie tylko udane realizacje",
+    "newUsersCampaign": "Klienci, których pierwsza aktywność w przestrzeni roboczej to kod z tej kampanii",
+    "newUsersPeriod": "Klienci, których pierwsza aktywność w przestrzeni roboczej miała miejsce w tym okresie",
+    "actionsShort": "Wszystkie odwołania do kodów (walidacja + realizacja)",
+    "newUsersCode": "Klienci, których pierwsza aktywność w przestrzeni roboczej to ten kod",
+    "lifetime": "Kiedy kod przestaje działać — jego własny termin ważności lub domyślny dla kampanii"
+  },
+  "empty": {
+    "nothingYet": "Na razie nic",
+    "notAssignedToCampaign": "Nie przypisano jeszcze do żadnej kampanii",
+    "noCodesGenerated": "Nie wygenerowano jeszcze żadnych kodów",
+    "noCodesHere": "Nie ma tu jeszcze żadnych kodów"
+  },
+  "sections": {
+    "devices": "Urządzenia",
+    "countries": "Kraje",
+    "description": "Opis",
+    "campaign": "Kampania",
+    "codes": "Kody"
+  },
+  "info": {
+    "name": "Nazwa",
+    "email": "E-mail",
+    "status": "Status",
+    "joined": "Dołączył(a)"
+  },
+  "devices": {
+    "ios": "iOS",
+    "android": "Android",
+    "web": "Sieć",
+    "unknown": "Nieznane"
+  }
+}

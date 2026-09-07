@@ -1,0 +1,43 @@
+{
+  "dateRangeField": {
+    "selectPeriod": "Виберіть період"
+  },
+  "dateRangePickerPanel": {
+    "cancel": "Скасувати",
+    "apply": "Застосувати"
+  },
+  "pagination": {
+    "previousPage": "Попередня сторінка",
+    "nextPage": "Наступна сторінка"
+  },
+  "periodControl": {
+    "day": "1Д",
+    "week": "7Д",
+    "month": "1М",
+    "quarter": "3М",
+    "year": "Рік",
+    "all": "Усі",
+    "refresh": "Оновити"
+  },
+  "searchInput": {
+    "placeholder": "Пошук",
+    "clear": "Очистити"
+  },
+  "select": {
+    "placeholder": "Вибрати",
+    "emptyText": "Поки що нічого немає"
+  },
+  "statusChips": {
+    "active": "Активний",
+    "redeemed": "Погашено",
+    "deactivated": "Деактивовано",
+    "expired": "Закінчився",
+    "inviteSent": "Запрошення надіслано"
+  },
+  "table": {
+    "nothingYet": "Поки що нічого немає"
+  },
+  "workspaceItem": {
+    "pro": "PRO"
+  }
+}

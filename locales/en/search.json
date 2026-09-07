@@ -1,0 +1,50 @@
+{
+  "back": "Back",
+  "resultsFor": "Search results for: “{{query}}”",
+  "noResults": {
+    "title": "No results found",
+    "description": "We couldn't find anything matching “{{query}}”"
+  },
+  "sections": {
+    "codes": {
+      "title": "Codes",
+      "empty": "No matching codes",
+      "columns": {
+        "name": "Name",
+        "status": "Status",
+        "actions": "Actions",
+        "actionsHelp": "All code lookups (validate + redeem), not only successful redemptions",
+        "newUsers": "New users",
+        "newUsersHelp": "Customers whose first-ever activity in the workspace was this code",
+        "lifetime": "Lifetime",
+        "lifetimeHelp": "When the code stops working — its own expiry, or the campaign default"
+      }
+    },
+    "campaigns": {
+      "title": "Campaign",
+      "empty": "No matching campaigns",
+      "distributor": "Distributor:",
+      "active": "Active",
+      "deactivated": "Deactivated",
+      "columns": {
+        "name": "Name",
+        "status": "Status",
+        "generated": "Generated",
+        "generatedHelp": "Promo codes generated for this campaign",
+        "redeemed": "Redeemed",
+        "redeemedHelp": "Successfully redeemed codes",
+        "newUsers": "New Users",
+        "newUsersHelp": "Customers whose first-ever activity in the workspace was a code from this campaign"
+      }
+    },
+    "users": {
+      "title": "Users",
+      "empty": "No matching users",
+      "columns": {
+        "name": "Name",
+        "email": "Email",
+        "lastSession": "Last session"
+      }
+    }
+  }
+}

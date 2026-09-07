@@ -1,0 +1,101 @@
+{
+  "page": {
+    "title": "Kody",
+    "emptyCodes": "Nie ma tu jeszcze żadnych kodów",
+    "columns": {
+      "name": "Nazwa",
+      "status": "Status",
+      "actions": "Akcje",
+      "newUsers": "Nowi użytkownicy",
+      "lifetime": "Ważność"
+    },
+    "help": {
+      "actions": "Wszystkie odwołania do kodu (walidacja + realizacja), nie tylko udane realizacje",
+      "newUsers": "Klienci, których pierwszą aktywnością w przestrzeni roboczej był ten kod",
+      "lifetime": "Kiedy kod przestaje działać — jego własny termin ważności lub domyślny dla kampanii"
+    }
+  },
+  "detail": {
+    "notFound": "Nie znaleziono kodu.",
+    "backToCodes": "Wróć do kodów",
+    "copySuccess": "Skopiowano do schowka",
+    "copyError": "Nie udało się skopiować",
+    "codeActions": "Akcje kodu",
+    "codeIdLabel": "ID kodu",
+    "copyCode": "Skopiuj kod",
+    "breadcrumbs": {
+      "campaigns": "Kampanie"
+    },
+    "menu": {
+      "deactivate": "Dezaktywuj",
+      "activate": "Aktywuj"
+    },
+    "info": {
+      "campaign": "Kampania",
+      "status": "Status",
+      "released": "Wydano",
+      "expirationData": "Data wygaśnięcia",
+      "creator": "Twórca",
+      "generatedBySdk": "Wygenerowano przez SDK",
+      "redemptions": "Realizacje",
+      "changed": "Zmieniono"
+    },
+    "help": {
+      "redemptions": "Ile razy ten kod został zrealizowany",
+      "actions": "Wszystkie odwołania do kodu (walidacja + realizacja), nie tylko udane realizacje",
+      "newUsers": "Klienci, których pierwszą aktywnością był ten kod"
+    },
+    "stats": {
+      "actions": "Akcje",
+      "newUsers": "Nowi użytkownicy"
+    },
+    "devices": {
+      "title": "Urządzenia",
+      "ios": "iOS",
+      "android": "Android",
+      "web": "Web",
+      "unknown": "Nieznane"
+    },
+    "countries": {
+      "title": "Kraje"
+    },
+    "description": {
+      "title": "Opis"
+    },
+    "payload": {
+      "title": "Początkowa zawartość",
+      "helperText": "Możesz zmienić zawartość kodu po utworzeniu szablonu, jeśli włączona jest funkcja edytowalności",
+      "copyPayload": "Skopiuj zawartość"
+    },
+    "usersSection": {
+      "title": "Użytkownicy",
+      "seeAll": "Zobacz wszystkie",
+      "emptyActivity": "Brak aktywności",
+      "columns": {
+        "name": "Nazwa",
+        "actions": "Akcje",
+        "generated": "Wygenerowano"
+      },
+      "help": {
+        "actions": "Wszystkie wywołania SDK przez tę integrację (walidacja + realizacja)",
+        "generated": "Kody wygenerowane samodzielnie przez tę integrację (self-serve)"
+      }
+    }
+  },
+  "usersPage": {
+    "breadcrumbs": {
+      "code": "Kod",
+      "users": "Użytkownicy"
+    },
+    "emptyActivity": "Brak aktywności",
+    "columns": {
+      "name": "Nazwa",
+      "actions": "Akcje",
+      "generated": "Wygenerowano"
+    },
+    "help": {
+      "actions": "Wszystkie wywołania SDK przez tę integrację (walidacja + realizacja)",
+      "generated": "Kody wygenerowane samodzielnie przez tę integrację (self-serve)"
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "common": {
+    "close": "Закрити",
+    "cancel": "Скасувати"
+  },
+  "confirmPopup": {
+    "confirm": "Підтвердити",
+    "cancel": "Скасувати"
+  },
+  "generateCode": {
+    "title": "Формат коду",
+    "auto": "Авто",
+    "autoExample": "Приклад: 01HRVJKBTD1H79GXBPXH8Q4E1A",
+    "custom": "Власний",
+    "generate": "Згенерувати"
+  },
+  "inviteDistributor": {
+    "title": "Запросити дистриб'ютора",
+    "description": "Ми надішлемо посилання-запрошення на цю адресу, щоб вони могли приєднатися як дистриб'ютор.",
+    "emailLabel": "Email",
+    "emailPlaceholder": "distributor@company.com",
+    "sendInvite": "Надіслати запрошення"
+  }
+}

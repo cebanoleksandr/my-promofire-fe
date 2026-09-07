@@ -1,0 +1,24 @@
+{
+  "common": {
+    "close": "Close",
+    "cancel": "Cancel"
+  },
+  "confirmPopup": {
+    "confirm": "Confirm",
+    "cancel": "Cancel"
+  },
+  "generateCode": {
+    "title": "Set code format",
+    "auto": "Auto",
+    "autoExample": "Example: 01HRVJKBTD1H79GXBPXH8Q4E1A",
+    "custom": "Custom",
+    "generate": "Generate"
+  },
+  "inviteDistributor": {
+    "title": "Invite distributor",
+    "description": "We'll send an invite link to this email so they can join as a distributor.",
+    "emailLabel": "Email",
+    "emailPlaceholder": "distributor@company.com",
+    "sendInvite": "Send invite"
+  }
+}

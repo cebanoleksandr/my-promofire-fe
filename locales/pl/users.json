@@ -1,0 +1,91 @@
+{
+  "page": {
+    "title": "Użytkownicy",
+    "empty": "Nie ma tu jeszcze żadnych użytkowników",
+    "columns": {
+      "name": "Nazwa",
+      "email": "Email",
+      "joined": "Dołączył",
+      "lastSession": "Ostatnia sesja"
+    }
+  },
+  "detail": {
+    "notFound": "Nie znaleziono użytkownika.",
+    "backToUsers": "Wróć do użytkowników",
+    "breadcrumb": {
+      "users": "Użytkownicy"
+    },
+    "info": {
+      "name": "Nazwa",
+      "email": "Email",
+      "phone": "Telefon",
+      "joined": "Dołączył",
+      "lastSession": "Ostatnia sesja"
+    },
+    "stats": {
+      "actions": {
+        "label": "Działania",
+        "help": "Wszystkie sprawdzenia kodu (walidacja + realizacja), nie tylko udane realizacje"
+      },
+      "redeemed": {
+        "label": "Zrealizowane",
+        "help": "Pomyślnie zrealizowane kody"
+      },
+      "codesUsed": {
+        "label": "Użyte kody"
+      }
+    },
+    "sections": {
+      "devices": "Urządzenia",
+      "countries": "Kraje",
+      "descriptions": "Opisy",
+      "codes": "Kody"
+    },
+    "devices": {
+      "ios": "iOS",
+      "android": "Android",
+      "web": "Web",
+      "unknown": "Nieznane"
+    },
+    "seeAll": "Zobacz wszystkie",
+    "editable": {
+      "save": "Zapisz",
+      "cancel": "Anuluj",
+      "edit": "Edytuj"
+    },
+    "codesTable": {
+      "empty": "Kody nie zostały jeszcze użyte",
+      "columns": {
+        "name": "Nazwa",
+        "status": "Status",
+        "actions": "Działania",
+        "newUsers": "Nowi użytkownicy",
+        "lifetime": "Ważność"
+      },
+      "help": {
+        "actions": "Wszystkie sprawdzenia kodu (walidacja + realizacja)",
+        "newUsers": "Klienci, których pierwsza aktywność dotyczyła tego kodu"
+      }
+    }
+  },
+  "codes": {
+    "breadcrumb": {
+      "codes": "Kody"
+    },
+    "table": {
+      "empty": "Kody nie zostały jeszcze użyte",
+      "columns": {
+        "name": "Nazwa",
+        "status": "Status",
+        "actions": "Działania",
+        "newUsers": "Nowi użytkownicy",
+        "lifetime": "Ważność"
+      },
+      "help": {
+        "actions": "Wszystkie sprawdzenia kodu (walidacja + realizacja), nie tylko udane realizacje",
+        "newUsers": "Klienci, których pierwsza aktywność w przestrzeni roboczej dotyczyła tego kodu",
+        "lifetime": "Kiedy kod przestaje działać — jego własna ważność lub domyślna dla kampanii"
+      }
+    }
+  }
+}

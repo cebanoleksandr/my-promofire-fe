@@ -1,0 +1,91 @@
+{
+  "page": {
+    "title": "Users",
+    "empty": "No users here yet",
+    "columns": {
+      "name": "Name",
+      "email": "Email",
+      "joined": "Joined",
+      "lastSession": "Last session"
+    }
+  },
+  "detail": {
+    "notFound": "User not found.",
+    "backToUsers": "Back to users",
+    "breadcrumb": {
+      "users": "Users"
+    },
+    "info": {
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "joined": "Joined",
+      "lastSession": "Last session"
+    },
+    "stats": {
+      "actions": {
+        "label": "Actions",
+        "help": "All code lookups (validate + redeem), not only successful redemptions"
+      },
+      "redeemed": {
+        "label": "Redeemed",
+        "help": "Successfully redeemed codes"
+      },
+      "codesUsed": {
+        "label": "Codes used"
+      }
+    },
+    "sections": {
+      "devices": "Devices",
+      "countries": "Countries",
+      "descriptions": "Descriptions",
+      "codes": "Codes"
+    },
+    "devices": {
+      "ios": "iOS",
+      "android": "Android",
+      "web": "Web",
+      "unknown": "Unknown"
+    },
+    "seeAll": "See all",
+    "editable": {
+      "save": "Save",
+      "cancel": "Cancel",
+      "edit": "Edit"
+    },
+    "codesTable": {
+      "empty": "No codes used yet",
+      "columns": {
+        "name": "Name",
+        "status": "Status",
+        "actions": "Actions",
+        "newUsers": "New users",
+        "lifetime": "Lifetime"
+      },
+      "help": {
+        "actions": "All code lookups (validate + redeem)",
+        "newUsers": "Customers whose first-ever activity was this code"
+      }
+    }
+  },
+  "codes": {
+    "breadcrumb": {
+      "codes": "Codes"
+    },
+    "table": {
+      "empty": "No codes used yet",
+      "columns": {
+        "name": "Name",
+        "status": "Status",
+        "actions": "Actions",
+        "newUsers": "New users",
+        "lifetime": "Lifetime"
+      },
+      "help": {
+        "actions": "All code lookups (validate + redeem), not only successful redemptions",
+        "newUsers": "Customers whose first-ever activity in the workspace was this code",
+        "lifetime": "When the code stops working — its own expiry, or the campaign default"
+      }
+    }
+  }
+}

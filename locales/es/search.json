@@ -1,0 +1,50 @@
+{
+  "back": "Atrás",
+  "resultsFor": "Resultados de búsqueda para: “{{query}}”",
+  "noResults": {
+    "title": "No se encontraron resultados",
+    "description": "No pudimos encontrar nada que coincida con “{{query}}”"
+  },
+  "sections": {
+    "codes": {
+      "title": "Códigos",
+      "empty": "No hay códigos coincidentes",
+      "columns": {
+        "name": "Nombre",
+        "status": "Estado",
+        "actions": "Acciones",
+        "actionsHelp": "Todas las consultas del código (validación + canje), no solo los canjes exitosos",
+        "newUsers": "Usuarios nuevos",
+        "newUsersHelp": "Clientes cuya primera actividad en el espacio de trabajo fue con este código",
+        "lifetime": "Vigencia",
+        "lifetimeHelp": "Cuándo deja de funcionar el código: su propio vencimiento o el predeterminado de la campaña"
+      }
+    },
+    "campaigns": {
+      "title": "Campaña",
+      "empty": "No hay campañas coincidentes",
+      "distributor": "Distribuidor:",
+      "active": "Activa",
+      "deactivated": "Desactivada",
+      "columns": {
+        "name": "Nombre",
+        "status": "Estado",
+        "generated": "Generados",
+        "generatedHelp": "Códigos promocionales generados para esta campaña",
+        "redeemed": "Canjeados",
+        "redeemedHelp": "Códigos canjeados con éxito",
+        "newUsers": "Usuarios nuevos",
+        "newUsersHelp": "Clientes cuya primera actividad en el espacio de trabajo fue con un código de esta campaña"
+      }
+    },
+    "users": {
+      "title": "Usuarios",
+      "empty": "No hay usuarios coincidentes",
+      "columns": {
+        "name": "Nombre",
+        "email": "Correo electrónico",
+        "lastSession": "Última sesión"
+      }
+    }
+  }
+}

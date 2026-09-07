@@ -1,0 +1,38 @@
+{
+  "header": {
+    "profile": "Profile",
+    "toggleTheme": "Toggle theme"
+  },
+  "search": {
+    "placeholder": "Search…",
+    "aria": "Search"
+  },
+  "sidebar": {
+    "home": "Home",
+    "campaigns": "Campaigns",
+    "codes": "Codes",
+    "distributors": "Distributors",
+    "users": "Users",
+    "settings": "Settings"
+  },
+  "logout": {
+    "navLabel": "Log out",
+    "title": "Log out?",
+    "description": "You’ll need to sign in again to access your workspace.",
+    "confirm": "Log out"
+  },
+  "workspaceSwitcher": {
+    "noWorkspace": "No workspace",
+    "addWorkspace": "Add workspace"
+  },
+  "createWorkspace": {
+    "title": "New workspace",
+    "subtitle": "You’ll be switched into it right away.",
+    "nameLabel": "Workspace name",
+    "namePlaceholder": "Acme Inc.",
+    "nameRequired": "Enter a workspace name",
+    "nameMin": "At least 2 characters",
+    "cancel": "Cancel",
+    "create": "Create"
+  }
+}

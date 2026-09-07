@@ -1,0 +1,29 @@
+{
+  "title": "Perfil",
+  "editableField": {
+    "save": "Guardar",
+    "cancel": "Cancelar"
+  },
+  "general": {
+    "label": "General",
+    "email": "Correo electrónico",
+    "firstName": "Nombre",
+    "lastName": "Apellido"
+  },
+  "team": {
+    "label": "Equipo",
+    "description": "Todos los miembros tienen acceso a las mismas funciones que tú",
+    "admin": "Administrador",
+    "removeAria": "Eliminar a {{name}}",
+    "invitePlaceholder": "admin@company.com",
+    "send": "Enviar",
+    "cancel": "Cancelar",
+    "inviteAdmin": "Invitar administrador",
+    "invitationSent": "Invitación enviada a {{email}}"
+  },
+  "removeDialog": {
+    "title": "¿Eliminar administrador?",
+    "description": "{{name}} perderá el acceso a este espacio de trabajo.",
+    "confirm": "Eliminar"
+  }
+}

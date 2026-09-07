@@ -1,0 +1,53 @@
+{
+  "header": {
+    "title": "Configuración de integración y SDK",
+    "subtitle": "Gestiona las claves API para acceder al servicio Promofire y configura la integración en tu backend."
+  },
+  "apiKeys": {
+    "title": "Claves API",
+    "subtitle": "Las claves otorgan acceso completo a los endpoints del SDK en nombre de tu cuenta.",
+    "createKey": "Crear clave",
+    "empty": "Todavía no tienes ninguna integración. Haz clic en \"Crear clave\" para empezar a trabajar con el SDK.",
+    "deleteKey": "Eliminar clave",
+    "table": {
+      "name": "Nombre",
+      "keyPrefix": "Prefijo de clave",
+      "operations": "Operaciones (SDK)",
+      "generated": "Generado",
+      "created": "Creado",
+      "action": "Acción"
+    }
+  },
+  "sdk": {
+    "title": "Integración vía @my-promofire-io/sdk",
+    "subtitle": "El cliente oficial para la interacción segura con la API de Promofire.",
+    "securityWarning": {
+      "title": "Regla de seguridad importante",
+      "usePrefix": "Usa el SDK",
+      "useBold": "solo en tu servidor/backend",
+      "useSuffix": "(Node.js, Express, NestJS, manejadores del servidor de Next.js).",
+      "neverPrefix": "Nunca agregues",
+      "neverSuffix": "al código frontend de React, Vue o de la app móvil para evitar exponer la clave a los usuarios."
+    },
+    "step1": "1. Instala el paquete",
+    "step2": "2. Ejemplo de validación y canje de un código promocional"
+  },
+  "createDialog": {
+    "title": "Nueva integración",
+    "description": "Indica el nombre del sistema o app (por ejemplo, \"Main Website API\", \"Mobile App Backend\").",
+    "nameLabel": "Nombre de la integración",
+    "creating": "Creando...",
+    "create": "Crear"
+  },
+  "apiKeyDialog": {
+    "title": "Guarda tu clave API",
+    "warningTitle": "¡Atención! La clave se muestra solo una vez",
+    "warningDescription": "Cópiala y agrégala ahora mismo a las variables de entorno de tu backend. Una vez que cierres esta ventana, no podrás volver a ver la clave.",
+    "confirmButton": "He guardado la clave"
+  },
+  "common": {
+    "cancel": "Cancelar",
+    "copy": "Copiar",
+    "copied": "Copiado"
+  }
+}

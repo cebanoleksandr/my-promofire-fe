@@ -1,0 +1,225 @@
+{
+  "list": {
+    "title": "Campañas",
+    "createButton": "Crear campaña",
+    "tabs": {
+      "active": "Activas",
+      "archived": "Archivadas",
+      "deactivated": "Desactivadas"
+    },
+    "empty": "Todavía no hay campañas aquí",
+    "distributor": "Distribuidor:",
+    "table": {
+      "name": "Nombre",
+      "generated": "Generados",
+      "generatedHelp": "Códigos promocionales generados para esta campaña",
+      "redeemed": "Canjeados",
+      "redeemedHelp": "Códigos canjeados con éxito",
+      "actions": "Acciones",
+      "actionsHelp": "Todas las consultas de códigos (validación + canje), no solo los canjes exitosos",
+      "newUsers": "Usuarios nuevos",
+      "newUsersHelp": "Clientes cuya primera actividad en el workspace fue un código de esta campaña"
+    }
+  },
+  "detail": {
+    "breadcrumb": {
+      "campaign": "Campaña"
+    },
+    "actionsAria": "Acciones de la campaña",
+    "menu": {
+      "restore": "Restaurar",
+      "deactivate": "Desactivar",
+      "activate": "Activar",
+      "archive": "Archivar"
+    },
+    "toast": {
+      "restored": "Campaña restaurada",
+      "deactivated": "Campaña desactivada",
+      "activated": "Campaña activada",
+      "archived": "Campaña archivada",
+      "codeGenerated": "Código generado"
+    },
+    "generateCode": "Generar código",
+    "notFound": {
+      "title": "Campaña no encontrada.",
+      "back": "Volver a campañas"
+    },
+    "confirmRemove": {
+      "title": "¿Eliminar distribuidor?",
+      "description": "{{name}} perderá el acceso a esta campaña.",
+      "confirm": "Eliminar"
+    },
+    "info": {
+      "creator": "Creador",
+      "status": "Estado",
+      "created": "Creado",
+      "codeLifetime": "Vida útil del código",
+      "codeLifetimeHint": "TTL por código, contado desde la generación",
+      "redemptionLimit": "Límite de canjes",
+      "redemptionLimitHint": "Número máximo de canjes por código, por defecto",
+      "mutable": "Modificable",
+      "mutableHint": "Si el contenido del código puede editarse después de generarlo",
+      "changed": "Modificado"
+    },
+    "unlimited": "Ilimitado",
+    "yes": "Sí",
+    "no": "No",
+    "status": {
+      "active": "Activa",
+      "deactivated": "Desactivada",
+      "archived": "Archivada"
+    },
+    "distributors": {
+      "title": "Distribuidores",
+      "removeAria": "Eliminar {{name}}",
+      "placeholder": "Asignar distribuidor",
+      "empty": "No hay distribuidores para añadir"
+    },
+    "kpi": {
+      "actions": "Acciones",
+      "generated": "Generados",
+      "redeemed": "Canjeados",
+      "expired": "Expirados",
+      "newUsers": "Usuarios nuevos"
+    },
+    "codes": {
+      "title": "Códigos",
+      "seeAll": "Ver todos",
+      "empty": "Esta campaña aún no tiene códigos",
+      "table": {
+        "name": "Nombre",
+        "status": "Estado",
+        "actions": "Acciones",
+        "actionsHelp": "Todas las consultas de códigos (validación + canje)",
+        "newUsers": "Usuarios nuevos",
+        "newUsersHelp": "Clientes cuya primera actividad fue este código",
+        "lifetime": "Vigencia"
+      }
+    },
+    "devices": {
+      "title": "Dispositivos",
+      "unknown": "Desconocido"
+    },
+    "countries": {
+      "title": "Países"
+    },
+    "descriptions": {
+      "title": "Descripción"
+    },
+    "payload": {
+      "title": "Contenido inicial",
+      "hint": "Puedes cambiar el contenido del código después de crear una plantilla si la función de modificable está habilitada",
+      "invalidJson": "El contenido no es un JSON válido"
+    },
+    "editable": {
+      "save": "Guardar",
+      "cancel": "Cancelar",
+      "edit": "Editar"
+    }
+  },
+  "create": {
+    "title": "Crear campaña",
+    "submit": "Crear campaña",
+    "toast": {
+      "created": "Campaña creada"
+    },
+    "templateCards": {
+      "scratch": {
+        "title": "Crear una nueva campaña",
+        "description": "Crear plantilla desde cero"
+      },
+      "template": {
+        "title": "Configurar campaña",
+        "description": "Elige una plantilla existente como base para tu nueva campaña",
+        "descriptionEmpty": "Aún no hay campañas para usar como plantilla"
+      }
+    },
+    "baseCampaign": {
+      "label": "Campaña base",
+      "placeholder": "Selecciona una campaña",
+      "empty": "No hay campañas"
+    },
+    "fields": {
+      "name": {
+        "label": "Nombre de la campaña",
+        "hint": "Aparecerá en tu perfil",
+        "placeholder": "Descuento del 30%"
+      },
+      "discount": {
+        "label": "Descuento",
+        "hint": "Valor aplicado al canjear el código",
+        "percentLabel": "%",
+        "fixedLabel": "Fijo",
+        "placeholder": "30"
+      },
+      "ttl": {
+        "label": "Tiempo de vida",
+        "hint": "Elige cuánto tiempo estará activo el código después de generarlo",
+        "placeholder": "Déjalo vacío para usar la fecha de fin de la campaña",
+        "units": {
+          "minute": "Minuto",
+          "hour": "Hora",
+          "day": "Día",
+          "month": "Mes"
+        }
+      },
+      "redemption": {
+        "label": "Límite de canjes",
+        "hint": "Elige cuántas veces se puede usar el código",
+        "unlimited": "Ilimitado",
+        "custom": "Personalizado",
+        "placeholder": "p. ej. 100"
+      },
+      "payload": {
+        "label": "Contenido inicial",
+        "hint": "Las propiedades del código pueden ajustarse después de crear la plantilla",
+        "placeholder": "{\n  \"discount\": \"20%\",\n  \"product\": \"Suscripción mensual\"\n}"
+      },
+      "mutable": {
+        "label": "Contenido modificable",
+        "hint": "Las propiedades del código pueden actualizarse después de crear la plantilla",
+        "checkboxLabel": "Modificable"
+      },
+      "availability": {
+        "label": "Disponibilidad",
+        "hint": "Permitir que los usuarios generen códigos",
+        "checkboxLabel": "Disponible"
+      },
+      "description": {
+        "label": "Descripción",
+        "hint": "Proporciona detalles sobre la campaña; esta descripción solo es visible en Promofire",
+        "placeholder": "Descripción de la campaña"
+      }
+    },
+    "validation": {
+      "nameRequired": "Ingresa un nombre de campaña",
+      "numberRequired": "Ingresa un número",
+      "mustBePositive": "Debe ser mayor que 0",
+      "wholeNumbersOnly": "Solo números enteros",
+      "discountValueRequired": "Ingresa un valor de descuento",
+      "limitRequired": "Ingresa un límite",
+      "validJson": "Debe ser un objeto JSON válido"
+    }
+  },
+  "codes": {
+    "breadcrumb": {
+      "campaign": "Campaña",
+      "codes": "Códigos"
+    },
+    "notFound": {
+      "title": "Campaña no encontrada.",
+      "back": "Volver a campañas"
+    },
+    "empty": "Todavía no hay códigos aquí",
+    "table": {
+      "name": "Nombre",
+      "status": "Estado",
+      "actions": "Acciones",
+      "actionsHelp": "Todas las consultas de códigos (validación + canje), no solo los canjes exitosos",
+      "newUsers": "Usuarios nuevos",
+      "newUsersHelp": "Clientes cuya primera actividad en el workspace fue este código",
+      "lifetime": "Vigencia",
+      "lifetimeHelp": "Cuándo deja de funcionar el código: su propia expiración o el valor predeterminado de la campaña"
+    }
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "back": "Wstecz",
+  "resultsFor": "Wyniki wyszukiwania dla: „{{query}}”",
+  "noResults": {
+    "title": "Nie znaleziono wyników",
+    "description": "Nie znaleźliśmy niczego pasującego do „{{query}}”"
+  },
+  "sections": {
+    "codes": {
+      "title": "Kody",
+      "empty": "Brak pasujących kodów",
+      "columns": {
+        "name": "Nazwa",
+        "status": "Status",
+        "actions": "Akcje",
+        "actionsHelp": "Wszystkie odwołania do kodu (walidacja + realizacja), nie tylko udane realizacje",
+        "newUsers": "Nowi użytkownicy",
+        "newUsersHelp": "Klienci, których pierwsza aktywność w obszarze roboczym dotyczyła tego kodu",
+        "lifetime": "Ważność",
+        "lifetimeHelp": "Kiedy kod przestaje działać — jego własna data ważności lub wartość domyślna kampanii"
+      }
+    },
+    "campaigns": {
+      "title": "Kampania",
+      "empty": "Brak pasujących kampanii",
+      "distributor": "Dystrybutor:",
+      "active": "Aktywna",
+      "deactivated": "Dezaktywowana",
+      "columns": {
+        "name": "Nazwa",
+        "status": "Status",
+        "generated": "Wygenerowano",
+        "generatedHelp": "Kody promocyjne wygenerowane dla tej kampanii",
+        "redeemed": "Zrealizowano",
+        "redeemedHelp": "Pomyślnie zrealizowane kody",
+        "newUsers": "Nowi użytkownicy",
+        "newUsersHelp": "Klienci, których pierwsza aktywność w obszarze roboczym dotyczyła kodu z tej kampanii"
+      }
+    },
+    "users": {
+      "title": "Użytkownicy",
+      "empty": "Brak pasujących użytkowników",
+      "columns": {
+        "name": "Nazwa",
+        "email": "E-mail",
+        "lastSession": "Ostatnia sesja"
+      }
+    }
+  }
+}

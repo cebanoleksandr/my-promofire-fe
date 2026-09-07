@@ -1,0 +1,225 @@
+{
+  "list": {
+    "title": "Kampanie",
+    "createButton": "Utwórz kampanię",
+    "tabs": {
+      "active": "Aktywne",
+      "archived": "Zarchiwizowane",
+      "deactivated": "Dezaktywowane"
+    },
+    "empty": "Brak kampanii",
+    "distributor": "Dystrybutor:",
+    "table": {
+      "name": "Nazwa",
+      "generated": "Wygenerowane",
+      "generatedHelp": "Kody promocyjne wygenerowane dla tej kampanii",
+      "redeemed": "Wykorzystane",
+      "redeemedHelp": "Pomyślnie wykorzystane kody",
+      "actions": "Akcje",
+      "actionsHelp": "Wszystkie odwołania do kodów (weryfikacja + wykorzystanie), nie tylko udane",
+      "newUsers": "Nowi użytkownicy",
+      "newUsersHelp": "Klienci, których pierwszą aktywnością w workspace był kod z tej kampanii"
+    }
+  },
+  "detail": {
+    "breadcrumb": {
+      "campaign": "Kampania"
+    },
+    "actionsAria": "Akcje kampanii",
+    "menu": {
+      "restore": "Przywróć",
+      "deactivate": "Dezaktywuj",
+      "activate": "Aktywuj",
+      "archive": "Archiwizuj"
+    },
+    "toast": {
+      "restored": "Kampania przywrócona",
+      "deactivated": "Kampania dezaktywowana",
+      "activated": "Kampania aktywowana",
+      "archived": "Kampania zarchiwizowana",
+      "codeGenerated": "Kod wygenerowany"
+    },
+    "generateCode": "Generuj kod",
+    "notFound": {
+      "title": "Nie znaleziono kampanii.",
+      "back": "Powrót do kampanii"
+    },
+    "confirmRemove": {
+      "title": "Usunąć dystrybutora?",
+      "description": "{{name}} straci dostęp do tej kampanii.",
+      "confirm": "Usuń"
+    },
+    "info": {
+      "creator": "Twórca",
+      "status": "Status",
+      "created": "Utworzono",
+      "codeLifetime": "Czas życia kodu",
+      "codeLifetimeHint": "TTL kodu liczony od momentu wygenerowania",
+      "redemptionLimit": "Limit wykorzystań",
+      "redemptionLimitHint": "Domyślna maksymalna liczba wykorzystań kodu",
+      "mutable": "Modyfikowalność",
+      "mutableHint": "Czy zawartość kodu można edytować po wygenerowaniu",
+      "changed": "Zmieniono"
+    },
+    "unlimited": "Bez limitu",
+    "yes": "Tak",
+    "no": "Nie",
+    "status": {
+      "active": "Aktywna",
+      "deactivated": "Dezaktywowana",
+      "archived": "Zarchiwizowana"
+    },
+    "distributors": {
+      "title": "Dystrybutorzy",
+      "removeAria": "Usuń {{name}}",
+      "placeholder": "Ustaw dystrybutora",
+      "empty": "Brak dystrybutorów do dodania"
+    },
+    "kpi": {
+      "actions": "Akcje",
+      "generated": "Wygenerowane",
+      "redeemed": "Wykorzystane",
+      "expired": "Wygasłe",
+      "newUsers": "Nowi użytkownicy"
+    },
+    "codes": {
+      "title": "Kody",
+      "seeAll": "Zobacz wszystkie",
+      "empty": "Ta kampania nie ma jeszcze kodów",
+      "table": {
+        "name": "Nazwa",
+        "status": "Status",
+        "actions": "Akcje",
+        "actionsHelp": "Wszystkie odwołania do kodów (weryfikacja + wykorzystanie)",
+        "newUsers": "Nowi użytkownicy",
+        "newUsersHelp": "Klienci, których pierwszą aktywnością był ten kod",
+        "lifetime": "Czas życia"
+      }
+    },
+    "devices": {
+      "title": "Urządzenia",
+      "unknown": "Nieznane"
+    },
+    "countries": {
+      "title": "Kraje"
+    },
+    "descriptions": {
+      "title": "Opis"
+    },
+    "payload": {
+      "title": "Początkowa zawartość",
+      "hint": "Możesz zmienić zawartość kodu po utworzeniu szablonu, jeśli funkcja modyfikowalności jest włączona",
+      "invalidJson": "Zawartość nie jest prawidłowym formatem JSON"
+    },
+    "editable": {
+      "save": "Zapisz",
+      "cancel": "Anuluj",
+      "edit": "Edytuj"
+    }
+  },
+  "create": {
+    "title": "Utwórz kampanię",
+    "submit": "Utwórz kampanię",
+    "toast": {
+      "created": "Kampania utworzona"
+    },
+    "templateCards": {
+      "scratch": {
+        "title": "Utwórz nową kampanię",
+        "description": "Zbuduj szablon od podstaw"
+      },
+      "template": {
+        "title": "Ustaw kampanię",
+        "description": "Wybierz istniejący szablon jako podstawę nowej kampanii",
+        "descriptionEmpty": "Brak kampanii do użycia jako szablon"
+      }
+    },
+    "baseCampaign": {
+      "label": "Kampania bazowa",
+      "placeholder": "Wybierz kampanię",
+      "empty": "Brak kampanii"
+    },
+    "fields": {
+      "name": {
+        "label": "Nazwa kampanii",
+        "hint": "Będzie widoczna na Twoim profilu",
+        "placeholder": "Zniżka 30%"
+      },
+      "discount": {
+        "label": "Zniżka",
+        "hint": "Wartość stosowana przy wykorzystaniu kodu",
+        "percentLabel": "%",
+        "fixedLabel": "Kwota stała",
+        "placeholder": "30"
+      },
+      "ttl": {
+        "label": "Czas życia",
+        "hint": "Wybierz, jak długo kod będzie aktywny po wygenerowaniu",
+        "placeholder": "Pozostaw puste, aby użyć daty zakończenia kampanii",
+        "units": {
+          "minute": "Minuta",
+          "hour": "Godzina",
+          "day": "Dzień",
+          "month": "Miesiąc"
+        }
+      },
+      "redemption": {
+        "label": "Limit wykorzystań",
+        "hint": "Wybierz, ile razy można wykorzystać kod",
+        "unlimited": "Bez limitu",
+        "custom": "Niestandardowy",
+        "placeholder": "np. 100"
+      },
+      "payload": {
+        "label": "Początkowa zawartość",
+        "hint": "Właściwości kodu można dostosować po utworzeniu szablonu",
+        "placeholder": "{\n  \"discount\": \"20%\",\n  \"product\": \"Subskrypcja miesięczna\"\n}"
+      },
+      "mutable": {
+        "label": "Modyfikowalna zawartość",
+        "hint": "Właściwości kodu można aktualizować po utworzeniu szablonu",
+        "checkboxLabel": "Modyfikowalna"
+      },
+      "availability": {
+        "label": "Dostępność",
+        "hint": "Zezwól użytkownikom na generowanie kodów",
+        "checkboxLabel": "Dostępna"
+      },
+      "description": {
+        "label": "Opis",
+        "hint": "Podaj szczegóły dotyczące kampanii; ten opis jest widoczny tylko w Promofire",
+        "placeholder": "Opis kampanii"
+      }
+    },
+    "validation": {
+      "nameRequired": "Wprowadź nazwę kampanii",
+      "numberRequired": "Wprowadź liczbę",
+      "mustBePositive": "Musi być większa niż 0",
+      "wholeNumbersOnly": "Tylko liczby całkowite",
+      "discountValueRequired": "Wprowadź wartość zniżki",
+      "limitRequired": "Wprowadź limit",
+      "validJson": "Musi być prawidłowym obiektem JSON"
+    }
+  },
+  "codes": {
+    "breadcrumb": {
+      "campaign": "Kampania",
+      "codes": "Kody"
+    },
+    "notFound": {
+      "title": "Nie znaleziono kampanii.",
+      "back": "Powrót do kampanii"
+    },
+    "empty": "Brak kodów",
+    "table": {
+      "name": "Nazwa",
+      "status": "Status",
+      "actions": "Akcje",
+      "actionsHelp": "Wszystkie odwołania do kodów (weryfikacja + wykorzystanie), nie tylko udane",
+      "newUsers": "Nowi użytkownicy",
+      "newUsersHelp": "Klienci, których pierwszą aktywnością w workspace był ten kod",
+      "lifetime": "Czas życia",
+      "lifetimeHelp": "Kiedy kod przestaje działać — jego własne wygaśnięcie lub wartość domyślna kampanii"
+    }
+  }
+}

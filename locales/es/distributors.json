@@ -1,0 +1,81 @@
+{
+  "title": "Distribuidores",
+  "notFound": "Distribuidor no encontrado.",
+  "breadcrumbs": {
+    "distributors": "Distribuidores",
+    "campaigns": "Campañas",
+    "codes": "Códigos"
+  },
+  "actions": {
+    "resendInvitation": "Reenviar invitación",
+    "inviteDistributor": "Invitar distribuidor",
+    "backToDistributors": "Volver a distribuidores",
+    "deactivate": "Desactivar",
+    "activate": "Activar",
+    "remove": "Eliminar",
+    "seeAll": "Ver todo"
+  },
+  "aria": {
+    "distributorActions": "Acciones del distribuidor",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "edit": "Editar"
+  },
+  "alerts": {
+    "invitationResent": "Invitación reenviada a {{email}}",
+    "invitationSent": "Invitación enviada a {{email}}"
+  },
+  "kpis": {
+    "actions": "Acciones",
+    "generated": "Generados",
+    "redeemed": "Canjeados",
+    "expired": "Caducados",
+    "newUsers": "Nuevos usuarios"
+  },
+  "columns": {
+    "generated": "Generados",
+    "redeemed": "Canjeados",
+    "actions": "Acciones",
+    "newUsers": "Nuevos usuarios",
+    "campaign": "Campaña",
+    "name": "Nombre",
+    "status": "Estado",
+    "newUsersLower": "Nuevos usuarios",
+    "lifetime": "Vigencia"
+  },
+  "help": {
+    "generated": "Códigos promocionales generados",
+    "redeemed": "Códigos canjeados con éxito",
+    "actions": "Todas las consultas de códigos (validar + canjear), no solo los canjes exitosos",
+    "newUsersCampaign": "Clientes cuya primera actividad en el espacio de trabajo fue un código de esta campaña",
+    "newUsersPeriod": "Clientes cuya primera actividad en el espacio de trabajo ocurrió en este período",
+    "actionsShort": "Todas las consultas de códigos (validar + canjear)",
+    "newUsersCode": "Clientes cuya primera actividad en el espacio de trabajo fue este código",
+    "lifetime": "Cuándo deja de funcionar el código: su propia caducidad o el valor predeterminado de la campaña"
+  },
+  "empty": {
+    "nothingYet": "Nada por ahora",
+    "notAssignedToCampaign": "Aún no está asignado a ninguna campaña",
+    "noCodesGenerated": "Aún no se han generado códigos",
+    "noCodesHere": "Aún no hay códigos aquí"
+  },
+  "sections": {
+    "devices": "Dispositivos",
+    "countries": "Países",
+    "description": "Descripción",
+    "campaign": "Campaña",
+    "codes": "Códigos"
+  },
+  "info": {
+    "name": "Nombre",
+    "email": "Correo electrónico",
+    "status": "Estado",
+    "joined": "Se unió"
+  },
+  "devices": {
+    "ios": "iOS",
+    "android": "Android",
+    "web": "Web",
+    "unknown": "Desconocido"
+  }
+}

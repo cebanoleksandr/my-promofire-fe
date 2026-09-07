@@ -1,0 +1,24 @@
+{
+  "common": {
+    "close": "Cerrar",
+    "cancel": "Cancelar"
+  },
+  "confirmPopup": {
+    "confirm": "Confirmar",
+    "cancel": "Cancelar"
+  },
+  "generateCode": {
+    "title": "Establecer formato de código",
+    "auto": "Automático",
+    "autoExample": "Ejemplo: 01HRVJKBTD1H79GXBPXH8Q4E1A",
+    "custom": "Personalizado",
+    "generate": "Generar"
+  },
+  "inviteDistributor": {
+    "title": "Invitar distribuidor",
+    "description": "Enviaremos un enlace de invitación a este correo para que pueda unirse como distribuidor.",
+    "emailLabel": "Correo electrónico",
+    "emailPlaceholder": "distributor@company.com",
+    "sendInvite": "Enviar invitación"
+  }
+}
