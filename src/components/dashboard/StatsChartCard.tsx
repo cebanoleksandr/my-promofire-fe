@@ -17,20 +17,35 @@ export function StatsChartCard({ tiles, chart }: StatsChartCardProps) {
     <Paper
       elevation={0}
       sx={{
-        p: 3,
+        p: { xs: 2, sm: 3 },
         borderRadius: '12px',
         border: `1px solid ${colors.interface.grey3}`,
         boxShadow: customShadows.soft,
         bgcolor: colors.interface.white,
+        overflow: 'hidden',
       }}
     >
-      <Box sx={{ display: 'flex', alignItems: 'stretch', gap: 3 }}>
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'stretch',
+          flexWrap: { xs: 'wrap', sm: 'nowrap' },
+          gap: { xs: 2, sm: 3 },
+        }}
+      >
         {tiles.map((t, i) => (
           <Box
             key={t.label}
-            sx={{ flex: 1, display: 'flex', gap: 3, minWidth: 0 }}
+            sx={{
+              flex: { xs: '1 1 calc(50% - 8px)', sm: 1 },
+              display: 'flex',
+              gap: { xs: 2, sm: 3 },
+              minWidth: 0,
+            }}
           >
-            {i > 0 && <Divider orientation="vertical" flexItem />}
+            {i > 0 && (
+              <Divider orientation="vertical" flexItem sx={{ display: { xs: 'none', sm: 'block' } }} />
+            )}
             <Box sx={{ flex: 1, minWidth: 0 }}>
               <StatTile {...t} />
             </Box>
@@ -38,7 +53,7 @@ export function StatsChartCard({ tiles, chart }: StatsChartCardProps) {
         ))}
       </Box>
 
-      <Box sx={{ mt: 3 }}>{chart}</Box>
+      <Box sx={{ mt: 3, width: '100%', overflow: 'hidden' }}>{chart}</Box>
     </Paper>
   );
 }

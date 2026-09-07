@@ -9,6 +9,7 @@ import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import { StatsPeriod, type DateRangeParams } from '../types';
 import {
+  useCachedCustomerListItem,
   useCustomer,
   useCustomerCodes,
   useCustomerCountriesBreakdown,
@@ -157,6 +158,7 @@ const UserDetailPage = () => {
   const updateCustomer = useUpdateCustomer();
 
   const u = customer.data;
+  const cachedListItem = useCachedCustomerListItem(id);
 
   const toastErr = (e: { message: string }) =>
     dispatch(setAlertAC({ text: e.message, mode: 'error' }));
@@ -183,7 +185,13 @@ const UserDetailPage = () => {
   // Берём id из URL, а не из ответа API — на некоторых бэкендах Customer
   // в ответе GET /users/:id почему-то не отдаёт своё же id
   const customerId = id as string;
-  const displayName = u.name || u.externalCustomerId;
+  const name = u.name || cachedListItem?.name || null;
+  const externalCustomerId = u.externalCustomerId || cachedListItem?.externalCustomerId || '';
+  const email = u.email || cachedListItem?.email || null;
+  const phone = u.phone || cachedListItem?.phone || null;
+  const firstSeenAt = u.firstSeenAt || cachedListItem?.firstSeenAt || null;
+  const lastSeenAt = u.lastSeenAt || cachedListItem?.lastSeenAt || null;
+  const displayName = name || externalCustomerId || customerId;
   const totalPages = codes.data?.meta.totalPages ?? 1;
 
   return (
@@ -233,14 +241,14 @@ const UserDetailPage = () => {
               <TruncatedText text={displayName} />
             </InfoRow>
             <InfoRow label={t('detail.info.email')}>
-              {u.email ? <TruncatedText text={u.email} /> : '—'}
+              {email ? <TruncatedText text={email} /> : '—'}
             </InfoRow>
-            <InfoRow label={t('detail.info.phone')}>{u.phone ?? '—'}</InfoRow>
+            <InfoRow label={t('detail.info.phone')}>{phone ?? '—'}</InfoRow>
             <InfoRow label={t('detail.info.joined')}>
-              <DateLabel from={u.firstSeenAt} withIcon={false} />
+              <DateLabel from={firstSeenAt ?? ''} withIcon={false} />
             </InfoRow>
             <InfoRow label={t('detail.info.lastSession')}>
-              <DateLabel from={u.lastSeenAt} withIcon={false} />
+              <DateLabel from={lastSeenAt ?? ''} withIcon={false} />
             </InfoRow>
           </Paper>
         </Box>

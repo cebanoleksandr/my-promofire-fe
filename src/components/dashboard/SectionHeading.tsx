@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { Box, Link, Typography } from '@mui/material';
+import { Link as RouterLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { colors } from '../../theme';
 
@@ -34,7 +35,7 @@ export function SectionHeading({
       {action ??
         (actionHref || onActionClick ? (
           <Link
-            href={actionHref}
+            {...(actionHref ? { component: RouterLink, to: actionHref } : {})}
             onClick={onActionClick}
             underline="hover"
             sx={{

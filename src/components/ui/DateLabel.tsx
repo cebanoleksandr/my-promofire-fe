@@ -24,6 +24,30 @@ export function DateLabel({
   const start = new Date(from);
   const end = to != null ? new Date(to) : null;
 
+  if (from == null || Number.isNaN(start.getTime()) || (end && Number.isNaN(end.getTime()))) {
+    return (
+      <Box
+        component="span"
+        sx={{
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: 0.75,
+          fontSize: 14,
+          fontWeight: 500,
+          lineHeight: '22px',
+          color: colors.interface.grey2,
+          ...sx,
+        }}
+        {...rest}
+      >
+        {withIcon && (
+          <CalendarTodayRoundedIcon sx={{ fontSize: 16, color: colors.interface.grey }} />
+        )}
+        —
+      </Box>
+    );
+  }
+
   let text: string;
   if (!end) {
     // "22 Oct, 2025"

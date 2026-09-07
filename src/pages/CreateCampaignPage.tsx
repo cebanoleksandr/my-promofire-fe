@@ -340,14 +340,14 @@ const CreateCampaignPage = () => {
       </Field>
 
       <Field label={t('create.fields.discount.label')} hint={t('create.fields.discount.hint')}>
-        <Box sx={{ display: 'flex', gap: 1.5 }}>
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1.5 }}>
           <RadioGroup
             row
             value={discountType}
             onChange={(e) =>
               setValue('discountType', e.target.value as DiscountType)
             }
-            sx={{ flexShrink: 0 }}
+            sx={{ flexShrink: 0, flexWrap: 'wrap' }}
           >
             <FormControlLabel
               value={DiscountType.PERCENTAGE}
@@ -360,13 +360,15 @@ const CreateCampaignPage = () => {
               label={t('create.fields.discount.fixedLabel')}
             />
           </RadioGroup>
-          <TextField
-            type="number"
-            placeholder={t('create.fields.discount.placeholder')}
-            error={!!errors.discountValue}
-            helperText={errors.discountValue?.message}
-            {...register('discountValue')}
-          />
+          <Box sx={{ flex: '1 1 160px', minWidth: 0 }}>
+            <TextField
+              type="number"
+              placeholder={t('create.fields.discount.placeholder')}
+              error={!!errors.discountValue}
+              helperText={errors.discountValue?.message}
+              {...register('discountValue')}
+            />
+          </Box>
         </Box>
       </Field>
 

@@ -57,17 +57,17 @@ export function DateRangePickerPanel({
         display: 'flex',
         flexDirection: 'column',
         gap: 1.5,
-        width: 340,
+        width: { xs: 'min(88vw, 340px)', sm: 340 },
         ...sx,
       }}
       {...rest}
     >
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap' }}>
         <Box component="input" type="date" value={from} max={to || undefined}
-          onChange={(e) => setFrom(e.target.value)} sx={inputSx} />
-        <Box component="span" sx={{ color: colors.interface.grey }}>—</Box>
+          onChange={(e) => setFrom(e.target.value)} sx={{ ...inputSx, minWidth: 120 }} />
+        <Box component="span" sx={{ color: colors.interface.grey, flexShrink: 0 }}>—</Box>
         <Box component="input" type="date" value={to} min={from || undefined}
-          onChange={(e) => setTo(e.target.value)} sx={inputSx} />
+          onChange={(e) => setTo(e.target.value)} sx={{ ...inputSx, minWidth: 120 }} />
       </Box>
 
       <Box sx={{ display: 'flex', gap: 1, justifyContent: 'flex-end' }}>

@@ -39,7 +39,10 @@ export function PeriodControl({
   }));
 
   return (
-    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, ...sx }} {...rest}>
+    <Box
+      sx={{ display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap', ...sx }}
+      {...rest}
+    >
       <DatePicker
         value={
           value.period === StatsPeriod.CUSTOM
@@ -55,6 +58,7 @@ export function PeriodControl({
         options={presets}
         value={(value.period ?? '') as StatsPeriod}
         onChange={(period) => onChange({ period })}
+        sx={{ overflowX: 'auto', maxWidth: '100%' }}
       />
 
       {onRefresh && (

@@ -1,5 +1,5 @@
 import { useId } from 'react';
-import { Box, Skeleton, Typography } from '@mui/material';
+import { Box, Skeleton, Typography, useMediaQuery, useTheme } from '@mui/material';
 import {
   Area,
   AreaChart,
@@ -82,17 +82,20 @@ export function TrendAreaChart<T>({
   loading = false,
 }: TrendAreaChartProps<T>) {
   const gradId = useId().replace(/:/g, '');
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const chartHeight = isMobile ? Math.min(height, 220) : height;
 
   if (loading) {
-    return <Skeleton variant="rounded" height={height} />;
+    return <Skeleton variant="rounded" height={chartHeight} />;
   }
 
   return (
-    <Box sx={{ width: '100%', height }}>
+    <Box sx={{ width: '100%', height: chartHeight }}>
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart
           data={data as unknown[]}
-          margin={{ top: 8, right: 8, bottom: 0, left: 0 }}
+          margin={{ top: 8, right: isMobile ? 0 : 8, bottom: 0, left: 0 }}
         >
           <defs>
             {series.map((s) => (
@@ -118,18 +121,19 @@ export function TrendAreaChart<T>({
           <XAxis
             dataKey={xKey as string}
             tickFormatter={(v) => formatDayMonth(String(v))}
-            tick={{ fontSize: 11, fill: colors.interface.grey }}
+            tick={{ fontSize: isMobile ? 10 : 11, fill: colors.interface.grey }}
             tickLine={false}
             axisLine={false}
-            minTickGap={24}
+            minTickGap={isMobile ? 16 : 24}
+            interval="preserveStartEnd"
           />
           <YAxis
             orientation="right"
             tickFormatter={(v) => formatCompact(Number(v))}
-            tick={{ fontSize: 11, fill: colors.interface.grey }}
+            tick={{ fontSize: isMobile ? 10 : 11, fill: colors.interface.grey }}
             tickLine={false}
             axisLine={false}
-            width={44}
+            width={isMobile ? 32 : 44}
           />
           <Tooltip
             content={<ChartTooltip />}

@@ -5,7 +5,7 @@ import { Box, CircularProgress, Typography } from '@mui/material';
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
 import ContentCopyRoundedIcon from '@mui/icons-material/ContentCopyRounded';
 import { StatsPeriod, type DateRangeParams } from '../types';
-import { useCustomer, useCustomerCodes } from '../network/hooks';
+import { useCachedCustomerListItem, useCustomer, useCustomerCodes } from '../network/hooks';
 import {
   Button,
   DateLabel,
@@ -70,6 +70,7 @@ const UserCodes = () => {
 
   const totalPages = data?.meta.totalPages ?? 1;
   const u = customer.data;
+  const cachedListItem = useCachedCustomerListItem(id);
 
   if (customer.isPending) {
     return (
@@ -93,7 +94,8 @@ const UserCodes = () => {
   // Берём id из URL, а не из ответа API — на некоторых бэкендах Customer
   // в ответе GET /users/:id почему-то не отдаёт своё же id
   const customerId = id as string;
-  const displayName = u.name || u.externalCustomerId;
+  const displayName =
+    u.name || u.externalCustomerId || cachedListItem?.name || cachedListItem?.externalCustomerId || customerId;
 
   return (
     <Box sx={{ maxWidth: 1200, mx: 'auto' }}>

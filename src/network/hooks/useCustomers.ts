@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { keepPreviousData, useMutation, useQuery } from '@tanstack/react-query';
 import { customersService } from '../../services';
 import { EQueries, queryKeys } from '../_types';
@@ -30,6 +31,23 @@ export function useCustomer(id: string | undefined, params: CustomerRangeParams 
     enabled: !!id,
     placeholderData: keepPreviousData,
   });
+}
+
+// На некоторых бэкендах GET /users/:id возвращает только totals, без базовых
+// полей клиента (name/email/phone/firstSeenAt/lastSeenAt) — подстраховываемся
+// уже загруженным списком (GET /users), если нужный клиент там закэширован.
+export function useCachedCustomerListItem(id: string | undefined) {
+  return useMemo(() => {
+    if (!id) return undefined;
+    const entries = queryClient.getQueriesData<PaginatedResult<CustomerListItem>>({
+      queryKey: [EQueries.CUSTOMERS],
+    });
+    for (const [, data] of entries) {
+      const found = data?.data.find((c) => c.id === id);
+      if (found) return found;
+    }
+    return undefined;
+  }, [id]);
 }
 
 export function useCustomerDevicesBreakdown(

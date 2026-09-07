@@ -32,7 +32,10 @@ export function StatTile({
             sx={{ width: 8, height: 8, borderRadius: '50%', bgcolor: color, flexShrink: 0 }}
           />
         )}
-        <Typography sx={{ fontSize: 14, color: colors.interface.grey }}>
+        <Typography
+          noWrap
+          sx={{ fontSize: 14, color: colors.interface.grey, minWidth: 0 }}
+        >
           {label}
         </Typography>
         {help && (
@@ -47,8 +50,16 @@ export function StatTile({
       {loading ? (
         <Skeleton variant="text" width={90} sx={{ fontSize: 28 }} />
       ) : (
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 0.5 }}>
-          <Typography sx={{ fontSize: 28, fontWeight: 700, lineHeight: '36px' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 0.5, flexWrap: 'wrap' }}>
+          <Typography
+            noWrap
+            sx={{
+              fontSize: { xs: 20, sm: 28 },
+              fontWeight: 700,
+              lineHeight: { xs: '26px', sm: '36px' },
+              minWidth: 0,
+            }}
+          >
             {value}
           </Typography>
           {changePct != null && <MetricDelta value={changePct} />}

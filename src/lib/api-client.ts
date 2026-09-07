@@ -21,7 +21,7 @@ apiClient.interceptors.response.use(
     // Токен невалиден/истёк, или пользователя деактивировали — выкидываем на логин
     if (error.response?.status === 401) {
       clearAuth();
-      window.location.href = '/login';
+      window.location.href = `${import.meta.env.BASE_URL}#/login`;
     }
 
     // WorkspaceGuard возвращает 403 "Сначала выберите воркспейс", если токен
