@@ -1,0 +1,14 @@
+{
+  "modal": {
+    "close": "Zamknij",
+    "title": "Poznaj Promofire",
+    "description": "Przejdź krótkie wprowadzenie do produktu, aby zacząć pracować szybciej",
+    "skip": "Pomiń",
+    "start": "Rozpocznij"
+  },
+  "tooltip": {
+    "skip": "Pomiń",
+    "finish": "Zakończ",
+    "okay": "OK"
+  }
+}

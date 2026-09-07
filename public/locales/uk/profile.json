@@ -1,0 +1,29 @@
+{
+  "title": "Профіль",
+  "editableField": {
+    "save": "Зберегти",
+    "cancel": "Скасувати"
+  },
+  "general": {
+    "label": "Загальне",
+    "email": "Email",
+    "firstName": "Ім'я",
+    "lastName": "Прізвище"
+  },
+  "team": {
+    "label": "Команда",
+    "description": "Усі учасники мають доступ до тих самих функцій, що й ви",
+    "admin": "Адміністратор",
+    "removeAria": "Видалити {{name}}",
+    "invitePlaceholder": "admin@company.com",
+    "send": "Надіслати",
+    "cancel": "Скасувати",
+    "inviteAdmin": "Запросити адміністратора",
+    "invitationSent": "Запрошення надіслано на {{email}}"
+  },
+  "removeDialog": {
+    "title": "Видалити адміністратора?",
+    "description": "{{name}} втратить доступ до цього робочого простору.",
+    "confirm": "Видалити"
+  }
+}

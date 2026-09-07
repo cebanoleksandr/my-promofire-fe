@@ -1,52 +1,73 @@
 import * as yup from 'yup';
+import type { TFunction } from 'i18next';
 
-const email = yup
-  .string()
-  .trim()
-  .required('Enter your email')
-  .email('Invalid email address');
+// Схемы валидации строятся фабричными функциями, чтобы сообщения об
+// ошибках можно было перевести через react-i18next (t передаётся из
+// компонента, где вызывается useTranslation).
 
-const password = yup
-  .string()
-  .required('Enter your password')
-  .min(8, 'At least 8 characters');
+export const getLoginSchema = (t: TFunction<'auth'>) =>
+  yup.object({
+    email: yup
+      .string()
+      .trim()
+      .required(t('validation.emailRequired'))
+      .email(t('validation.emailInvalid')),
+    password: yup.string().required(t('validation.passwordRequired')),
+  });
 
-export const loginSchema = yup.object({
-  email,
-  password: yup.string().required('Enter your password'),
-});
-
-const optionalName = yup
-  .string()
-  .trim()
-  .max(50, 'At most 50 characters')
-  .optional()
-  .transform((value: string) => value || undefined);
-
-export const registerSchema = yup.object({
-  workspaceName: yup
+export const getRegisterSchema = (t: TFunction<'auth'>) => {
+  const email = yup
     .string()
     .trim()
-    .required('Enter a workspace name')
-    .min(2, 'At least 2 characters'),
-  firstName: optionalName,
-  lastName: optionalName,
-  email,
-  password,
-  confirmPassword: yup
-    .string()
-    .required('Repeat your password')
-    .oneOf([yup.ref('password')], 'Passwords do not match'),
-});
+    .required(t('validation.emailRequired'))
+    .email(t('validation.emailInvalid'));
 
-export const acceptInviteSchema = yup.object({
-  password,
-  confirmPassword: yup
+  const password = yup
     .string()
-    .required('Repeat your password')
-    .oneOf([yup.ref('password')], 'Passwords do not match'),
-});
+    .required(t('validation.passwordRequired'))
+    .min(8, t('validation.passwordMin'));
 
-export type LoginFormValues = yup.InferType<typeof loginSchema>;
-export type RegisterFormValues = yup.InferType<typeof registerSchema>;
-export type AcceptInviteFormValues = yup.InferType<typeof acceptInviteSchema>;
+  const optionalName = yup
+    .string()
+    .trim()
+    .max(50, t('validation.nameMax'))
+    .optional()
+    .transform((value: string) => value || undefined);
+
+  return yup.object({
+    workspaceName: yup
+      .string()
+      .trim()
+      .required(t('validation.workspaceNameRequired'))
+      .min(2, t('validation.workspaceNameMin')),
+    firstName: optionalName,
+    lastName: optionalName,
+    email,
+    password,
+    confirmPassword: yup
+      .string()
+      .required(t('validation.confirmPasswordRequired'))
+      .oneOf([yup.ref('password')], t('validation.passwordsMismatch')),
+  });
+};
+
+export const getAcceptInviteSchema = (t: TFunction<'auth'>) => {
+  const password = yup
+    .string()
+    .required(t('validation.passwordRequired'))
+    .min(8, t('validation.passwordMin'));
+
+  return yup.object({
+    password,
+    confirmPassword: yup
+      .string()
+      .required(t('validation.confirmPasswordRequired'))
+      .oneOf([yup.ref('password')], t('validation.passwordsMismatch')),
+  });
+};
+
+export type LoginFormValues = yup.InferType<ReturnType<typeof getLoginSchema>>;
+export type RegisterFormValues = yup.InferType<ReturnType<typeof getRegisterSchema>>;
+export type AcceptInviteFormValues = yup.InferType<
+  ReturnType<typeof getAcceptInviteSchema>
+>;

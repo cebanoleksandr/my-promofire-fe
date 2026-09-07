@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Box, CircularProgress, IconButton, Paper, Tooltip, Typography } from '@mui/material';
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
 import ContentCopyRoundedIcon from '@mui/icons-material/ContentCopyRounded';
@@ -32,11 +33,11 @@ import type { PromoCodeListItem } from '../types/promo-code';
 const numberFmt = new Intl.NumberFormat('en-US');
 const PAGE_SIZE = 8;
 
-const deviceLabels: Record<string, string> = {
-  ios: 'iOS',
-  android: 'Android',
-  web: 'Web',
-  unknown: 'Unknown',
+const deviceLabelKeys: Record<string, string> = {
+  ios: 'detail.devices.ios',
+  android: 'detail.devices.android',
+  web: 'detail.devices.web',
+  unknown: 'detail.devices.unknown',
 };
 
 function InfoRow({ label, children }: { label: string; children: React.ReactNode }) {
@@ -98,6 +99,7 @@ function EditableTextarea({
   saving?: boolean;
   onSave: (next: string) => void;
 }) {
+  const { t } = useTranslation('users');
   const [draft, setDraft] = useState(value);
   const [editing, setEditing] = useState(false);
 
@@ -121,15 +123,15 @@ function EditableTextarea({
       <Box sx={{ position: 'absolute', right: 8, bottom: 8, display: 'flex', gap: 0.5 }}>
         {editing ? (
           <>
-            <IconButton size="small" aria-label="Save" disabled={saving} onClick={confirm}>
+            <IconButton size="small" aria-label={t('detail.editable.save')} disabled={saving} onClick={confirm}>
               <CheckRoundedIcon sx={{ fontSize: 18, color: colors.brand.main }} />
             </IconButton>
-            <IconButton size="small" aria-label="Cancel" disabled={saving} onClick={cancel}>
+            <IconButton size="small" aria-label={t('detail.editable.cancel')} disabled={saving} onClick={cancel}>
               <CloseRoundedIcon sx={{ fontSize: 18, color: colors.interface.grey }} />
             </IconButton>
           </>
         ) : (
-          <IconButton size="small" aria-label="Edit" onClick={() => setEditing(true)}>
+          <IconButton size="small" aria-label={t('detail.editable.edit')} onClick={() => setEditing(true)}>
             <BorderColorOutlinedIcon sx={{ fontSize: 16, color: colors.interface.grey }} />
           </IconButton>
         )}
@@ -142,6 +144,7 @@ const UserDetailPage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const { t } = useTranslation('users');
 
   const [period, setPeriod] = useState<DateRangeParams>({ period: StatsPeriod.MONTH });
   const [page, setPage] = useState(1);
@@ -169,9 +172,9 @@ const UserDetailPage = () => {
   if (!u) {
     return (
       <Box sx={{ maxWidth: 1100, mx: 'auto', py: 6 }}>
-        <Typography>User not found.</Typography>
+        <Typography>{t('detail.notFound')}</Typography>
         <Button sx={{ mt: 2 }} variant="white" onClick={() => navigate('/users')}>
-          Back to users
+          {t('detail.backToUsers')}
         </Button>
       </Box>
     );
@@ -191,7 +194,7 @@ const UserDetailPage = () => {
           sx={{ fontSize: 14, color: colors.interface.grey, cursor: 'pointer' }}
           onClick={() => navigate('/users')}
         >
-          Users
+          {t('detail.breadcrumb.users')}
         </Typography>
         <ChevronRightRoundedIcon sx={{ fontSize: 16, color: colors.interface.grey2 }} />
         <Typography sx={{ fontSize: 14, fontWeight: 600, color: colors.interface.black }}>
@@ -226,17 +229,17 @@ const UserDetailPage = () => {
               bgcolor: colors.interface.white,
             }}
           >
-            <InfoRow label="Name">
+            <InfoRow label={t('detail.info.name')}>
               <TruncatedText text={displayName} />
             </InfoRow>
-            <InfoRow label="Email">
+            <InfoRow label={t('detail.info.email')}>
               {u.email ? <TruncatedText text={u.email} /> : '—'}
             </InfoRow>
-            <InfoRow label="Phone">{u.phone ?? '—'}</InfoRow>
-            <InfoRow label="Joined">
+            <InfoRow label={t('detail.info.phone')}>{u.phone ?? '—'}</InfoRow>
+            <InfoRow label={t('detail.info.joined')}>
               <DateLabel from={u.firstSeenAt} withIcon={false} />
             </InfoRow>
-            <InfoRow label="Last session">
+            <InfoRow label={t('detail.info.lastSession')}>
               <DateLabel from={u.lastSeenAt} withIcon={false} />
             </InfoRow>
           </Paper>
@@ -262,10 +265,10 @@ const UserDetailPage = () => {
               }}
             >
               <StatTile
-                label="Actions"
+                label={t('detail.stats.actions.label')}
                 value={numberFmt.format(u.totals.actions)}
                 changePct={u.totals.actionsChangePct}
-                help="All code lookups (validate + redeem), not only successful redemptions"
+                help={t('detail.stats.actions.help')}
                 loading={customer.isFetching}
               />
             </Paper>
@@ -280,10 +283,10 @@ const UserDetailPage = () => {
               }}
             >
               <StatTile
-                label="Redeemed"
+                label={t('detail.stats.redeemed.label')}
                 value={numberFmt.format(u.totals.redeemed)}
                 changePct={u.totals.redeemedChangePct}
-                help="Successfully redeemed codes"
+                help={t('detail.stats.redeemed.help')}
                 loading={customer.isFetching}
               />
             </Paper>
@@ -298,7 +301,7 @@ const UserDetailPage = () => {
               }}
             >
               <StatTile
-                label="Codes used"
+                label={t('detail.stats.codesUsed.label')}
                 value={numberFmt.format(u.totals.codesUsed)}
                 changePct={u.totals.codesUsedChangePct}
                 loading={customer.isFetching}
@@ -315,20 +318,20 @@ const UserDetailPage = () => {
             }}
           >
             <DonutCard
-              title="Devices"
+              title={t('detail.sections.devices')}
               loading={devices.isPending}
               items={devices.data?.items ?? []}
-              labelFor={(k) => deviceLabels[k] ?? k}
+              labelFor={(k) => (deviceLabelKeys[k] ? t(deviceLabelKeys[k]) : k)}
             />
             <DonutCard
-              title="Countries"
+              title={t('detail.sections.countries')}
               loading={countries.isPending}
               items={countries.data?.items ?? []}
               labelFor={(k) => k.toUpperCase()}
             />
           </Box>
 
-          <Section title="Descriptions">
+          <Section title={t('detail.sections.descriptions')}>
             <EditableTextarea
               value={u.description ?? ''}
               saving={updateCustomer.isPending}
@@ -342,13 +345,13 @@ const UserDetailPage = () => {
           </Section>
 
           <Section
-            title="Codes"
+            title={t('detail.sections.codes')}
             action={
               <Typography
                 sx={{ fontSize: 14, fontWeight: 500, color: colors.brand.main, cursor: 'pointer' }}
                 onClick={() => navigate(`/users/${customerId}/codes`)}
               >
-                See all
+                {t('detail.seeAll')}
               </Typography>
             }
           >
@@ -357,11 +360,11 @@ const UserDetailPage = () => {
               getRowKey={(r) => r.id}
               loading={codes.isPending}
               onRowClick={(r) => navigate(`/codes/${r.id}`)}
-              emptyContent="No codes used yet"
+              emptyContent={t('detail.codesTable.empty')}
               columns={[
                 {
                   id: 'code',
-                  header: 'Name',
+                  header: t('detail.codesTable.columns.name'),
                   cell: (r) => (
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                       <ContentCopyRoundedIcon sx={{ fontSize: 16, color: colors.interface.grey }} />
@@ -371,26 +374,26 @@ const UserDetailPage = () => {
                 },
                 {
                   id: 'status',
-                  header: 'Status',
+                  header: t('detail.codesTable.columns.status'),
                   cell: (r) => <PromoCodeDisplayStatusChip status={r.displayStatus} />,
                 },
                 {
                   id: 'actions',
-                  header: 'Actions',
+                  header: t('detail.codesTable.columns.actions'),
                   align: 'right',
-                  help: 'All code lookups (validate + redeem)',
+                  help: t('detail.codesTable.help.actions'),
                   cell: (r) => numberFmt.format(r.actions),
                 },
                 {
                   id: 'newUsers',
-                  header: 'New users',
+                  header: t('detail.codesTable.columns.newUsers'),
                   align: 'right',
-                  help: 'Customers whose first-ever activity was this code',
+                  help: t('detail.codesTable.help.newUsers'),
                   cell: (r) => numberFmt.format(r.newUsers),
                 },
                 {
                   id: 'lifetime',
-                  header: 'Lifetime',
+                  header: t('detail.codesTable.columns.lifetime'),
                   align: 'right',
                   cell: (r) => (r.lifetime ? <DateLabel from={r.lifetime} withIcon={false} /> : '∞'),
                 },

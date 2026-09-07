@@ -1,0 +1,24 @@
+{
+  "common": {
+    "close": "Zamknij",
+    "cancel": "Anuluj"
+  },
+  "confirmPopup": {
+    "confirm": "Potwierdź",
+    "cancel": "Anuluj"
+  },
+  "generateCode": {
+    "title": "Ustaw format kodu",
+    "auto": "Automatyczny",
+    "autoExample": "Przykład: 01HRVJKBTD1H79GXBPXH8Q4E1A",
+    "custom": "Niestandardowy",
+    "generate": "Generuj"
+  },
+  "inviteDistributor": {
+    "title": "Zaproś dystrybutora",
+    "description": "Wyślemy link z zaproszeniem na ten adres e-mail, aby mógł dołączyć jako dystrybutor.",
+    "emailLabel": "E-mail",
+    "emailPlaceholder": "distributor@company.com",
+    "sendInvite": "Wyślij zaproszenie"
+  }
+}

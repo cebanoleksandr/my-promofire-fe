@@ -1,14 +1,15 @@
+import { useTranslation } from 'react-i18next';
 import { StatusChip, type StatusChipProps } from './StatusChip';
 import { PromoCodeStatus, PromoCodeDisplayStatus } from '../../types/promo-code';
 import { MembershipStatus } from '../../types/membership';
 
-type Mapped = { label: string; tone: StatusChipProps['tone'] };
+type Mapped = { labelKey: string; tone: StatusChipProps['tone'] };
 
 // ── Промокоды ──────────────────────────────────────────────────────────
 const promoCodeMap: Record<PromoCodeStatus, Mapped> = {
-  [PromoCodeStatus.ACTIVE]: { label: 'Active', tone: 'info' },
-  [PromoCodeStatus.EXHAUSTED]: { label: 'Redeemed', tone: 'success' },
-  [PromoCodeStatus.DISABLED]: { label: 'Deactivated', tone: 'neutral' },
+  [PromoCodeStatus.ACTIVE]: { labelKey: 'statusChips.active', tone: 'info' },
+  [PromoCodeStatus.EXHAUSTED]: { labelKey: 'statusChips.redeemed', tone: 'success' },
+  [PromoCodeStatus.DISABLED]: { labelKey: 'statusChips.deactivated', tone: 'neutral' },
 };
 
 export interface PromoCodeStatusChipProps
@@ -17,16 +18,17 @@ export interface PromoCodeStatusChipProps
 }
 
 export function PromoCodeStatusChip({ status, ...rest }: PromoCodeStatusChipProps) {
-  const { label, tone } = promoCodeMap[status];
-  return <StatusChip label={label} tone={tone} {...rest} />;
+  const { t } = useTranslation('common');
+  const { labelKey, tone } = promoCodeMap[status];
+  return <StatusChip label={t(labelKey)} tone={tone} {...rest} />;
 }
 
 // Вычисляемый на бэке статус для листинга кодов (учитывает истечение срока)
 const promoCodeDisplayMap: Record<PromoCodeDisplayStatus, Mapped> = {
-  [PromoCodeDisplayStatus.ACTIVE]: { label: 'Active', tone: 'info' },
-  [PromoCodeDisplayStatus.DEACTIVATED]: { label: 'Deactivated', tone: 'neutral' },
-  [PromoCodeDisplayStatus.REDEEMED]: { label: 'Redeemed', tone: 'success' },
-  [PromoCodeDisplayStatus.EXPIRED]: { label: 'Expired', tone: 'error' },
+  [PromoCodeDisplayStatus.ACTIVE]: { labelKey: 'statusChips.active', tone: 'info' },
+  [PromoCodeDisplayStatus.DEACTIVATED]: { labelKey: 'statusChips.deactivated', tone: 'neutral' },
+  [PromoCodeDisplayStatus.REDEEMED]: { labelKey: 'statusChips.redeemed', tone: 'success' },
+  [PromoCodeDisplayStatus.EXPIRED]: { labelKey: 'statusChips.expired', tone: 'error' },
 };
 
 export interface PromoCodeDisplayStatusChipProps
@@ -38,8 +40,9 @@ export function PromoCodeDisplayStatusChip({
   status,
   ...rest
 }: PromoCodeDisplayStatusChipProps) {
-  const { label, tone } = promoCodeDisplayMap[status];
-  return <StatusChip label={label} tone={tone} {...rest} />;
+  const { t } = useTranslation('common');
+  const { labelKey, tone } = promoCodeDisplayMap[status];
+  return <StatusChip label={t(labelKey)} tone={tone} {...rest} />;
 }
 
 // ── Участники команды (дистрибьюторы / пользователи) ───────────────────
@@ -50,11 +53,12 @@ export interface MemberStatusChipProps
 }
 
 export function MemberStatusChip({ status, isActive, ...rest }: MemberStatusChipProps) {
+  const { t } = useTranslation('common');
   let mapped: Mapped;
-  if (!isActive) mapped = { label: 'Deactivated', tone: 'neutral' };
+  if (!isActive) mapped = { labelKey: 'statusChips.deactivated', tone: 'neutral' };
   else if (status === MembershipStatus.PENDING)
-    mapped = { label: 'Invite sent', tone: 'info' };
-  else mapped = { label: 'Active', tone: 'success' };
+    mapped = { labelKey: 'statusChips.inviteSent', tone: 'info' };
+  else mapped = { labelKey: 'statusChips.active', tone: 'success' };
 
-  return <StatusChip label={mapped.label} tone={mapped.tone} {...rest} />;
+  return <StatusChip label={t(mapped.labelKey)} tone={mapped.tone} {...rest} />;
 }

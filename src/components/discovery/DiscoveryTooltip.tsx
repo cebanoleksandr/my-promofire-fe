@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Box, Paper, Popper, Typography } from '@mui/material';
 import { colors, customShadows } from '../../theme';
@@ -30,6 +31,7 @@ export function DiscoveryTooltip({
   onClose,
   onSkip,
 }: DiscoveryTooltipProps) {
+  const { t } = useTranslation('discovery');
   const navigate = useNavigate();
   const location = useLocation();
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
@@ -90,10 +92,10 @@ export function DiscoveryTooltip({
 
         <Box sx={{ mt: 2, display: 'flex', gap: 1 }}>
           <Button size="XS" variant="white" onClick={onSkip}>
-            Skip
+            {t('tooltip.skip')}
           </Button>
           <Button size="XS" onClick={isLast ? onClose : onNext}>
-            {isLast ? 'Finish' : 'Okay'}
+            {isLast ? t('tooltip.finish') : t('tooltip.okay')}
           </Button>
         </Box>
       </Paper>

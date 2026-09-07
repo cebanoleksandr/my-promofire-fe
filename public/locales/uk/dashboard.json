@@ -1,0 +1,50 @@
+{
+  "sectionHeading": {
+    "seeAll": "Дивитися всі"
+  },
+  "home": {
+    "title": "Ласкаво просимо до огляду промо",
+    "sections": {
+      "codes": "Коди",
+      "users": "Користувачі",
+      "campaigns": "Кампанії",
+      "countries": "Країни",
+      "devices": "Пристрої"
+    },
+    "codesTiles": {
+      "generated": "Згенеровано",
+      "redeemed": "Використано",
+      "expired": "Прострочено"
+    },
+    "usersTiles": {
+      "all": "Усі користувачі",
+      "active": "Активні користувачі",
+      "new": "Нові користувачі"
+    },
+    "codesTable": {
+      "name": "Назва",
+      "status": "Статус",
+      "redeemed": "Використано",
+      "maxRedemptions": "Макс. використань"
+    },
+    "campaignsTable": {
+      "name": "Назва",
+      "discount": "Знижка",
+      "status": "Статус",
+      "active": "Активна",
+      "deactivated": "Вимкнена",
+      "perCustomer": "На клієнта"
+    },
+    "devices": {
+      "ios": "iOS",
+      "android": "Android",
+      "web": "Веб",
+      "unknown": "Невідомо"
+    },
+    "emptyState": {
+      "title": "Тут поки нічого немає",
+      "description": "Створіть свою першу кампанію та згенеруйте промокоди — статистика, графіки та активність з'являться тут.",
+      "action": "Створити кампанію"
+    }
+  }
+}

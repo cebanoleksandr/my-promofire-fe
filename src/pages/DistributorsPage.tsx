@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Box, IconButton, Paper, Typography } from '@mui/material';
 import MoreHorizRoundedIcon from '@mui/icons-material/MoreHorizRounded';
 import RefreshRoundedIcon from '@mui/icons-material/RefreshRounded';
@@ -35,24 +36,27 @@ const numberFmt = new Intl.NumberFormat('en-US');
 
 type NumericCampaignKey = 'generated' | 'redeemed' | 'actions' | 'newUsers';
 
-const CAMPAIGN_COLUMNS: {
+function useCampaignColumns(): {
   id: NumericCampaignKey;
   header: string;
   help?: string;
-}[] = [
-  { id: 'generated', header: 'Generated', help: 'Promo codes generated' },
-  { id: 'redeemed', header: 'Redeemed', help: 'Successfully redeemed codes' },
-  {
-    id: 'actions',
-    header: 'Actions',
-    help: 'All code lookups (validate + redeem), not only successful redemptions',
-  },
-  {
-    id: 'newUsers',
-    header: 'New Users',
-    help: 'Customers whose first-ever activity in the workspace was a code from this campaign',
-  },
-];
+}[] {
+  const { t } = useTranslation('distributors');
+  return [
+    { id: 'generated', header: t('columns.generated'), help: t('help.generated') },
+    { id: 'redeemed', header: t('columns.redeemed'), help: t('help.redeemed') },
+    {
+      id: 'actions',
+      header: t('columns.actions'),
+      help: t('help.actions'),
+    },
+    {
+      id: 'newUsers',
+      header: t('columns.newUsers'),
+      help: t('help.newUsersCampaign'),
+    },
+  ];
+}
 
 function DistributorCard({
   item,
@@ -61,10 +65,12 @@ function DistributorCard({
   item: DistributorBreakdown;
   status: MembershipStatus | undefined;
 }) {
+  const { t } = useTranslation('distributors');
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [sort, setSort] = useState<TableSort | null>(null);
   const resend = useResendInvite();
+  const CAMPAIGN_COLUMNS = useCampaignColumns();
 
   const isPending = status === MembershipStatus.PENDING;
 
@@ -72,7 +78,10 @@ function DistributorCard({
     resend.mutate(item.membershipId, {
       onSuccess: () =>
         dispatch(
-          setAlertAC({ text: `Invitation re-sent to ${item.email}`, mode: 'success' }),
+          setAlertAC({
+            text: t('alerts.invitationResent', { email: item.email }),
+            mode: 'success',
+          }),
         ),
       onError: (e) =>
         dispatch(setAlertAC({ text: e.message, mode: 'error' })),
@@ -122,13 +131,13 @@ function DistributorCard({
               loading={resend.isPending}
               onClick={handleResend}
             >
-              Resend invitation
+              {t('actions.resendInvitation')}
             </Button>
           )}
         </Box>
       }
       actions={
-        <IconButton size="small" aria-label="Distributor actions">
+        <IconButton size="small" aria-label={t('aria.distributorActions')}>
           <MoreHorizRoundedIcon sx={{ fontSize: 20 }} />
         </IconButton>
       }
@@ -139,11 +148,11 @@ function DistributorCard({
         getRowKey={(r) => r.campaignId}
         sort={sort}
         onSortChange={setSort}
-        emptyContent="Nothing yet"
+        emptyContent={t('empty.nothingYet')}
         columns={[
           {
             id: 'name',
-            header: 'Campaign',
+            header: t('columns.campaign'),
             sortable: true,
             cell: (r) => r.name,
           },
@@ -161,6 +170,7 @@ function DistributorCard({
 }
 
 const DistributorsPage = () => {
+  const { t } = useTranslation('distributors');
   const dispatch = useDispatch();
   const [period, setPeriod] = useState<DateRangeParams>({
     period: StatsPeriod.MONTH,
@@ -183,7 +193,9 @@ const DistributorsPage = () => {
       { email, role: Role.DISTRIBUTOR },
       {
         onSuccess: () => {
-          dispatch(setAlertAC({ text: `Invitation sent to ${email}`, mode: 'success' }));
+          dispatch(
+            setAlertAC({ text: t('alerts.invitationSent', { email }), mode: 'success' }),
+          );
           closeInvite();
         },
       },
@@ -208,35 +220,35 @@ const DistributorsPage = () => {
 
   const summary = [
     {
-      label: 'Actions',
+      label: t('kpis.actions'),
       value: ct?.actions ?? 0,
       changePct: ct?.actionsChangePct,
-      help: 'All code lookups (validate + redeem), not only successful redemptions',
+      help: t('help.actions'),
       loading: codesStats.isPending,
     },
     {
-      label: 'Generated',
+      label: t('kpis.generated'),
       value: ct?.generated ?? 0,
       changePct: ct?.generatedChangePct,
       loading: codesStats.isPending,
     },
     {
-      label: 'Redeemed',
+      label: t('kpis.redeemed'),
       value: ct?.redeemed ?? 0,
       changePct: ct?.redeemedChangePct,
       loading: codesStats.isPending,
     },
     {
-      label: 'Expired',
+      label: t('kpis.expired'),
       value: ct?.expired ?? 0,
       changePct: ct?.expiredChangePct,
       loading: codesStats.isPending,
     },
     {
-      label: 'New users',
+      label: t('kpis.newUsers'),
       value: ut?.new ?? 0,
       changePct: ut?.newChangePct,
-      help: 'Customers whose first-ever activity in the workspace happened in this period',
+      help: t('help.newUsersPeriod'),
       loading: usersStats.isPending,
     },
   ];
@@ -248,7 +260,7 @@ const DistributorsPage = () => {
       <Typography
         sx={{ fontSize: 24, fontWeight: 700, lineHeight: '32px', mb: 3 }}
       >
-        Distributors
+        {t('title')}
       </Typography>
 
       <Box
@@ -262,7 +274,7 @@ const DistributorsPage = () => {
         }}
       >
         <PeriodControl value={period} onChange={setPeriod} onRefresh={refetchAll} />
-        <Button onClick={() => setInviteOpen(true)}>Invite distributor</Button>
+        <Button onClick={() => setInviteOpen(true)}>{t('actions.inviteDistributor')}</Button>
       </Box>
 
       <InviteDistributorPopup

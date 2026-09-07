@@ -1,0 +1,101 @@
+{
+  "page": {
+    "title": "Códigos",
+    "emptyCodes": "Aún no hay códigos aquí",
+    "columns": {
+      "name": "Nombre",
+      "status": "Estado",
+      "actions": "Acciones",
+      "newUsers": "Nuevos usuarios",
+      "lifetime": "Vigencia"
+    },
+    "help": {
+      "actions": "Todas las consultas del código (validación + canje), no solo los canjes exitosos",
+      "newUsers": "Clientes cuya primera actividad en el espacio de trabajo fue este código",
+      "lifetime": "Cuándo el código deja de funcionar: su propia caducidad o la predeterminada de la campaña"
+    }
+  },
+  "detail": {
+    "notFound": "Código no encontrado.",
+    "backToCodes": "Volver a códigos",
+    "copySuccess": "Copiado al portapapeles",
+    "copyError": "No se pudo copiar",
+    "codeActions": "Acciones del código",
+    "codeIdLabel": "ID del código",
+    "copyCode": "Copiar código",
+    "breadcrumbs": {
+      "campaigns": "Campañas"
+    },
+    "menu": {
+      "deactivate": "Desactivar",
+      "activate": "Activar"
+    },
+    "info": {
+      "campaign": "Campaña",
+      "status": "Estado",
+      "released": "Publicado",
+      "expirationData": "Fecha de caducidad",
+      "creator": "Creador",
+      "generatedBySdk": "Generado por el SDK",
+      "redemptions": "Canjes",
+      "changed": "Modificado"
+    },
+    "help": {
+      "redemptions": "Cuántas veces se canjeó este código",
+      "actions": "Todas las consultas del código (validación + canje), no solo los canjes exitosos",
+      "newUsers": "Clientes cuya primera actividad fue este código"
+    },
+    "stats": {
+      "actions": "Acciones",
+      "newUsers": "Nuevos usuarios"
+    },
+    "devices": {
+      "title": "Dispositivos",
+      "ios": "iOS",
+      "android": "Android",
+      "web": "Web",
+      "unknown": "Desconocido"
+    },
+    "countries": {
+      "title": "Países"
+    },
+    "description": {
+      "title": "Descripción"
+    },
+    "payload": {
+      "title": "Carga inicial",
+      "helperText": "Puedes cambiar la carga del código después de crear una plantilla si la función de modificación está habilitada",
+      "copyPayload": "Copiar carga"
+    },
+    "usersSection": {
+      "title": "Usuarios",
+      "seeAll": "Ver todos",
+      "emptyActivity": "Aún no hay actividad",
+      "columns": {
+        "name": "Nombre",
+        "actions": "Acciones",
+        "generated": "Generados"
+      },
+      "help": {
+        "actions": "Todas las llamadas del SDK a través de esta integración (validación + canje)",
+        "generated": "Códigos generados por esta integración de forma autónoma (autoservicio)"
+      }
+    }
+  },
+  "usersPage": {
+    "breadcrumbs": {
+      "code": "Código",
+      "users": "Usuarios"
+    },
+    "emptyActivity": "Aún no hay actividad",
+    "columns": {
+      "name": "Nombre",
+      "actions": "Acciones",
+      "generated": "Generados"
+    },
+    "help": {
+      "actions": "Todas las llamadas del SDK a través de esta integración (validación + canje)",
+      "generated": "Códigos generados por esta integración de forma autónoma (autoservicio)"
+    }
+  }
+}

@@ -1,6 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import { useTranslation } from 'react-i18next';
 import { Alert, Box, Typography } from '@mui/material';
 import { useCreateWorkspace } from '../../network/hooks';
 import { Button, TextField } from '../ui';
@@ -11,8 +12,8 @@ const schema = yup.object({
   name: yup
     .string()
     .trim()
-    .required('Enter a workspace name')
-    .min(2, 'At least 2 characters'),
+    .required('createWorkspace.nameRequired')
+    .min(2, 'createWorkspace.nameMin'),
 });
 
 type Values = yup.InferType<typeof schema>;
@@ -29,6 +30,7 @@ export function CreateWorkspacePopup({
   onClose,
   onCreated,
 }: CreateWorkspacePopupProps) {
+  const { t } = useTranslation('layout');
   const create = useCreateWorkspace();
   const {
     register,
@@ -70,22 +72,22 @@ export function CreateWorkspacePopup({
         sx={{ maxWidth: 420, display: 'flex', flexDirection: 'column', gap: 2 }}
       >
         <Typography sx={{ fontSize: 20, fontWeight: 600, lineHeight: '28px' }}>
-          New workspace
+          {t('createWorkspace.title')}
         </Typography>
         <Typography
           sx={{ fontSize: 14, lineHeight: '22px', color: colors.interface.grey, mt: -1 }}
         >
-          You’ll be switched into it right away.
+          {t('createWorkspace.subtitle')}
         </Typography>
 
         {create.error && <Alert severity="error">{create.error.message}</Alert>}
 
         <TextField
-          label="Workspace name"
-          placeholder="Acme Inc."
+          label={t('createWorkspace.nameLabel')}
+          placeholder={t('createWorkspace.namePlaceholder')}
           autoFocus
           error={!!errors.name}
-          helperText={errors.name?.message}
+          helperText={errors.name?.message ? t(errors.name.message) : undefined}
           {...register('name')}
         />
 
@@ -97,10 +99,10 @@ export function CreateWorkspacePopup({
             onClick={close}
             disabled={create.isPending}
           >
-            Cancel
+            {t('createWorkspace.cancel')}
           </Button>
           <Button variant="main" size="M" type="submit" loading={create.isPending}>
-            Create
+            {t('createWorkspace.create')}
           </Button>
         </Box>
       </Box>

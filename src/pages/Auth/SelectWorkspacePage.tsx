@@ -1,10 +1,12 @@
 import { Alert, Box, CircularProgress, Paper, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useMyWorkspaces, useSelectWorkspace } from '../../network/hooks';
 import { WorkspaceItem } from '../../components/ui';
 import { colors, customShadows } from '../../theme';
 
 const SelectWorkspacePage = () => {
+  const { t } = useTranslation('auth');
   const navigate = useNavigate();
   const { data: workspaces, isPending, error } = useMyWorkspaces();
   const select = useSelectWorkspace();
@@ -41,12 +43,12 @@ const SelectWorkspacePage = () => {
         }}
       >
         <Typography sx={{ fontSize: 24, fontWeight: 700, lineHeight: '32px' }}>
-          Choose a workspace
+          {t('selectWorkspace.title')}
         </Typography>
         <Typography
           sx={{ mt: 1, fontSize: 14, lineHeight: '22px', color: colors.interface.grey }}
         >
-          Pick which workspace to open.
+          {t('selectWorkspace.subtitle')}
         </Typography>
 
         {(error || select.error) && (
@@ -75,7 +77,7 @@ const SelectWorkspacePage = () => {
 
           {!isPending && workspaces?.length === 0 && (
             <Typography sx={{ py: 2, textAlign: 'center', color: colors.interface.grey2 }}>
-              No workspaces available
+              {t('selectWorkspace.empty')}
             </Typography>
           )}
         </Box>

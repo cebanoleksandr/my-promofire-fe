@@ -1,5 +1,6 @@
 import { forwardRef, type InputHTMLAttributes } from 'react';
 import { Box, IconButton } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import { colors } from '../../theme';
@@ -18,9 +19,10 @@ export interface SearchInputProps
  */
 export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
   function SearchInput(
-    { value, onChange, onClear, placeholder = 'Search', fullWidth = true, ...rest },
+    { value, onChange, onClear, placeholder, fullWidth = true, ...rest },
     ref,
   ) {
+    const { t } = useTranslation('common');
     return (
       <Box
         sx={{
@@ -42,7 +44,7 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
           component="input"
           ref={ref}
           value={value}
-          placeholder={placeholder}
+          placeholder={placeholder ?? t('searchInput.placeholder')}
           onChange={(e) => onChange(e.target.value)}
           sx={{
             flex: 1,
@@ -61,7 +63,7 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
         {value && (
           <IconButton
             size="small"
-            aria-label="clear"
+            aria-label={t('searchInput.clear')}
             onClick={() => {
               onChange('');
               onClear?.();

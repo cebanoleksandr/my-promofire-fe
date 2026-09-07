@@ -1,0 +1,14 @@
+{
+  "modal": {
+    "close": "Cerrar",
+    "title": "Descubramos Promofire",
+    "description": "Completa una breve introducción del producto para empezar a trabajar más rápido",
+    "skip": "Omitir",
+    "start": "Iniciar recorrido"
+  },
+  "tooltip": {
+    "skip": "Omitir",
+    "finish": "Finalizar",
+    "okay": "Entendido"
+  }
+}

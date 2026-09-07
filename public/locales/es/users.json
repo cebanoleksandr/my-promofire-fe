@@ -1,0 +1,91 @@
+{
+  "page": {
+    "title": "Usuarios",
+    "empty": "Todavía no hay usuarios aquí",
+    "columns": {
+      "name": "Nombre",
+      "email": "Email",
+      "joined": "Se unió",
+      "lastSession": "Última sesión"
+    }
+  },
+  "detail": {
+    "notFound": "Usuario no encontrado.",
+    "backToUsers": "Volver a usuarios",
+    "breadcrumb": {
+      "users": "Usuarios"
+    },
+    "info": {
+      "name": "Nombre",
+      "email": "Email",
+      "phone": "Teléfono",
+      "joined": "Se unió",
+      "lastSession": "Última sesión"
+    },
+    "stats": {
+      "actions": {
+        "label": "Acciones",
+        "help": "Todas las consultas de código (validación + canje), no solo canjes exitosos"
+      },
+      "redeemed": {
+        "label": "Canjeados",
+        "help": "Códigos canjeados con éxito"
+      },
+      "codesUsed": {
+        "label": "Códigos usados"
+      }
+    },
+    "sections": {
+      "devices": "Dispositivos",
+      "countries": "Países",
+      "descriptions": "Descripciones",
+      "codes": "Códigos"
+    },
+    "devices": {
+      "ios": "iOS",
+      "android": "Android",
+      "web": "Web",
+      "unknown": "Desconocido"
+    },
+    "seeAll": "Ver todos",
+    "editable": {
+      "save": "Guardar",
+      "cancel": "Cancelar",
+      "edit": "Editar"
+    },
+    "codesTable": {
+      "empty": "Aún no se han usado códigos",
+      "columns": {
+        "name": "Nombre",
+        "status": "Estado",
+        "actions": "Acciones",
+        "newUsers": "Nuevos usuarios",
+        "lifetime": "Vigencia"
+      },
+      "help": {
+        "actions": "Todas las consultas de código (validación + canje)",
+        "newUsers": "Clientes cuya primera actividad fue con este código"
+      }
+    }
+  },
+  "codes": {
+    "breadcrumb": {
+      "codes": "Códigos"
+    },
+    "table": {
+      "empty": "Aún no se han usado códigos",
+      "columns": {
+        "name": "Nombre",
+        "status": "Estado",
+        "actions": "Acciones",
+        "newUsers": "Nuevos usuarios",
+        "lifetime": "Vigencia"
+      },
+      "help": {
+        "actions": "Todas las consultas de código (validación + canje), no solo canjes exitosos",
+        "newUsers": "Clientes cuya primera actividad en el espacio de trabajo fue con este código",
+        "lifetime": "Cuándo deja de funcionar el código: su propia caducidad o la predeterminada de la campaña"
+      }
+    }
+  }
+}

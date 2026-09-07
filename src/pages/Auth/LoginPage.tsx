@@ -2,14 +2,16 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Link as RouterLink, useLocation, useNavigate } from 'react-router-dom';
 import { Link } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 import { useLogin } from '../../network/hooks';
 import { isWorkspaceAuthResponse } from '../../types/auth';
 import { Button, TextField } from '../../components/ui';
 import { AuthCard } from './AuthCard';
 import { PasswordField } from './PasswordField';
-import { loginSchema, type LoginFormValues } from './schema';
+import { getLoginSchema, type LoginFormValues } from './schema';
 
 const LoginPage = () => {
+  const { t } = useTranslation('auth');
   const navigate = useNavigate();
   const location = useLocation();
   const login = useLogin();
@@ -22,7 +24,7 @@ const LoginPage = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<LoginFormValues>({
-    resolver: yupResolver(loginSchema),
+    resolver: yupResolver(getLoginSchema(t)),
     defaultValues: { email: '', password: '' },
   });
 
@@ -43,38 +45,38 @@ const LoginPage = () => {
 
   return (
     <AuthCard
-      title="Log in"
-      subtitle="Welcome back to Promofire"
+      title={t('login.title')}
+      subtitle={t('login.subtitle')}
       error={login.error?.message}
       onSubmit={onSubmit}
       footer={
         <>
-          No account?{' '}
+          {t('login.noAccount')}{' '}
           <Link component={RouterLink} to="/register" underline="hover">
-            Create one
+            {t('login.createOne')}
           </Link>
         </>
       }
     >
       <TextField
-        label="Email"
+        label={t('login.emailLabel')}
         type="email"
         autoComplete="email"
-        placeholder="you@company.com"
+        placeholder={t('login.emailPlaceholder')}
         error={!!errors.email}
         helperText={errors.email?.message}
         {...register('email')}
       />
       <PasswordField
-        label="Password"
+        label={t('login.passwordLabel')}
         autoComplete="current-password"
-        placeholder="••••••••"
+        placeholder={t('login.passwordPlaceholder')}
         error={!!errors.password}
         helperText={errors.password?.message}
         {...register('password')}
       />
       <Button type="submit" fullWidth loading={login.isPending} sx={{ mt: 1 }}>
-        Log in
+        {t('login.submit')}
       </Button>
     </AuthCard>
   );

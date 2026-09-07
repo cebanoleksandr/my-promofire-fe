@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import { useLogout } from '../../network/hooks';
 import { NavItem } from '../ui';
@@ -9,6 +10,7 @@ import { ConfirmPopup } from '../popups/ConfirmPopup';
  * Пункт "Log out" с подтверждением через ConfirmPopup.
  */
 export function LogoutNavItem() {
+  const { t } = useTranslation('layout');
   const navigate = useNavigate();
   const logout = useLogout();
   const [open, setOpen] = useState(false);
@@ -25,15 +27,15 @@ export function LogoutNavItem() {
   return (
     <>
       <NavItem
-        label="Log out"
+        label={t('logout.navLabel')}
         icon={<LogoutOutlinedIcon />}
         onClick={() => setOpen(true)}
       />
       <ConfirmPopup
         isVisible={open}
-        title="Log out?"
-        description="You’ll need to sign in again to access your workspace."
-        confirmLabel="Log out"
+        title={t('logout.title')}
+        description={t('logout.description')}
+        confirmLabel={t('logout.confirm')}
         tone="danger"
         loading={logout.isPending}
         onConfirm={handleConfirm}

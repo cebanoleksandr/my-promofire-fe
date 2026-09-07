@@ -2,13 +2,15 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { Link } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 import { useRegister } from '../../network/hooks';
 import { Button, TextField } from '../../components/ui';
 import { AuthCard } from './AuthCard';
 import { PasswordField } from './PasswordField';
-import { registerSchema, type RegisterFormValues } from './schema';
+import { getRegisterSchema, type RegisterFormValues } from './schema';
 
 const RegisterPage = () => {
+  const { t } = useTranslation('auth');
   const navigate = useNavigate();
   const registerMutation = useRegister();
 
@@ -17,7 +19,7 @@ const RegisterPage = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<RegisterFormValues>({
-    resolver: yupResolver(registerSchema),
+    resolver: yupResolver(getRegisterSchema(t)),
     defaultValues: {
       workspaceName: '',
       firstName: '',
@@ -45,63 +47,63 @@ const RegisterPage = () => {
 
   return (
     <AuthCard
-      title="Create account"
-      subtitle="Start using Promofire"
+      title={t('register.title')}
+      subtitle={t('register.subtitle')}
       error={registerMutation.error?.message}
       onSubmit={onSubmit}
       footer={
         <>
-          Already have an account?{' '}
+          {t('register.hasAccount')}{' '}
           <Link component={RouterLink} to="/login" underline="hover">
-            Log in
+            {t('register.logIn')}
           </Link>
         </>
       }
     >
       <TextField
-        label="Workspace name"
-        placeholder="Acme Inc."
+        label={t('register.workspaceNameLabel')}
+        placeholder={t('register.workspaceNamePlaceholder')}
         error={!!errors.workspaceName}
         helperText={errors.workspaceName?.message}
         {...register('workspaceName')}
       />
       <TextField
-        label="First name"
+        label={t('register.firstNameLabel')}
         autoComplete="given-name"
-        placeholder="Jane"
+        placeholder={t('register.firstNamePlaceholder')}
         error={!!errors.firstName}
         helperText={errors.firstName?.message}
         {...register('firstName')}
       />
       <TextField
-        label="Last name"
+        label={t('register.lastNameLabel')}
         autoComplete="family-name"
-        placeholder="Doe"
+        placeholder={t('register.lastNamePlaceholder')}
         error={!!errors.lastName}
         helperText={errors.lastName?.message}
         {...register('lastName')}
       />
       <TextField
-        label="Email"
+        label={t('register.emailLabel')}
         type="email"
         autoComplete="email"
-        placeholder="you@company.com"
+        placeholder={t('register.emailPlaceholder')}
         error={!!errors.email}
         helperText={errors.email?.message}
         {...register('email')}
       />
       <PasswordField
-        label="Password"
+        label={t('register.passwordLabel')}
         autoComplete="new-password"
-        placeholder="At least 8 characters"
+        placeholder={t('register.passwordPlaceholder')}
         error={!!errors.password}
         helperText={errors.password?.message}
         {...register('password')}
       />
       <PasswordField
-        label="Repeat password"
+        label={t('register.confirmPasswordLabel')}
         autoComplete="new-password"
-        placeholder="••••••••"
+        placeholder={t('register.confirmPasswordPlaceholder')}
         error={!!errors.confirmPassword}
         helperText={errors.confirmPassword?.message}
         {...register('confirmPassword')}
@@ -112,7 +114,7 @@ const RegisterPage = () => {
         loading={registerMutation.isPending}
         sx={{ mt: 1 }}
       >
-        Create account
+        {t('register.submit')}
       </Button>
     </AuthCard>
   );

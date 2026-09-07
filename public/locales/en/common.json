@@ -1,0 +1,43 @@
+{
+  "dateRangeField": {
+    "selectPeriod": "Select period"
+  },
+  "dateRangePickerPanel": {
+    "cancel": "Cancel",
+    "apply": "Apply"
+  },
+  "pagination": {
+    "previousPage": "Previous page",
+    "nextPage": "Next page"
+  },
+  "periodControl": {
+    "day": "1D",
+    "week": "7D",
+    "month": "1M",
+    "quarter": "3M",
+    "year": "Year",
+    "all": "All",
+    "refresh": "Refresh"
+  },
+  "searchInput": {
+    "placeholder": "Search",
+    "clear": "Clear"
+  },
+  "select": {
+    "placeholder": "Select",
+    "emptyText": "Nothing here yet"
+  },
+  "statusChips": {
+    "active": "Active",
+    "redeemed": "Redeemed",
+    "deactivated": "Deactivated",
+    "expired": "Expired",
+    "inviteSent": "Invite sent"
+  },
+  "table": {
+    "nothingYet": "Nothing yet"
+  },
+  "workspaceItem": {
+    "pro": "PRO"
+  }
+}

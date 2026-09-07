@@ -1,0 +1,14 @@
+{
+  "modal": {
+    "close": "Close",
+    "title": "Let's discover Promofire",
+    "description": "Complete a brief product intro to start working faster",
+    "skip": "Skip",
+    "start": "Start discovery"
+  },
+  "tooltip": {
+    "skip": "Skip",
+    "finish": "Finish",
+    "okay": "Okay"
+  }
+}

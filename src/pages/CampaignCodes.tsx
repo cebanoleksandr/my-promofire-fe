@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Box, CircularProgress, Typography } from '@mui/material';
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
 import ContentCopyRoundedIcon from '@mui/icons-material/ContentCopyRounded';
@@ -21,6 +22,7 @@ const PAGE_SIZE = 20;
 const numberFmt = new Intl.NumberFormat('en-US');
 
 const CampaignCodes = () => {
+  const { t } = useTranslation('campaigns');
   const { campaignId } = useParams<{ campaignId: string }>();
   const navigate = useNavigate();
 
@@ -80,9 +82,9 @@ const CampaignCodes = () => {
   if (!c) {
     return (
       <Box sx={{ maxWidth: 1100, mx: 'auto', py: 6 }}>
-        <Typography>Campaign not found.</Typography>
+        <Typography>{t('codes.notFound.title')}</Typography>
         <Button sx={{ mt: 2 }} variant="white" onClick={() => navigate('/campaigns')}>
-          Back to campaigns
+          {t('codes.notFound.back')}
         </Button>
       </Box>
     );
@@ -96,7 +98,7 @@ const CampaignCodes = () => {
           sx={{ fontSize: 14, color: colors.interface.grey, cursor: 'pointer' }}
           onClick={() => navigate('/campaigns')}
         >
-          Campaign
+          {t('codes.breadcrumb.campaign')}
         </Typography>
         <ChevronRightRoundedIcon sx={{ fontSize: 16, color: colors.interface.grey2 }} />
         <Typography
@@ -107,7 +109,7 @@ const CampaignCodes = () => {
         </Typography>
         <ChevronRightRoundedIcon sx={{ fontSize: 16, color: colors.interface.grey2 }} />
         <Typography sx={{ fontSize: 14, fontWeight: 600, color: colors.interface.black }}>
-          Codes
+          {t('codes.breadcrumb.codes')}
         </Typography>
       </Box>
 
@@ -126,11 +128,11 @@ const CampaignCodes = () => {
         sort={sort}
         onSortChange={setSort}
         onRowClick={(r) => navigate(`/codes/${r.id}`)}
-        emptyContent="No codes here yet"
+        emptyContent={t('codes.empty')}
         columns={[
           {
             id: 'code',
-            header: 'Name',
+            header: t('codes.table.name'),
             sortable: true,
             cell: (r) => (
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -151,32 +153,32 @@ const CampaignCodes = () => {
           },
           {
             id: 'status',
-            header: 'Status',
+            header: t('codes.table.status'),
             sortable: true,
             cell: (r) => <PromoCodeDisplayStatusChip status={r.displayStatus} />,
           },
           {
             id: 'actions',
-            header: 'Actions',
+            header: t('codes.table.actions'),
             align: 'right',
             sortable: true,
-            help: 'All code lookups (validate + redeem), not only successful redemptions',
+            help: t('codes.table.actionsHelp'),
             cell: (r) => numberFmt.format(r.actions),
           },
           {
             id: 'newUsers',
-            header: 'New users',
+            header: t('codes.table.newUsers'),
             align: 'right',
             sortable: true,
-            help: 'Customers whose first-ever activity in the workspace was this code',
+            help: t('codes.table.newUsersHelp'),
             cell: (r) => numberFmt.format(r.newUsers),
           },
           {
             id: 'lifetime',
-            header: 'Lifetime',
+            header: t('codes.table.lifetime'),
             align: 'right',
             sortable: true,
-            help: 'When the code stops working — its own expiry, or the campaign default',
+            help: t('codes.table.lifetimeHelp'),
             cell: (r) =>
               r.lifetime ? (
                 <DateLabel from={r.lifetime} withIcon={false} />

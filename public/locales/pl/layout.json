@@ -1,0 +1,38 @@
+{
+  "header": {
+    "profile": "Profil",
+    "toggleTheme": "Przełącz motyw"
+  },
+  "search": {
+    "placeholder": "Szukaj…",
+    "aria": "Szukaj"
+  },
+  "sidebar": {
+    "home": "Strona główna",
+    "campaigns": "Kampanie",
+    "codes": "Kody",
+    "distributors": "Dystrybutorzy",
+    "users": "Użytkownicy",
+    "settings": "Ustawienia"
+  },
+  "logout": {
+    "navLabel": "Wyloguj się",
+    "title": "Wylogować się?",
+    "description": "Aby uzyskać dostęp do swojego obszaru roboczego, musisz zalogować się ponownie.",
+    "confirm": "Wyloguj się"
+  },
+  "workspaceSwitcher": {
+    "noWorkspace": "Brak obszaru roboczego",
+    "addWorkspace": "Dodaj obszar roboczy"
+  },
+  "createWorkspace": {
+    "title": "Nowy obszar roboczy",
+    "subtitle": "Zostaniesz do niego od razu przełączony.",
+    "nameLabel": "Nazwa obszaru roboczego",
+    "namePlaceholder": "Acme Inc.",
+    "nameRequired": "Podaj nazwę obszaru roboczego",
+    "nameMin": "Co najmniej 2 znaki",
+    "cancel": "Anuluj",
+    "create": "Utwórz"
+  }
+}

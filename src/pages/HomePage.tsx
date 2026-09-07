@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Box, CircularProgress, Typography } from '@mui/material';
 import RocketLaunchOutlinedIcon from '@mui/icons-material/RocketLaunchOutlined';
 import { StatsPeriod, type DateRangeParams } from '../types';
@@ -29,15 +30,16 @@ import {
 import type { PromoCode } from '../types/promo-code';
 import type { Campaign } from '../types/campaign';
 
-const deviceLabels: Record<string, string> = {
-  ios: 'iOS',
-  android: 'Android',
-  web: 'Web',
-  unknown: 'Unknown',
-};
-
 const HomePage = () => {
+  const { t } = useTranslation('dashboard');
   const navigate = useNavigate();
+
+  const deviceLabels: Record<string, string> = {
+    ios: t('home.devices.ios'),
+    android: t('home.devices.android'),
+    web: t('home.devices.web'),
+    unknown: t('home.devices.unknown'),
+  };
   const [period, setPeriod] = useState<DateRangeParams>({
     period: StatsPeriod.MONTH,
   });
@@ -95,11 +97,11 @@ const HomePage = () => {
       <Box sx={{ maxWidth: 1200, mx: 'auto' }}>
         <EmptyState
           icon={<RocketLaunchOutlinedIcon />}
-          title="Nothing here yet"
-          description="Create your first campaign and generate promo codes — stats, charts and activity will show up here."
+          title={t('home.emptyState.title')}
+          description={t('home.emptyState.description')}
           action={
             <Button onClick={() => navigate('/campaigns/create')}>
-              Create campaign
+              {t('home.emptyState.action')}
             </Button>
           }
           sx={{ mt: 8 }}
@@ -121,7 +123,7 @@ const HomePage = () => {
         }}
       >
         <Typography sx={{ fontSize: 24, fontWeight: 700, lineHeight: '32px' }}>
-          Welcome to promo updates
+          {t('home.title')}
         </Typography>
         <PeriodControl value={period} onChange={setPeriod} onRefresh={refetchAll} />
       </Box>
@@ -138,25 +140,25 @@ const HomePage = () => {
           }}
         >
           <Box>
-            <SectionHeading title="Codes" />
+            <SectionHeading title={t('home.sections.codes')} />
             <StatsChartCard
               tiles={[
                 {
-                  label: 'Generated',
+                  label: t('home.codesTiles.generated'),
                   value: ct?.generated ?? 0,
                   changePct: ct?.generatedChangePct,
                   color: seriesColors.generated,
                   loading: codesStats.isPending,
                 },
                 {
-                  label: 'Redeemed',
+                  label: t('home.codesTiles.redeemed'),
                   value: ct?.redeemed ?? 0,
                   changePct: ct?.redeemedChangePct,
                   color: seriesColors.redeemed,
                   loading: codesStats.isPending,
                 },
                 {
-                  label: 'Expired',
+                  label: t('home.codesTiles.expired'),
                   value: ct?.expired ?? 0,
                   changePct: ct?.expiredChangePct,
                   color: seriesColors.expired,
@@ -169,9 +171,9 @@ const HomePage = () => {
                   data={codesStats.data?.series ?? []}
                   xKey="date"
                   series={[
-                    { key: 'generated', label: 'Generated', color: seriesColors.generated },
-                    { key: 'redeemed', label: 'Redeemed', color: seriesColors.redeemed },
-                    { key: 'expired', label: 'Expired', color: seriesColors.expired },
+                    { key: 'generated', label: t('home.codesTiles.generated'), color: seriesColors.generated },
+                    { key: 'redeemed', label: t('home.codesTiles.redeemed'), color: seriesColors.redeemed },
+                    { key: 'expired', label: t('home.codesTiles.expired'), color: seriesColors.expired },
                   ]}
                 />
               }
@@ -179,25 +181,25 @@ const HomePage = () => {
           </Box>
 
           <Box>
-            <SectionHeading title="Users" />
+            <SectionHeading title={t('home.sections.users')} />
             <StatsChartCard
               tiles={[
                 {
-                  label: 'All users',
+                  label: t('home.usersTiles.all'),
                   value: ut?.all ?? 0,
                   changePct: ut?.allChangePct,
                   color: seriesColors.all,
                   loading: usersStats.isPending,
                 },
                 {
-                  label: 'Active users',
+                  label: t('home.usersTiles.active'),
                   value: ut?.active ?? 0,
                   changePct: ut?.activeChangePct,
                   color: seriesColors.active,
                   loading: usersStats.isPending,
                 },
                 {
-                  label: 'New users',
+                  label: t('home.usersTiles.new'),
                   value: ut?.new ?? 0,
                   changePct: ut?.newChangePct,
                   color: seriesColors.new,
@@ -210,8 +212,8 @@ const HomePage = () => {
                   data={usersStats.data?.series ?? []}
                   xKey="date"
                   series={[
-                    { key: 'active', label: 'Active', color: seriesColors.active },
-                    { key: 'new', label: 'New', color: seriesColors.new },
+                    { key: 'active', label: t('home.usersTiles.active'), color: seriesColors.active },
+                    { key: 'new', label: t('home.usersTiles.new'), color: seriesColors.new },
                   ]}
                 />
               }
@@ -219,26 +221,26 @@ const HomePage = () => {
           </Box>
 
           <Box>
-            <SectionHeading title="Codes" actionHref="/codes" />
+            <SectionHeading title={t('home.sections.codes')} actionHref="/codes" />
             <Table<PromoCode>
               rows={codes.data?.data ?? []}
               getRowKey={(r) => r.id}
               loading={codes.isPending}
               columns={[
-                { id: 'code', header: 'Name', cell: (r) => r.code },
+                { id: 'code', header: t('home.codesTable.name'), cell: (r) => r.code },
                 {
                   id: 'status',
-                  header: 'Status',
+                  header: t('home.codesTable.status'),
                   cell: (r) => <PromoCodeStatusChip status={r.status} />,
                 },
                 {
                   id: 'redeemed',
-                  header: 'Redeemed',
+                  header: t('home.codesTable.redeemed'),
                   cell: (r) => r.redemptionsCount,
                 },
                 {
                   id: 'limit',
-                  header: 'Max redemptions',
+                  header: t('home.codesTable.maxRedemptions'),
                   cell: (r) => (r.maxRedemptions == null ? '∞' : r.maxRedemptions),
                 },
               ]}
@@ -246,16 +248,16 @@ const HomePage = () => {
           </Box>
 
           <Box>
-            <SectionHeading title="Campaigns" actionHref="/campaigns" />
+            <SectionHeading title={t('home.sections.campaigns')} actionHref="/campaigns" />
             <Table<Campaign>
               rows={campaigns.data?.data ?? []}
               getRowKey={(r) => r.id}
               loading={campaigns.isPending}
               columns={[
-                { id: 'name', header: 'Name', cell: (r) => r.name },
+                { id: 'name', header: t('home.campaignsTable.name'), cell: (r) => r.name },
                 {
                   id: 'discount',
-                  header: 'Discount',
+                  header: t('home.campaignsTable.discount'),
                   cell: (r) =>
                     r.discountType === 'percentage'
                       ? `${r.discountValue}%`
@@ -263,17 +265,17 @@ const HomePage = () => {
                 },
                 {
                   id: 'status',
-                  header: 'Status',
+                  header: t('home.campaignsTable.status'),
                   cell: (r) => (
                     <StatusChip
-                      label={r.isActive ? 'Active' : 'Deactivated'}
+                      label={r.isActive ? t('home.campaignsTable.active') : t('home.campaignsTable.deactivated')}
                       tone={r.isActive ? 'success' : 'neutral'}
                     />
                   ),
                 },
                 {
                   id: 'perCustomer',
-                  header: 'Per customer',
+                  header: t('home.campaignsTable.perCustomer'),
                   cell: (r) => r.perCustomerLimit,
                 },
               ]}
@@ -292,13 +294,13 @@ const HomePage = () => {
           }}
         >
           <DonutCard
-            title="Countries"
+            title={t('home.sections.countries')}
             loading={countries.isPending}
             items={countries.data?.items ?? []}
             labelFor={(key) => key.toUpperCase()}
           />
           <DonutCard
-            title="Devices"
+            title={t('home.sections.devices')}
             loading={devices.isPending}
             items={devices.data?.items ?? []}
             labelFor={(key) => deviceLabels[key] ?? key}

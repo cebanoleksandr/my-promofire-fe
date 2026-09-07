@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Box, Radio, Typography } from '@mui/material';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import { colors } from '../../theme';
@@ -23,6 +24,7 @@ export function GenerateCodePopup({
   onClose,
   onGenerate,
 }: GenerateCodePopupProps) {
+  const { t } = useTranslation('popups');
   const [format, setFormat] = useState<CodeFormat>('auto');
   const [customCode, setCustomCode] = useState('PromofireApp');
 
@@ -40,9 +42,9 @@ export function GenerateCodePopup({
       <Box sx={{ width: '100%', minWidth: 380 }}>
         <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
           <Typography sx={{ fontSize: 20, fontWeight: 600, lineHeight: '28px' }}>
-            Set code format
+            {t('generateCode.title')}
           </Typography>
-          <IconButton size={24} aria-label="Close" onClick={handleClose}>
+          <IconButton size={24} aria-label={t('common.close')} onClick={handleClose}>
             <CloseRoundedIcon />
           </IconButton>
         </Box>
@@ -59,11 +61,11 @@ export function GenerateCodePopup({
                 sx={{ color: colors.interface.grey3, '&.Mui-checked': { color: colors.brand.main } }}
               />
               <Typography sx={{ fontSize: 14, fontWeight: 500, color: colors.interface.black }}>
-                Auto
+                {t('generateCode.auto')}
               </Typography>
             </Box>
             <Typography sx={{ ml: 4.5, mt: 0.5, fontSize: 13, color: colors.interface.grey2 }}>
-              Example: 01HRVJKBTD1H79GXBPXH8Q4E1A
+              {t('generateCode.autoExample')}
             </Typography>
           </Box>
 
@@ -78,7 +80,7 @@ export function GenerateCodePopup({
                 sx={{ color: colors.interface.grey3, '&.Mui-checked': { color: colors.brand.main } }}
               />
               <Typography sx={{ fontSize: 14, fontWeight: 500, color: colors.interface.black }}>
-                Custom
+                {t('generateCode.custom')}
               </Typography>
             </Box>
             {format === 'custom' && (
@@ -95,7 +97,7 @@ export function GenerateCodePopup({
 
         <Box sx={{ mt: 3, display: 'flex', gap: 1.5 }}>
           <Button variant="white" fullWidth disabled={loading} onClick={handleClose}>
-            Cancel
+            {t('common.cancel')}
           </Button>
           <Button
             fullWidth
@@ -103,7 +105,7 @@ export function GenerateCodePopup({
             disabled={format === 'custom' && !customCode.trim()}
             onClick={handleGenerate}
           >
-            Generate
+            {t('generateCode.generate')}
           </Button>
         </Box>
       </Box>

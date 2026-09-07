@@ -5,7 +5,7 @@ import { createTheme } from '@mui/material/styles';
  * Токены цвета из Figma (Promofire-App → node 2653:56011).
  * Имена сохранены как в Figma-переменных, приведены к camelCase.
  */
-export const colors = {
+export const lightColors = {
   interface: {
     main: '#EB2A41', // Interface/Main — акцентный красный интерфейса
     black: '#120C0E', // Interface/black
@@ -36,6 +36,59 @@ export const colors = {
     blue10: '#E9F4FE', // Supportive/blue-10
   },
 } as const;
+
+type ColorPalette = {
+  interface: Record<keyof typeof lightColors.interface, string>;
+  brand: Record<keyof typeof lightColors.brand, string>;
+  supportive: Record<keyof typeof lightColors.supportive, string>;
+};
+
+/**
+ * Тёмная тема — те же роли токенов, что и в lightColors, инвертированные
+ * под тёмный фон. Бренд/supportive-акценты слегка осветлены для контраста
+ * на тёмном фоне.
+ */
+export const darkColors: ColorPalette = {
+  interface: {
+    main: '#FF5C6E',
+    black: '#F5F6FA', // используется как основной текст — теперь светлый
+    black2: '#D7D8E2',
+    grey: '#9A9BB0',
+    grey2: '#7A7B8D',
+    grey3: '#3A3A42',
+    grey4: '#201A1D', // used as subtle surface/hover background
+    white: '#17151A', // "white" surfaces become the dark card background
+    white2: '#1D1A20',
+    overlay: '#000000',
+  },
+  brand: {
+    main: '#FE7A34',
+    action: '#FF8A52',
+    second: '#F5896C',
+  },
+  supportive: {
+    red: '#F16A5B',
+    redAction: '#7A2E27',
+    red10: '#2E1917',
+    green: '#8BC24A',
+    green10: '#1E2A14',
+    blue: '#4DA9F5',
+    blueAction: '#3D8FD1',
+    blue60: '#73B9F1',
+    blue10: '#132433',
+  },
+};
+
+export type ThemeMode = 'light' | 'dark';
+
+/** Текущая цветовая палитра — переключается через `setThemeColors`. Живая
+ * ES-module привязка: все модули, импортирующие `colors` по имени, видят
+ * актуальное значение сразу после переключения, без дополнительной логики. */
+export let colors: ColorPalette = lightColors;
+
+export function setThemeColors(mode: ThemeMode) {
+  colors = mode === 'dark' ? darkColors : lightColors;
+}
 
 /**
  * Тени из Figma (node 2653:56099). Цвет #484F5D, альфа как в макете.
@@ -133,55 +186,58 @@ declare module '@mui/material/Typography' {
   }
 }
 
-const theme = createTheme({
+export function getTheme(mode: ThemeMode) {
+  const palette = mode === 'dark' ? darkColors : lightColors;
+
+  return createTheme({
   customShadows,
   palette: {
-    mode: 'light',
+    mode,
     primary: {
-      main: colors.brand.main,
-      dark: colors.brand.action,
-      light: colors.brand.second,
-      contrastText: colors.interface.white,
+      main: palette.brand.main,
+      dark: palette.brand.action,
+      light: palette.brand.second,
+      contrastText: palette.interface.white,
     },
     secondary: {
-      main: colors.interface.black2,
-      light: colors.interface.grey,
-      dark: colors.interface.black,
-      contrastText: colors.interface.white,
+      main: palette.interface.black2,
+      light: palette.interface.grey,
+      dark: palette.interface.black,
+      contrastText: palette.interface.white,
     },
     error: {
-      main: colors.supportive.red,
-      light: colors.supportive.redAction,
-      contrastText: colors.interface.white,
+      main: palette.supportive.red,
+      light: palette.supportive.redAction,
+      contrastText: palette.interface.white,
     },
     success: {
-      main: colors.supportive.green,
-      light: colors.supportive.green10,
-      contrastText: colors.interface.white,
+      main: palette.supportive.green,
+      light: palette.supportive.green10,
+      contrastText: palette.interface.white,
     },
     info: {
-      main: colors.supportive.blue,
-      dark: colors.supportive.blueAction,
-      light: colors.supportive.blue60,
-      contrastText: colors.interface.white,
+      main: palette.supportive.blue,
+      dark: palette.supportive.blueAction,
+      light: palette.supportive.blue60,
+      contrastText: palette.interface.white,
     },
     text: {
-      primary: colors.interface.black,
-      secondary: colors.interface.grey,
-      disabled: colors.interface.grey2,
+      primary: palette.interface.black,
+      secondary: palette.interface.grey,
+      disabled: palette.interface.grey2,
     },
     background: {
-      default: colors.interface.grey4,
-      paper: colors.interface.white,
+      default: mode === 'dark' ? '#121013' : palette.interface.grey4,
+      paper: palette.interface.white,
     },
-    divider: colors.interface.grey3,
+    divider: palette.interface.grey3,
     common: {
-      black: colors.interface.black,
-      white: colors.interface.white,
+      black: palette.interface.black,
+      white: palette.interface.white,
     },
-    interface: { ...colors.interface },
-    brand: { ...colors.brand },
-    supportive: { ...colors.supportive },
+    interface: { ...palette.interface },
+    brand: { ...palette.brand },
+    supportive: { ...palette.supportive },
   },
   typography: {
     fontFamily,
@@ -229,6 +285,9 @@ const theme = createTheme({
       },
     },
   },
-});
+  });
+}
+
+const theme = getTheme('light');
 
 export default theme;

@@ -1,4 +1,5 @@
 import { useNavigate, useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Box, CircularProgress, Typography } from '@mui/material';
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
 import { usePromoCode } from '../network/hooks';
@@ -11,6 +12,7 @@ const numberFmt = new Intl.NumberFormat('en-US');
 const CodeUsers = () => {
   const { codeId } = useParams<{ codeId: string }>();
   const navigate = useNavigate();
+  const { t } = useTranslation('codes');
 
   const code = usePromoCode(codeId);
   const c = code.data;
@@ -26,9 +28,9 @@ const CodeUsers = () => {
   if (!c) {
     return (
       <Box sx={{ maxWidth: 1100, mx: 'auto', py: 6 }}>
-        <Typography>Code not found.</Typography>
+        <Typography>{t('detail.notFound')}</Typography>
         <Button sx={{ mt: 2 }} variant="white" onClick={() => navigate('/codes')}>
-          Back to codes
+          {t('detail.backToCodes')}
         </Button>
       </Box>
     );
@@ -42,7 +44,7 @@ const CodeUsers = () => {
           sx={{ fontSize: 14, color: colors.interface.grey, cursor: 'pointer' }}
           onClick={() => navigate('/codes')}
         >
-          Code
+          {t('usersPage.breadcrumbs.code')}
         </Typography>
         <ChevronRightRoundedIcon sx={{ fontSize: 16, color: colors.interface.grey2 }} />
         <Typography
@@ -53,28 +55,28 @@ const CodeUsers = () => {
         </Typography>
         <ChevronRightRoundedIcon sx={{ fontSize: 16, color: colors.interface.grey2 }} />
         <Typography sx={{ fontSize: 14, fontWeight: 600, color: colors.interface.black }}>
-          Users
+          {t('usersPage.breadcrumbs.users')}
         </Typography>
       </Box>
 
       <Table<PromoCodeIntegrationBreakdown>
         rows={c.integrations}
         getRowKey={(r) => r.integrationId}
-        emptyContent="No activity yet"
+        emptyContent={t('usersPage.emptyActivity')}
         columns={[
-          { id: 'name', header: 'Name', cell: (r) => r.name },
+          { id: 'name', header: t('usersPage.columns.name'), cell: (r) => r.name },
           {
             id: 'actions',
-            header: 'Actions',
+            header: t('usersPage.columns.actions'),
             align: 'right',
-            help: 'All SDK calls through this integration (validate + redeem)',
+            help: t('usersPage.help.actions'),
             cell: (r) => numberFmt.format(r.actions),
           },
           {
             id: 'generated',
-            header: 'Generated',
+            header: t('usersPage.columns.generated'),
             align: 'right',
-            help: 'Codes this integration generated itself (self-serve)',
+            help: t('usersPage.help.generated'),
             cell: (r) => numberFmt.format(r.generated),
           },
         ]}

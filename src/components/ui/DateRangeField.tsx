@@ -1,5 +1,6 @@
 import { forwardRef } from 'react';
 import { ButtonBase, type ButtonBaseProps } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 import CalendarTodayRoundedIcon from '@mui/icons-material/CalendarTodayRounded';
 import { colors } from '../../theme';
 import { DateLabel } from './DateLabel';
@@ -18,9 +19,10 @@ export interface DateRangeFieldProps extends Omit<ButtonBaseProps, 'children'> {
  */
 export const DateRangeField = forwardRef<HTMLButtonElement, DateRangeFieldProps>(
   function DateRangeField(
-    { from, to, placeholder = 'Select period', active = false, locale, sx, ...rest },
+    { from, to, placeholder, active = false, locale, sx, ...rest },
     ref,
   ) {
+    const { t } = useTranslation('common');
     const hasValue = from != null;
     return (
       <ButtonBase
@@ -52,7 +54,7 @@ export const DateRangeField = forwardRef<HTMLButtonElement, DateRangeFieldProps>
             <CalendarTodayRoundedIcon
               sx={{ fontSize: 16, color: colors.interface.grey }}
             />
-            {placeholder}
+            {placeholder ?? t('dateRangeField.selectPeriod')}
           </>
         )}
       </ButtonBase>

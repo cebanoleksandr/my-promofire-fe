@@ -3,8 +3,9 @@ import { Avatar, Box, Menu, MenuItem } from '@mui/material';
 import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
 import PersonOutlineRoundedIcon from '@mui/icons-material/PersonOutlineRounded';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { colors } from '../../theme';
-import { Button, SearchInput } from '../ui';
+import { Button, LanguageSwitcher, SearchInput, ThemeSwitcher } from '../ui';
 
 export const HEADER_HEIGHT = 64;
 
@@ -20,10 +21,11 @@ export interface HeaderProps {
 export function Header({
   search,
   onSearchChange,
-  searchPlaceholder = 'Search…',
+  searchPlaceholder,
   actions,
   userName = 'User',
 }: HeaderProps) {
+  const { t } = useTranslation('layout');
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [localSearch, setLocalSearch] = useState(searchParams.get('q') ?? '');
@@ -61,13 +63,13 @@ export function Header({
         <SearchInput
           value={value}
           onChange={handleChange}
-          placeholder={searchPlaceholder}
+          placeholder={searchPlaceholder ?? t('search.placeholder')}
         />
         {trimmed && (
           <Button
             type="submit"
             size="M"
-            aria-label="Search"
+            aria-label={t('search.aria')}
             sx={{ flexShrink: 0, px: 1.5 }}
           >
             <ArrowForwardRoundedIcon sx={{ fontSize: 18 }} />
@@ -76,6 +78,9 @@ export function Header({
       </Box>
 
       <Box sx={{ flex: 1 }} />
+
+      <ThemeSwitcher />
+      <LanguageSwitcher />
 
       {actions ?? (
         <>
@@ -108,7 +113,7 @@ export function Header({
               }}
             >
               <PersonOutlineRoundedIcon sx={{ fontSize: 18, mr: 1, color: colors.interface.grey }} />
-              Profile
+              {t('header.profile')}
             </MenuItem>
           </Menu>
         </>

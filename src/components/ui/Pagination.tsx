@@ -1,4 +1,5 @@
 import { Box, ButtonBase, type BoxProps } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
 import { colors } from '../../theme';
@@ -49,6 +50,7 @@ export function Pagination({
   sx,
   ...rest
 }: PaginationProps) {
+  const { t } = useTranslation('common');
   if (count <= 1) return null;
 
   const items = buildRange(page, count, siblingCount);
@@ -76,7 +78,7 @@ export function Pagination({
     return (
       <ButtonBase
         disableRipple
-        aria-label={kind === 'prev' ? 'Previous page' : 'Next page'}
+        aria-label={kind === 'prev' ? t('pagination.previousPage') : t('pagination.nextPage')}
         disabled={isDisabled}
         onClick={() => go(kind === 'prev' ? page - 1 : page + 1)}
         sx={{

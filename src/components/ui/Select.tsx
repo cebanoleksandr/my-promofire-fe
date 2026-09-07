@@ -1,4 +1,5 @@
 import { useId, useState, type ReactNode } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   ButtonBase,
   Menu,
@@ -41,14 +42,15 @@ export function Select<T extends string = string>({
   options,
   value,
   onChange,
-  placeholder = 'Select',
+  placeholder,
   label,
   error = false,
-  emptyText = 'Nothing here yet',
+  emptyText,
   fullWidth = true,
   sx,
   ...rest
 }: SelectProps<T>) {
+  const { t } = useTranslation('common');
   const [anchor, setAnchor] = useState<HTMLElement | null>(null);
   const labelId = useId();
   const open = Boolean(anchor);
@@ -104,7 +106,7 @@ export function Select<T extends string = string>({
       >
         {selected?.icon}
         <span style={{ flex: 1, textAlign: 'left', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-          {selected?.label ?? placeholder}
+          {selected?.label ?? placeholder ?? t('select.placeholder')}
         </span>
         <KeyboardArrowDownRoundedIcon
           sx={{
@@ -134,7 +136,7 @@ export function Select<T extends string = string>({
       >
         {options.length === 0 && (
           <MenuItem disabled sx={{ color: colors.interface.grey, fontSize: 14 }}>
-            {emptyText}
+            {emptyText ?? t('select.emptyText')}
           </MenuItem>
         )}
 

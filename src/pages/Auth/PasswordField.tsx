@@ -2,6 +2,7 @@ import { forwardRef, useState } from 'react';
 import { IconButton } from '@mui/material';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
+import { useTranslation } from 'react-i18next';
 import { colors } from '../../theme';
 import { TextField, type TextFieldProps } from '../../components/ui';
 
@@ -11,6 +12,7 @@ import { TextField, type TextFieldProps } from '../../components/ui';
  */
 export const PasswordField = forwardRef<HTMLInputElement, TextFieldProps>(
   function PasswordField(props, ref) {
+    const { t } = useTranslation('auth');
     const [visible, setVisible] = useState(false);
     return (
       <TextField
@@ -20,7 +22,7 @@ export const PasswordField = forwardRef<HTMLInputElement, TextFieldProps>(
         endIcon={
           <IconButton
             type="button"
-            aria-label={visible ? 'Hide password' : 'Show password'}
+            aria-label={visible ? t('passwordField.hide') : t('passwordField.show')}
             onClick={() => setVisible((v) => !v)}
             sx={{ p: 0.25, color: colors.interface.grey }}
           >

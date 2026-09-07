@@ -1,4 +1,5 @@
 import { type ReactNode } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Box,
   Skeleton,
@@ -97,12 +98,13 @@ export function Table<Row>({
   isRowSelected,
   loading = false,
   skeletonRows = 5,
-  emptyContent = 'Nothing yet',
+  emptyContent,
   stickyHeader = false,
   bare = false,
   sx,
   ...rest
 }: TableProps<Row>) {
+  const { t } = useTranslation('common');
   const clickable = Boolean(onRowClick);
 
   const handleSort = (col: Column<Row>) => {
@@ -202,7 +204,7 @@ export function Table<Row>({
                   borderBottom: 'none',
                 }}
               >
-                {emptyContent}
+                {emptyContent ?? t('table.nothingYet')}
               </TableCell>
             </TableRow>
           )}

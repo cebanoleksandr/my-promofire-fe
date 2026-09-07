@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Box, Typography } from '@mui/material';
 import { colors } from '../../theme';
 import { Button } from '../ui';
@@ -24,13 +25,16 @@ export function ConfirmPopup({
   isVisible,
   title,
   description,
-  confirmLabel = 'Confirm',
-  cancelLabel = 'Cancel',
+  confirmLabel,
+  cancelLabel,
   tone = 'default',
   loading = false,
   onConfirm,
   onClose,
 }: ConfirmPopupProps) {
+  const { t } = useTranslation('popups');
+  const resolvedConfirmLabel = confirmLabel ?? t('confirmPopup.confirm');
+  const resolvedCancelLabel = cancelLabel ?? t('confirmPopup.cancel');
   return (
     <BasePopup isVisible={isVisible} onClose={loading ? () => {} : onClose}>
       <Box sx={{ maxWidth: 420 }}>
@@ -53,7 +57,7 @@ export function ConfirmPopup({
 
         <Box sx={{ mt: 3, display: 'flex', gap: 1, justifyContent: 'flex-end' }}>
           <Button variant="white" size="M" onClick={onClose} disabled={loading}>
-            {cancelLabel}
+            {resolvedCancelLabel}
           </Button>
           <Button
             variant={tone === 'danger' ? 'red' : 'main'}
@@ -61,7 +65,7 @@ export function ConfirmPopup({
             loading={loading}
             onClick={onConfirm}
           >
-            {confirmLabel}
+            {resolvedConfirmLabel}
           </Button>
         </Box>
       </Box>

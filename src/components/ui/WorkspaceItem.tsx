@@ -4,6 +4,7 @@ import {
   Typography,
   type ButtonBaseProps,
 } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
 import { colors, customShadows } from '../../theme';
 import { WorkspaceAvatar } from './WorkspaceAvatar';
@@ -36,6 +37,7 @@ export function WorkspaceItem({
   sx,
   ...rest
 }: WorkspaceItemProps) {
+  const { t } = useTranslation('common');
   const isMain = variant === 'main';
 
   return (
@@ -105,7 +107,7 @@ export function WorkspaceItem({
                 letterSpacing: '.04em',
               }}
             >
-              PRO
+              {t('workspaceItem.pro')}
             </Box>
           )}
         </Box>

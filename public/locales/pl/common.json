@@ -1,0 +1,43 @@
+{
+  "dateRangeField": {
+    "selectPeriod": "Wybierz okres"
+  },
+  "dateRangePickerPanel": {
+    "cancel": "Anuluj",
+    "apply": "Zastosuj"
+  },
+  "pagination": {
+    "previousPage": "Poprzednia strona",
+    "nextPage": "Następna strona"
+  },
+  "periodControl": {
+    "day": "1D",
+    "week": "7D",
+    "month": "1M",
+    "quarter": "3M",
+    "year": "Rok",
+    "all": "Wszystko",
+    "refresh": "Odśwież"
+  },
+  "searchInput": {
+    "placeholder": "Szukaj",
+    "clear": "Wyczyść"
+  },
+  "select": {
+    "placeholder": "Wybierz",
+    "emptyText": "Nic tu jeszcze nie ma"
+  },
+  "statusChips": {
+    "active": "Aktywny",
+    "redeemed": "Zrealizowany",
+    "deactivated": "Dezaktywowany",
+    "expired": "Wygasł",
+    "inviteSent": "Zaproszenie wysłane"
+  },
+  "table": {
+    "nothingYet": "Jeszcze nic tu nie ma"
+  },
+  "workspaceItem": {
+    "pro": "PRO"
+  }
+}

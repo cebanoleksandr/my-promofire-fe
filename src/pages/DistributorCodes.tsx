@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Box, CircularProgress, Typography } from '@mui/material';
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
@@ -21,6 +22,7 @@ const PAGE_SIZE = 20;
 const numberFmt = new Intl.NumberFormat('en-US');
 
 const DistributorCodes = () => {
+  const { t } = useTranslation('distributors');
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
@@ -81,9 +83,9 @@ const DistributorCodes = () => {
   if (!d) {
     return (
       <Box sx={{ maxWidth: 1100, mx: 'auto', py: 6 }}>
-        <Typography>Distributor not found.</Typography>
+        <Typography>{t('notFound')}</Typography>
         <Button sx={{ mt: 2 }} variant="white" onClick={() => navigate('/distributors')}>
-          Back to distributors
+          {t('actions.backToDistributors')}
         </Button>
       </Box>
     );
@@ -97,7 +99,7 @@ const DistributorCodes = () => {
           sx={{ fontSize: 14, color: colors.interface.grey, cursor: 'pointer' }}
           onClick={() => navigate('/distributors')}
         >
-          Distributors
+          {t('breadcrumbs.distributors')}
         </Typography>
         <ChevronRightRoundedIcon sx={{ fontSize: 16, color: colors.interface.grey2 }} />
         <Typography
@@ -108,7 +110,7 @@ const DistributorCodes = () => {
         </Typography>
         <ChevronRightRoundedIcon sx={{ fontSize: 16, color: colors.interface.grey2 }} />
         <Typography sx={{ fontSize: 14, fontWeight: 600, color: colors.interface.black }}>
-          Codes
+          {t('breadcrumbs.codes')}
         </Typography>
       </Box>
 
@@ -121,7 +123,7 @@ const DistributorCodes = () => {
       </Box>
 
       <Typography sx={{ fontSize: 16, fontWeight: 600, lineHeight: '26px', mb: 1.5 }}>
-        Codes
+        {t('breadcrumbs.codes')}
       </Typography>
 
       <Table<PromoCodeListItem>
@@ -131,11 +133,11 @@ const DistributorCodes = () => {
         sort={sort}
         onSortChange={setSort}
         onRowClick={(r) => navigate(`/codes/${r.id}`)}
-        emptyContent="No codes here yet"
+        emptyContent={t('empty.noCodesHere')}
         columns={[
           {
             id: 'code',
-            header: 'Name',
+            header: t('columns.name'),
             sortable: true,
             cell: (r) => (
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -156,32 +158,32 @@ const DistributorCodes = () => {
           },
           {
             id: 'status',
-            header: 'Status',
+            header: t('columns.status'),
             sortable: true,
             cell: (r) => <PromoCodeDisplayStatusChip status={r.displayStatus} />,
           },
           {
             id: 'actions',
-            header: 'Actions',
+            header: t('columns.actions'),
             align: 'right',
             sortable: true,
-            help: 'All code lookups (validate + redeem), not only successful redemptions',
+            help: t('help.actions'),
             cell: (r) => numberFmt.format(r.actions),
           },
           {
             id: 'newUsers',
-            header: 'New users',
+            header: t('columns.newUsersLower'),
             align: 'right',
             sortable: true,
-            help: 'Customers whose first-ever activity in the workspace was this code',
+            help: t('help.newUsersCode'),
             cell: (r) => numberFmt.format(r.newUsers),
           },
           {
             id: 'lifetime',
-            header: 'Lifetime',
+            header: t('columns.lifetime'),
             align: 'right',
             sortable: true,
-            help: 'When the code stops working — its own expiry, or the campaign default',
+            help: t('help.lifetime'),
             cell: (r) =>
               r.lifetime ? (
                 <DateLabel from={r.lifetime} withIcon={false} />

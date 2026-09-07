@@ -1,0 +1,50 @@
+{
+  "sectionHeading": {
+    "seeAll": "Ver todos"
+  },
+  "home": {
+    "title": "Bienvenido al resumen de promociones",
+    "sections": {
+      "codes": "Códigos",
+      "users": "Usuarios",
+      "campaigns": "Campañas",
+      "countries": "Países",
+      "devices": "Dispositivos"
+    },
+    "codesTiles": {
+      "generated": "Generados",
+      "redeemed": "Canjeados",
+      "expired": "Caducados"
+    },
+    "usersTiles": {
+      "all": "Todos los usuarios",
+      "active": "Usuarios activos",
+      "new": "Usuarios nuevos"
+    },
+    "codesTable": {
+      "name": "Nombre",
+      "status": "Estado",
+      "redeemed": "Canjeados",
+      "maxRedemptions": "Máx. de canjes"
+    },
+    "campaignsTable": {
+      "name": "Nombre",
+      "discount": "Descuento",
+      "status": "Estado",
+      "active": "Activa",
+      "deactivated": "Desactivada",
+      "perCustomer": "Por cliente"
+    },
+    "devices": {
+      "ios": "iOS",
+      "android": "Android",
+      "web": "Web",
+      "unknown": "Desconocido"
+    },
+    "emptyState": {
+      "title": "Todavía no hay nada aquí",
+      "description": "Crea tu primera campaña y genera códigos promocionales: las estadísticas, los gráficos y la actividad aparecerán aquí.",
+      "action": "Crear campaña"
+    }
+  }
+}

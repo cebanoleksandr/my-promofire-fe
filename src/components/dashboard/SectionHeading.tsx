@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { Box, Link, Typography } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 import { colors } from '../../theme';
 
 export interface SectionHeadingProps {
@@ -16,6 +17,7 @@ export function SectionHeading({
   actionHref,
   onActionClick,
 }: SectionHeadingProps) {
+  const { t } = useTranslation('dashboard');
   return (
     <Box
       sx={{
@@ -42,7 +44,7 @@ export function SectionHeading({
               cursor: 'pointer',
             }}
           >
-            See all
+            {t('sectionHeading.seeAll')}
           </Link>
         ) : null)}
     </Box>

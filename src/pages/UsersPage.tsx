@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Box, Typography } from '@mui/material';
 import { useCustomers } from '../network/hooks';
 import { DateLabel, Pagination, Table, type TableSort } from '../components/ui';
@@ -10,6 +11,7 @@ const PAGE_SIZE = 20;
 
 const UsersPage = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation('users');
 
   const [page, setPage] = useState(1);
   const [sort, setSort] = useState<TableSort | null>(null);
@@ -48,7 +50,7 @@ const UsersPage = () => {
       <Typography
         sx={{ fontSize: 24, fontWeight: 700, lineHeight: '32px', mb: 3 }}
       >
-        Users
+        {t('page.title')}
       </Typography>
 
       <Table<CustomerListItem>
@@ -58,11 +60,11 @@ const UsersPage = () => {
         sort={sort}
         onSortChange={setSort}
         onRowClick={(r) => navigate(`/users/${r.id}`)}
-        emptyContent="No users here yet"
+        emptyContent={t('page.empty')}
         columns={[
           {
             id: 'name',
-            header: 'Name',
+            header: t('page.columns.name'),
             sortable: true,
             cell: (r) => (
               <Typography
@@ -78,20 +80,20 @@ const UsersPage = () => {
           },
           {
             id: 'email',
-            header: 'Email',
+            header: t('page.columns.email'),
             sortable: true,
             cell: (r) => r.email ?? '—',
           },
           {
             id: 'firstSeenAt',
-            header: 'Joined',
+            header: t('page.columns.joined'),
             align: 'right',
             sortable: true,
             cell: (r) => <DateLabel from={r.firstSeenAt} withIcon={false} />,
           },
           {
             id: 'lastSeenAt',
-            header: 'Last session',
+            header: t('page.columns.lastSession'),
             align: 'right',
             sortable: true,
             cell: (r) => <DateLabel from={r.lastSeenAt} withIcon={false} />,

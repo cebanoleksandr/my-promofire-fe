@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Box, Typography } from '@mui/material';
 import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
@@ -39,6 +39,7 @@ function Section({
 }
 
 const SearchPage = () => {
+  const { t } = useTranslation('search');
   const navigate = useNavigate();
   const [params] = useSearchParams();
   const q = params.get('q') ?? '';
@@ -50,40 +51,28 @@ const SearchPage = () => {
   const campaignsQuery = useCampaigns({ limit: 100 });
   const usersQuery = useCustomers({ limit: 100 });
 
-  const codes = useMemo(
-    () =>
-      hasTerm
-        ? (codesQuery.data?.data ?? []).filter((c) =>
-            c.code.toLowerCase().includes(term),
-          )
-        : [],
-    [codesQuery.data?.data, term, hasTerm],
-  );
+  const codes = hasTerm
+    ? (codesQuery.data?.data ?? []).filter((c) =>
+        c.code.toLowerCase().includes(term),
+      )
+    : [];
 
-  const campaigns = useMemo(
-    () =>
-      hasTerm
-        ? (campaignsQuery.data?.data ?? []).filter(
-            (c) =>
-              c.name.toLowerCase().includes(term) ||
-              c.distributors.some((d) => d.name.toLowerCase().includes(term)),
-          )
-        : [],
-    [campaignsQuery.data?.data, term, hasTerm],
-  );
+  const campaigns = hasTerm
+    ? (campaignsQuery.data?.data ?? []).filter(
+        (c) =>
+          c.name.toLowerCase().includes(term) ||
+          c.distributors.some((d) => d.name.toLowerCase().includes(term)),
+      )
+    : [];
 
-  const users = useMemo(
-    () =>
-      hasTerm
-        ? (usersQuery.data?.data ?? []).filter(
-            (u) =>
-              (u.name ?? '').toLowerCase().includes(term) ||
-              (u.email ?? '').toLowerCase().includes(term) ||
-              u.externalCustomerId.toLowerCase().includes(term),
-          )
-        : [],
-    [usersQuery.data?.data, term, hasTerm],
-  );
+  const users = hasTerm
+    ? (usersQuery.data?.data ?? []).filter(
+        (u) =>
+          (u.name ?? '').toLowerCase().includes(term) ||
+          (u.email ?? '').toLowerCase().includes(term) ||
+          u.externalCustomerId.toLowerCase().includes(term),
+      )
+    : [];
 
   const data = { codes, campaigns, users };
   const loading =
@@ -101,13 +90,13 @@ const SearchPage = () => {
         startIcon={<ChevronLeftRoundedIcon sx={{ fontSize: 18 }} />}
         onClick={() => navigate(-1)}
       >
-        Back
+        {t('back')}
       </Button>
 
       <Typography
         sx={{ mt: 2, fontSize: 24, fontWeight: 700, lineHeight: '32px' }}
       >
-        Search results for: “{q}”
+        {t('resultsFor', { query: q })}
       </Typography>
       <Box
         sx={{ mt: 2, borderBottom: `1px solid ${colors.interface.grey3}` }}
@@ -116,23 +105,23 @@ const SearchPage = () => {
       {!loading && !hasResults && (
         <EmptyState
           sx={{ mt: 4 }}
-          title="No results found"
-          description={`We couldn't find anything matching “${q}”`}
+          title={t('noResults.title')}
+          description={t('noResults.description', { query: q })}
         />
       )}
 
       {(loading || codes.length > 0) && (
-      <Section title="Codes">
+      <Section title={t('sections.codes.title')}>
         <Table<PromoCodeListItem>
           rows={data?.codes ?? []}
           getRowKey={(r) => r.id}
           loading={loading}
           onRowClick={(r) => navigate(`/codes/${r.id}`)}
-          emptyContent="No matching codes"
+          emptyContent={t('sections.codes.empty')}
           columns={[
             {
               id: 'code',
-              header: 'Name',
+              header: t('sections.codes.columns.name'),
               cell: (r) => (
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                   <ContentCopyRoundedIcon
@@ -148,28 +137,28 @@ const SearchPage = () => {
             },
             {
               id: 'status',
-              header: 'Status',
+              header: t('sections.codes.columns.status'),
               cell: (r) => <PromoCodeDisplayStatusChip status={r.displayStatus} />,
             },
             {
               id: 'actions',
-              header: 'Actions',
+              header: t('sections.codes.columns.actions'),
               align: 'right',
-              help: 'All code lookups (validate + redeem), not only successful redemptions',
+              help: t('sections.codes.columns.actionsHelp'),
               cell: (r) => numberFmt.format(r.actions),
             },
             {
               id: 'newUsers',
-              header: 'New users',
+              header: t('sections.codes.columns.newUsers'),
               align: 'right',
-              help: 'Customers whose first-ever activity in the workspace was this code',
+              help: t('sections.codes.columns.newUsersHelp'),
               cell: (r) => numberFmt.format(r.newUsers),
             },
             {
               id: 'lifetime',
-              header: 'Lifetime',
+              header: t('sections.codes.columns.lifetime'),
               align: 'right',
-              help: 'When the code stops working — its own expiry, or the campaign default',
+              help: t('sections.codes.columns.lifetimeHelp'),
               cell: (r) =>
                 r.lifetime ? <DateLabel from={r.lifetime} withIcon={false} /> : '∞',
             },
@@ -179,17 +168,17 @@ const SearchPage = () => {
       )}
 
       {(loading || campaigns.length > 0) && (
-      <Section title="Campaign">
+      <Section title={t('sections.campaigns.title')}>
         <Table<CampaignListItem>
           rows={data?.campaigns ?? []}
           getRowKey={(r) => r.id}
           loading={loading}
           onRowClick={(r) => navigate(`/campaigns/${r.id}`)}
-          emptyContent="No matching campaigns"
+          emptyContent={t('sections.campaigns.empty')}
           columns={[
             {
               id: 'name',
-              header: 'Name',
+              header: t('sections.campaigns.columns.name'),
               cell: (r) => (
                 <Box>
                   <Typography
@@ -199,7 +188,7 @@ const SearchPage = () => {
                   </Typography>
                   {r.distributors.length > 0 && (
                     <Typography sx={{ fontSize: 13, color: colors.interface.grey }}>
-                      Distributor:{' '}
+                      {t('sections.campaigns.distributor')}{' '}
                       <Box
                         component="span"
                         sx={{ color: colors.brand.main, fontWeight: 500 }}
@@ -213,34 +202,34 @@ const SearchPage = () => {
             },
             {
               id: 'status',
-              header: 'Status',
+              header: t('sections.campaigns.columns.status'),
               align: 'right',
               cell: (r) => (
                 <StatusChip
-                  label={r.isActive ? 'Active' : 'Deactivated'}
+                  label={r.isActive ? t('sections.campaigns.active') : t('sections.campaigns.deactivated')}
                   tone={r.isActive ? 'success' : 'neutral'}
                 />
               ),
             },
             {
               id: 'generated',
-              header: 'Generated',
+              header: t('sections.campaigns.columns.generated'),
               align: 'right',
-              help: 'Promo codes generated for this campaign',
+              help: t('sections.campaigns.columns.generatedHelp'),
               cell: (r) => numberFmt.format(r.generated),
             },
             {
               id: 'redeemed',
-              header: 'Redeemed',
+              header: t('sections.campaigns.columns.redeemed'),
               align: 'right',
-              help: 'Successfully redeemed codes',
+              help: t('sections.campaigns.columns.redeemedHelp'),
               cell: (r) => numberFmt.format(r.redeemed),
             },
             {
               id: 'newUsers',
-              header: 'New Users',
+              header: t('sections.campaigns.columns.newUsers'),
               align: 'right',
-              help: 'Customers whose first-ever activity in the workspace was a code from this campaign',
+              help: t('sections.campaigns.columns.newUsersHelp'),
               cell: (r) => numberFmt.format(r.newUsers),
             },
           ]}
@@ -249,17 +238,17 @@ const SearchPage = () => {
       )}
 
       {(loading || users.length > 0) && (
-      <Section title="Users">
+      <Section title={t('sections.users.title')}>
         <Table<CustomerListItem>
           rows={data?.users ?? []}
           getRowKey={(r) => r.id}
           loading={loading}
           onRowClick={(r) => navigate(`/users/${r.id}`)}
-          emptyContent="No matching users"
+          emptyContent={t('sections.users.empty')}
           columns={[
             {
               id: 'name',
-              header: 'Name',
+              header: t('sections.users.columns.name'),
               cell: (r) => (
                 <Typography
                   sx={{ fontSize: 14, fontWeight: 500, color: colors.interface.black }}
@@ -270,12 +259,12 @@ const SearchPage = () => {
             },
             {
               id: 'email',
-              header: 'Email',
+              header: t('sections.users.columns.email'),
               cell: (r) => r.email ?? '—',
             },
             {
               id: 'lastSeenAt',
-              header: 'Last session',
+              header: t('sections.users.columns.lastSession'),
               align: 'right',
               cell: (r) => <DateLabel from={r.lastSeenAt} withIcon={false} />,
             },

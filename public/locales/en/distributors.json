@@ -1,0 +1,81 @@
+{
+  "title": "Distributors",
+  "notFound": "Distributor not found.",
+  "breadcrumbs": {
+    "distributors": "Distributors",
+    "campaigns": "Campaigns",
+    "codes": "Codes"
+  },
+  "actions": {
+    "resendInvitation": "Resend invitation",
+    "inviteDistributor": "Invite distributor",
+    "backToDistributors": "Back to distributors",
+    "deactivate": "Deactivate",
+    "activate": "Activate",
+    "remove": "Remove",
+    "seeAll": "See all"
+  },
+  "aria": {
+    "distributorActions": "Distributor actions",
+    "save": "Save",
+    "cancel": "Cancel",
+    "edit": "Edit"
+  },
+  "alerts": {
+    "invitationResent": "Invitation re-sent to {{email}}",
+    "invitationSent": "Invitation sent to {{email}}"
+  },
+  "kpis": {
+    "actions": "Actions",
+    "generated": "Generated",
+    "redeemed": "Redeemed",
+    "expired": "Expired",
+    "newUsers": "New users"
+  },
+  "columns": {
+    "generated": "Generated",
+    "redeemed": "Redeemed",
+    "actions": "Actions",
+    "newUsers": "New Users",
+    "campaign": "Campaign",
+    "name": "Name",
+    "status": "Status",
+    "newUsersLower": "New users",
+    "lifetime": "Lifetime"
+  },
+  "help": {
+    "generated": "Promo codes generated",
+    "redeemed": "Successfully redeemed codes",
+    "actions": "All code lookups (validate + redeem), not only successful redemptions",
+    "newUsersCampaign": "Customers whose first-ever activity in the workspace was a code from this campaign",
+    "newUsersPeriod": "Customers whose first-ever activity in the workspace happened in this period",
+    "actionsShort": "All code lookups (validate + redeem)",
+    "newUsersCode": "Customers whose first-ever activity in the workspace was this code",
+    "lifetime": "When the code stops working — its own expiry, or the campaign default"
+  },
+  "empty": {
+    "nothingYet": "Nothing yet",
+    "notAssignedToCampaign": "Not assigned to any campaign yet",
+    "noCodesGenerated": "No codes generated yet",
+    "noCodesHere": "No codes here yet"
+  },
+  "sections": {
+    "devices": "Devices",
+    "countries": "Countries",
+    "description": "Description",
+    "campaign": "Campaign",
+    "codes": "Codes"
+  },
+  "info": {
+    "name": "Name",
+    "email": "Email",
+    "status": "Status",
+    "joined": "Joined"
+  },
+  "devices": {
+    "ios": "iOS",
+    "android": "Android",
+    "web": "Web",
+    "unknown": "Unknown"
+  }
+}

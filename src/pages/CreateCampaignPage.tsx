@@ -3,6 +3,8 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import type { TFunction } from 'i18next';
 import {
   Alert,
   Box,
@@ -30,70 +32,66 @@ import {
 } from '../components/ui';
 import { colors } from '../theme';
 
-const ttlUnits: { value: TtlUnit; label: string }[] = [
-  { value: TtlUnit.MINUTE, label: 'Minute' },
-  { value: TtlUnit.HOUR, label: 'Hour' },
-  { value: TtlUnit.DAY, label: 'Day' },
-  { value: TtlUnit.MONTH, label: 'Month' },
-];
-
 const toNum = (_: unknown, orig: unknown) =>
   orig === '' || orig == null ? undefined : Number(orig);
 
-const schema = yup.object({
-  name: yup.string().trim().required('Enter a campaign name'),
-  discountType: yup
-    .mixed<DiscountType>()
-    .oneOf(Object.values(DiscountType))
-    .required(),
-  discountValue: yup
-    .number()
-    .transform(toNum)
-    .typeError('Enter a number')
-    .positive('Must be greater than 0')
-    .required('Enter a discount value'),
-  ttlUnit: yup.mixed<TtlUnit>().oneOf(Object.values(TtlUnit)).required(),
-  ttlAmount: yup
-    .number()
-    .transform(toNum)
-    .typeError('Enter a number')
-    .positive('Must be greater than 0')
-    .integer('Whole numbers only')
-    .optional(),
-  redemptionMode: yup
-    .mixed<'unlimited' | 'custom'>()
-    .oneOf(['unlimited', 'custom'])
-    .required(),
-  defaultMaxRedemptions: yup
-    .number()
-    .transform(toNum)
-    .when('redemptionMode', {
-      is: 'custom',
-      then: (s) =>
-        s
-          .typeError('Enter a number')
-          .positive('Must be greater than 0')
-          .integer('Whole numbers only')
-          .required('Enter a limit'),
-      otherwise: (s) => s.optional(),
-    }),
-  payloadText: yup
-    .string()
-    .test('json', 'Must be a valid JSON object', (v) => {
-      if (!v || !v.trim()) return true;
-      try {
-        const parsed = JSON.parse(v);
-        return !!parsed && typeof parsed === 'object' && !Array.isArray(parsed);
-      } catch {
-        return false;
-      }
-    }),
-  payloadMutable: yup.boolean().required(),
-  isActive: yup.boolean().required(),
-  description: yup.string().trim(),
-});
+// Фабрика схемы валидации — принимает t, чтобы сообщения об ошибках были переведены
+function buildSchema(t: TFunction<'campaigns'>) {
+  return yup.object({
+    name: yup.string().trim().required(t('create.validation.nameRequired')),
+    discountType: yup
+      .mixed<DiscountType>()
+      .oneOf(Object.values(DiscountType))
+      .required(),
+    discountValue: yup
+      .number()
+      .transform(toNum)
+      .typeError(t('create.validation.numberRequired'))
+      .positive(t('create.validation.mustBePositive'))
+      .required(t('create.validation.discountValueRequired')),
+    ttlUnit: yup.mixed<TtlUnit>().oneOf(Object.values(TtlUnit)).required(),
+    ttlAmount: yup
+      .number()
+      .transform(toNum)
+      .typeError(t('create.validation.numberRequired'))
+      .positive(t('create.validation.mustBePositive'))
+      .integer(t('create.validation.wholeNumbersOnly'))
+      .optional(),
+    redemptionMode: yup
+      .mixed<'unlimited' | 'custom'>()
+      .oneOf(['unlimited', 'custom'])
+      .required(),
+    defaultMaxRedemptions: yup
+      .number()
+      .transform(toNum)
+      .when('redemptionMode', {
+        is: 'custom',
+        then: (s) =>
+          s
+            .typeError(t('create.validation.numberRequired'))
+            .positive(t('create.validation.mustBePositive'))
+            .integer(t('create.validation.wholeNumbersOnly'))
+            .required(t('create.validation.limitRequired')),
+        otherwise: (s) => s.optional(),
+      }),
+    payloadText: yup
+      .string()
+      .test('json', t('create.validation.validJson'), (v) => {
+        if (!v || !v.trim()) return true;
+        try {
+          const parsed = JSON.parse(v);
+          return !!parsed && typeof parsed === 'object' && !Array.isArray(parsed);
+        } catch {
+          return false;
+        }
+      }),
+    payloadMutable: yup.boolean().required(),
+    isActive: yup.boolean().required(),
+    description: yup.string().trim(),
+  });
+}
 
-type FormValues = yup.InferType<typeof schema>;
+type FormValues = yup.InferType<ReturnType<typeof buildSchema>>;
 
 const emptyValues: FormValues = {
   name: '',
@@ -163,6 +161,7 @@ function Field({
 }
 
 const CreateCampaignPage = () => {
+  const { t } = useTranslation('campaigns');
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const create = useCreateCampaign();
@@ -173,6 +172,13 @@ const CreateCampaignPage = () => {
   const [mode, setMode] = useState<'scratch' | 'template'>('scratch');
   const [templateId, setTemplateId] = useState<string | null>(null);
 
+  const ttlUnits: { value: TtlUnit; label: string }[] = [
+    { value: TtlUnit.MINUTE, label: t('create.fields.ttl.units.minute') },
+    { value: TtlUnit.HOUR, label: t('create.fields.ttl.units.hour') },
+    { value: TtlUnit.DAY, label: t('create.fields.ttl.units.day') },
+    { value: TtlUnit.MONTH, label: t('create.fields.ttl.units.month') },
+  ];
+
   const {
     register,
     handleSubmit,
@@ -181,7 +187,7 @@ const CreateCampaignPage = () => {
     reset,
     formState: { errors },
   } = useForm<FormValues>({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(buildSchema(t)),
     defaultValues: emptyValues,
     // свой плавный скролл к ошибке вместо мгновенного focus от RHF
     shouldFocusError: false,
@@ -253,7 +259,7 @@ const CreateCampaignPage = () => {
 
     create.mutate(dto, {
       onSuccess: (campaign) => {
-        dispatch(setAlertAC({ text: 'Campaign created', mode: 'success' }));
+        dispatch(setAlertAC({ text: t('create.toast.created'), mode: 'success' }));
         navigate(`/campaigns/${campaign.id}`);
       },
       onError: (err) => {
@@ -272,7 +278,7 @@ const CreateCampaignPage = () => {
       <Typography
         sx={{ fontSize: 24, fontWeight: 700, lineHeight: '32px', pb: 3 }}
       >
-        Create campaign
+        {t('create.title')}
       </Typography>
 
       {create.error && (
@@ -290,18 +296,18 @@ const CreateCampaignPage = () => {
       >
         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
           <TemplateCard
-            title="Create a new campaign"
-            description="Build template from scratch"
+            title={t('create.templateCards.scratch.title')}
+            description={t('create.templateCards.scratch.description')}
             selected={mode === 'scratch'}
             onSelect={() => switchMode('scratch')}
             sx={{ flex: 1, minWidth: 280 }}
           />
           <TemplateCard
-            title="Set campaign"
+            title={t('create.templateCards.template.title')}
             description={
               hasCampaigns
-                ? 'Choose an existing template to base your new one on'
-                : 'No campaigns to use as a template yet'
+                ? t('create.templateCards.template.description')
+                : t('create.templateCards.template.descriptionEmpty')
             }
             selected={mode === 'template'}
             disabled={!hasCampaigns}
@@ -313,27 +319,27 @@ const CreateCampaignPage = () => {
         {mode === 'template' && (
           <Box sx={{ mt: 2, maxWidth: 640 }}>
             <Select
-              label="Base campaign"
-              placeholder="Select a campaign"
+              label={t('create.baseCampaign.label')}
+              placeholder={t('create.baseCampaign.placeholder')}
               value={templateId}
               onChange={applyTemplate}
               options={campaigns.map((c) => ({ value: c.id, label: c.name }))}
-              emptyText="No campaigns"
+              emptyText={t('create.baseCampaign.empty')}
             />
           </Box>
         )}
       </Box>
 
-      <Field label="Campaign name" hint="This will appear on your profile">
+      <Field label={t('create.fields.name.label')} hint={t('create.fields.name.hint')}>
         <TextField
-          placeholder="30% discount"
+          placeholder={t('create.fields.name.placeholder')}
           error={!!errors.name}
           helperText={errors.name?.message}
           {...register('name')}
         />
       </Field>
 
-      <Field label="Discount" hint="Value applied when the code is redeemed">
+      <Field label={t('create.fields.discount.label')} hint={t('create.fields.discount.hint')}>
         <Box sx={{ display: 'flex', gap: 1.5 }}>
           <RadioGroup
             row
@@ -346,17 +352,17 @@ const CreateCampaignPage = () => {
             <FormControlLabel
               value={DiscountType.PERCENTAGE}
               control={<Radio />}
-              label="%"
+              label={t('create.fields.discount.percentLabel')}
             />
             <FormControlLabel
               value={DiscountType.FIXED_AMOUNT}
               control={<Radio />}
-              label="Fixed"
+              label={t('create.fields.discount.fixedLabel')}
             />
           </RadioGroup>
           <TextField
             type="number"
-            placeholder="30"
+            placeholder={t('create.fields.discount.placeholder')}
             error={!!errors.discountValue}
             helperText={errors.discountValue?.message}
             {...register('discountValue')}
@@ -365,8 +371,8 @@ const CreateCampaignPage = () => {
       </Field>
 
       <Field
-        label="Time to live"
-        hint="Choose how long the code will be active after generation"
+        label={t('create.fields.ttl.label')}
+        hint={t('create.fields.ttl.hint')}
       >
         <RadioGroup
           row
@@ -385,7 +391,7 @@ const CreateCampaignPage = () => {
         <Box sx={{ mt: 1.5 }}>
           <TextField
             type="number"
-            placeholder="Leave empty to use campaign end date"
+            placeholder={t('create.fields.ttl.placeholder')}
             error={!!errors.ttlAmount}
             helperText={errors.ttlAmount?.message}
             {...register('ttlAmount')}
@@ -393,7 +399,7 @@ const CreateCampaignPage = () => {
         </Box>
       </Field>
 
-      <Field label="Redemption limit" hint="Choose how many times the code can be used">
+      <Field label={t('create.fields.redemption.label')} hint={t('create.fields.redemption.hint')}>
         <RadioGroup
           row
           value={redemptionMode}
@@ -404,15 +410,15 @@ const CreateCampaignPage = () => {
           <FormControlLabel
             value="unlimited"
             control={<Radio />}
-            label="Unlimited"
+            label={t('create.fields.redemption.unlimited')}
           />
-          <FormControlLabel value="custom" control={<Radio />} label="Custom" />
+          <FormControlLabel value="custom" control={<Radio />} label={t('create.fields.redemption.custom')} />
         </RadioGroup>
         {redemptionMode === 'custom' && (
           <Box sx={{ mt: 1.5 }}>
             <TextField
               type="number"
-              placeholder="e.g. 100"
+              placeholder={t('create.fields.redemption.placeholder')}
               error={!!errors.defaultMaxRedemptions}
               helperText={errors.defaultMaxRedemptions?.message}
               {...register('defaultMaxRedemptions')}
@@ -422,12 +428,12 @@ const CreateCampaignPage = () => {
       </Field>
 
       <Field
-        label="Initial payload"
-        hint="Code properties can be adjusted after creating the template"
+        label={t('create.fields.payload.label')}
+        hint={t('create.fields.payload.hint')}
       >
         <Textarea
           minRows={5}
-          placeholder={'{\n  "discount": "20%",\n  "product": "Monthly subscription"\n}'}
+          placeholder={t('create.fields.payload.placeholder')}
           error={!!errors.payloadText}
           helperText={errors.payloadText?.message}
           {...register('payloadText')}
@@ -435,8 +441,8 @@ const CreateCampaignPage = () => {
       </Field>
 
       <Field
-        label="Mutable payload"
-        hint="Code properties can be updated after the template is created"
+        label={t('create.fields.mutable.label')}
+        hint={t('create.fields.mutable.hint')}
       >
         <FormControlLabel
           control={
@@ -445,11 +451,11 @@ const CreateCampaignPage = () => {
               onChange={(e) => setValue('payloadMutable', e.target.checked)}
             />
           }
-          label="Mutable"
+          label={t('create.fields.mutable.checkboxLabel')}
         />
       </Field>
 
-      <Field label="Availability" hint="Allow users to generate codes">
+      <Field label={t('create.fields.availability.label')} hint={t('create.fields.availability.hint')}>
         <FormControlLabel
           control={
             <Checkbox
@@ -457,17 +463,17 @@ const CreateCampaignPage = () => {
               onChange={(e) => setValue('isActive', e.target.checked)}
             />
           }
-          label="Available"
+          label={t('create.fields.availability.checkboxLabel')}
         />
       </Field>
 
       <Field
-        label="Description"
-        hint="Provide details about the campaign; this description is visible only in Promofire"
+        label={t('create.fields.description.label')}
+        hint={t('create.fields.description.hint')}
       >
         <Textarea
           minRows={4}
-          placeholder="Campaign description"
+          placeholder={t('create.fields.description.placeholder')}
           error={!!errors.description}
           helperText={errors.description?.message}
           {...register('description')}
@@ -476,7 +482,7 @@ const CreateCampaignPage = () => {
 
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', pt: 3 }}>
         <Button type="submit" loading={create.isPending}>
-          Create campaign
+          {t('create.submit')}
         </Button>
       </Box>
     </Box>

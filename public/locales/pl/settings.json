@@ -1,0 +1,53 @@
+{
+  "header": {
+    "title": "Ustawienia integracji i SDK",
+    "subtitle": "Zarządzaj kluczami API dostępu do usługi Promofire i skonfiguruj integrację na swoim backendzie."
+  },
+  "apiKeys": {
+    "title": "Klucze API",
+    "subtitle": "Klucze zapewniają pełny dostęp do endpointów SDK w imieniu Twojego konta.",
+    "createKey": "Utwórz klucz",
+    "empty": "Nie masz jeszcze żadnych integracji. Kliknij „Utwórz klucz”, aby rozpocząć pracę z SDK.",
+    "deleteKey": "Usuń klucz",
+    "table": {
+      "name": "Nazwa",
+      "keyPrefix": "Prefiks klucza",
+      "operations": "Operacje (SDK)",
+      "generated": "Wygenerowano",
+      "created": "Utworzono",
+      "action": "Akcja"
+    }
+  },
+  "sdk": {
+    "title": "Integracja przez @my-promofire-io/sdk",
+    "subtitle": "Oficjalny klient do bezpiecznej komunikacji z API Promofire.",
+    "securityWarning": {
+      "title": "Ważna zasada bezpieczeństwa",
+      "usePrefix": "Używaj SDK",
+      "useBold": "wyłącznie na swoim serwerze/backendzie",
+      "useSuffix": "(Node.js, Express, NestJS, serwerowe handlery Next.js).",
+      "neverPrefix": "Nigdy nie dodawaj",
+      "neverSuffix": "do kodu frontendu React, Vue ani aplikacji mobilnej, aby uniknąć ujawnienia klucza użytkownikom."
+    },
+    "step1": "1. Zainstaluj pakiet",
+    "step2": "2. Przykład walidacji i realizacji kodu promocyjnego"
+  },
+  "createDialog": {
+    "title": "Nowa integracja",
+    "description": "Podaj nazwę systemu lub aplikacji (np. „Main Website API”, „Mobile App Backend”).",
+    "nameLabel": "Nazwa integracji",
+    "creating": "Tworzenie...",
+    "create": "Utwórz"
+  },
+  "apiKeyDialog": {
+    "title": "Zapisz swój klucz API",
+    "warningTitle": "Uwaga! Klucz jest wyświetlany tylko raz",
+    "warningDescription": "Skopiuj go i dodaj teraz do zmiennych środowiskowych swojego backendu. Po zamknięciu tego okna nie będzie można ponownie wyświetlić klucza.",
+    "confirmButton": "Zapisałem klucz"
+  },
+  "common": {
+    "cancel": "Anuluj",
+    "copy": "Kopiuj",
+    "copied": "Skopiowano"
+  }
+}

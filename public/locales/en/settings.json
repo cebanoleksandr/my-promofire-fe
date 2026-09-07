@@ -1,0 +1,53 @@
+{
+  "header": {
+    "title": "Integration & SDK Settings",
+    "subtitle": "Manage API keys for accessing the Promofire service and set up the integration on your backend."
+  },
+  "apiKeys": {
+    "title": "API Keys",
+    "subtitle": "Keys grant full access to SDK endpoints on behalf of your account.",
+    "createKey": "Create Key",
+    "empty": "You don't have any integrations yet. Click \"Create Key\" to start working with the SDK.",
+    "deleteKey": "Delete key",
+    "table": {
+      "name": "Name",
+      "keyPrefix": "Key Prefix",
+      "operations": "Operations (SDK)",
+      "generated": "Generated",
+      "created": "Created",
+      "action": "Action"
+    }
+  },
+  "sdk": {
+    "title": "Integration via @my-promofire-io/sdk",
+    "subtitle": "The official client for secure interaction with the Promofire API.",
+    "securityWarning": {
+      "title": "Important security rule",
+      "usePrefix": "Use the SDK",
+      "useBold": "only on your server/backend",
+      "useSuffix": "(Node.js, Express, NestJS, Next.js server handlers).",
+      "neverPrefix": "Never add",
+      "neverSuffix": "to React, Vue, or mobile app frontend code to avoid the key being exposed to users."
+    },
+    "step1": "1. Install the package",
+    "step2": "2. Example of validating and redeeming a promo code"
+  },
+  "createDialog": {
+    "title": "New Integration",
+    "description": "Specify the name of the system or app (e.g., \"Main Website API\", \"Mobile App Backend\").",
+    "nameLabel": "Integration Name",
+    "creating": "Creating...",
+    "create": "Create"
+  },
+  "apiKeyDialog": {
+    "title": "Save your API key",
+    "warningTitle": "Warning! The key is shown only once",
+    "warningDescription": "Copy it and add it to your backend's environment variables right now. Once you close this window, you won't be able to view the key again.",
+    "confirmButton": "I've saved the key"
+  },
+  "common": {
+    "cancel": "Cancel",
+    "copy": "Copy",
+    "copied": "Copied"
+  }
+}

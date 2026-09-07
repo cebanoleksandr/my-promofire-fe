@@ -1,0 +1,50 @@
+{
+  "sectionHeading": {
+    "seeAll": "Zobacz wszystkie"
+  },
+  "home": {
+    "title": "Witamy w podsumowaniu promocji",
+    "sections": {
+      "codes": "Kody",
+      "users": "Użytkownicy",
+      "campaigns": "Kampanie",
+      "countries": "Kraje",
+      "devices": "Urządzenia"
+    },
+    "codesTiles": {
+      "generated": "Wygenerowane",
+      "redeemed": "Zrealizowane",
+      "expired": "Wygasłe"
+    },
+    "usersTiles": {
+      "all": "Wszyscy użytkownicy",
+      "active": "Aktywni użytkownicy",
+      "new": "Nowi użytkownicy"
+    },
+    "codesTable": {
+      "name": "Nazwa",
+      "status": "Status",
+      "redeemed": "Zrealizowane",
+      "maxRedemptions": "Maks. realizacji"
+    },
+    "campaignsTable": {
+      "name": "Nazwa",
+      "discount": "Rabat",
+      "status": "Status",
+      "active": "Aktywna",
+      "deactivated": "Dezaktywowana",
+      "perCustomer": "Na klienta"
+    },
+    "devices": {
+      "ios": "iOS",
+      "android": "Android",
+      "web": "Web",
+      "unknown": "Nieznane"
+    },
+    "emptyState": {
+      "title": "Nic tu jeszcze nie ma",
+      "description": "Utwórz swoją pierwszą kampanię i wygeneruj kody promocyjne — statystyki, wykresy i aktywność pojawią się tutaj.",
+      "action": "Utwórz kampanię"
+    }
+  }
+}

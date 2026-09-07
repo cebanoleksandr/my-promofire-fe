@@ -2,14 +2,16 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Link as RouterLink, useNavigate, useSearchParams } from 'react-router-dom';
 import { Link, Typography } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 import { useAcceptInvite } from '../../network/hooks';
 import { Button } from '../../components/ui';
 import { AuthCard } from './AuthCard';
 import { PasswordField } from './PasswordField';
-import { acceptInviteSchema, type AcceptInviteFormValues } from './schema';
+import { getAcceptInviteSchema, type AcceptInviteFormValues } from './schema';
 import { colors } from '../../theme';
 
 const AcceptInvitation = () => {
+  const { t } = useTranslation('auth');
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const token = searchParams.get('token');
@@ -21,20 +23,19 @@ const AcceptInvitation = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<AcceptInviteFormValues>({
-    resolver: yupResolver(acceptInviteSchema),
+    resolver: yupResolver(getAcceptInviteSchema(t)),
     defaultValues: { password: '', confirmPassword: '' },
   });
 
   if (!token) {
     return (
-      <AuthCard title="Invalid invitation" onSubmit={() => {}}>
+      <AuthCard title={t('acceptInvitation.invalidTitle')} onSubmit={() => {}}>
         <Typography sx={{ fontSize: 14, lineHeight: '22px', color: colors.interface.grey }}>
-          This invitation link is missing or malformed. Ask the workspace admin to
-          send you a new invite, or{' '}
+          {t('acceptInvitation.invalidBodyPrefix')}{' '}
           <Link component={RouterLink} to="/login" underline="hover">
-            log in
+            {t('acceptInvitation.invalidBodyLink')}
           </Link>{' '}
-          if you already have an account.
+          {t('acceptInvitation.invalidBodySuffix')}
         </Typography>
       </AuthCard>
     );
@@ -49,31 +50,31 @@ const AcceptInvitation = () => {
 
   return (
     <AuthCard
-      title="Accept invitation"
-      subtitle="Set a password to join the workspace"
+      title={t('acceptInvitation.title')}
+      subtitle={t('acceptInvitation.subtitle')}
       error={acceptInvite.error?.message}
       onSubmit={onSubmit}
       footer={
         <>
-          Already have an account?{' '}
+          {t('acceptInvitation.hasAccount')}{' '}
           <Link component={RouterLink} to="/login" underline="hover">
-            Log in
+            {t('acceptInvitation.logIn')}
           </Link>
         </>
       }
     >
       <PasswordField
-        label="Password"
+        label={t('acceptInvitation.passwordLabel')}
         autoComplete="new-password"
-        placeholder="At least 8 characters"
+        placeholder={t('acceptInvitation.passwordPlaceholder')}
         error={!!errors.password}
         helperText={errors.password?.message}
         {...register('password')}
       />
       <PasswordField
-        label="Repeat password"
+        label={t('acceptInvitation.confirmPasswordLabel')}
         autoComplete="new-password"
-        placeholder="••••••••"
+        placeholder={t('acceptInvitation.confirmPasswordPlaceholder')}
         error={!!errors.confirmPassword}
         helperText={errors.confirmPassword?.message}
         {...register('confirmPassword')}
@@ -84,7 +85,7 @@ const AcceptInvitation = () => {
         loading={acceptInvite.isPending}
         sx={{ mt: 1 }}
       >
-        Accept invitation
+        {t('acceptInvitation.submit')}
       </Button>
     </AuthCard>
   );

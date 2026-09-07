@@ -1,0 +1,29 @@
+{
+  "title": "Profile",
+  "editableField": {
+    "save": "Save",
+    "cancel": "Cancel"
+  },
+  "general": {
+    "label": "General",
+    "email": "Email",
+    "firstName": "First name",
+    "lastName": "Last name"
+  },
+  "team": {
+    "label": "Team",
+    "description": "All members have access to the same features as you",
+    "admin": "Admin",
+    "removeAria": "Remove {{name}}",
+    "invitePlaceholder": "admin@company.com",
+    "send": "Send",
+    "cancel": "Cancel",
+    "inviteAdmin": "Invite Admin",
+    "invitationSent": "Invitation sent to {{email}}"
+  },
+  "removeDialog": {
+    "title": "Remove admin?",
+    "description": "{{name}} will lose access to this workspace.",
+    "confirm": "Remove"
+  }
+}

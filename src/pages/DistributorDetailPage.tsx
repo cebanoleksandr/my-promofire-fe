@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
   Box,
@@ -50,11 +51,11 @@ import type { DistributorCampaignBreakdown } from '../types/stats';
 const numberFmt = new Intl.NumberFormat('en-US');
 const PAGE_SIZE = 8;
 
-const deviceLabels: Record<string, string> = {
-  ios: 'iOS',
-  android: 'Android',
-  web: 'Web',
-  unknown: 'Unknown',
+const deviceLabelKeys: Record<string, string> = {
+  ios: 'devices.ios',
+  android: 'devices.android',
+  web: 'devices.web',
+  unknown: 'devices.unknown',
 };
 
 // Однострочный текст с троеточием при переполнении и тултипом с полным значением
@@ -85,6 +86,7 @@ function TruncatedText({
   );
 }
 
+// InfoRow / Section / EditableTextarea — переиспользуемые блоки карточки дистрибьютора
 function InfoRow({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <Box sx={{ display: 'flex', alignItems: 'baseline', gap: 2, py: 0.75 }}>
@@ -122,6 +124,7 @@ function EditableTextarea({
   saving?: boolean;
   onSave: (next: string) => void;
 }) {
+  const { t } = useTranslation('distributors');
   const [draft, setDraft] = useState(value);
   const [editing, setEditing] = useState(false);
 
@@ -145,15 +148,15 @@ function EditableTextarea({
       <Box sx={{ position: 'absolute', right: 8, bottom: 8, display: 'flex', gap: 0.5 }}>
         {editing ? (
           <>
-            <IconButton size="small" aria-label="Save" disabled={saving} onClick={confirm}>
+            <IconButton size="small" aria-label={t('aria.save')} disabled={saving} onClick={confirm}>
               <CheckRoundedIcon sx={{ fontSize: 18, color: colors.brand.main }} />
             </IconButton>
-            <IconButton size="small" aria-label="Cancel" disabled={saving} onClick={cancel}>
+            <IconButton size="small" aria-label={t('aria.cancel')} disabled={saving} onClick={cancel}>
               <CloseRoundedIcon sx={{ fontSize: 18, color: colors.interface.grey }} />
             </IconButton>
           </>
         ) : (
-          <IconButton size="small" aria-label="Edit" onClick={() => setEditing(true)}>
+          <IconButton size="small" aria-label={t('aria.edit')} onClick={() => setEditing(true)}>
             <BorderColorOutlinedIcon sx={{ fontSize: 16, color: colors.interface.grey }} />
           </IconButton>
         )}
@@ -163,6 +166,7 @@ function EditableTextarea({
 }
 
 const DistributorDetailPage = () => {
+  const { t } = useTranslation('distributors');
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -206,9 +210,9 @@ const DistributorDetailPage = () => {
   if (!d) {
     return (
       <Box sx={{ maxWidth: 1100, mx: 'auto', py: 6 }}>
-        <Typography>Distributor not found.</Typography>
+        <Typography>{t('notFound')}</Typography>
         <Button sx={{ mt: 2 }} variant="white" onClick={() => navigate('/distributors')}>
-          Back to distributors
+          {t('actions.backToDistributors')}
         </Button>
       </Box>
     );
@@ -218,11 +222,11 @@ const DistributorDetailPage = () => {
   const ut = usersStats.data?.totals;
 
   const kpis = [
-    { label: 'Actions', value: ct?.actions ?? 0, changePct: ct?.actionsChangePct, loading: codesStats.isPending },
-    { label: 'Generated', value: ct?.generated ?? 0, changePct: ct?.generatedChangePct, loading: codesStats.isPending },
-    { label: 'Redeemed', value: ct?.redeemed ?? 0, changePct: ct?.redeemedChangePct, loading: codesStats.isPending },
-    { label: 'Expired', value: ct?.expired ?? 0, changePct: ct?.expiredChangePct, loading: codesStats.isPending },
-    { label: 'New users', value: ut?.new ?? 0, changePct: ut?.newChangePct, loading: usersStats.isPending },
+    { label: t('kpis.actions'), value: ct?.actions ?? 0, changePct: ct?.actionsChangePct, loading: codesStats.isPending },
+    { label: t('kpis.generated'), value: ct?.generated ?? 0, changePct: ct?.generatedChangePct, loading: codesStats.isPending },
+    { label: t('kpis.redeemed'), value: ct?.redeemed ?? 0, changePct: ct?.redeemedChangePct, loading: codesStats.isPending },
+    { label: t('kpis.expired'), value: ct?.expired ?? 0, changePct: ct?.expiredChangePct, loading: codesStats.isPending },
+    { label: t('kpis.newUsers'), value: ut?.new ?? 0, changePct: ut?.newChangePct, loading: usersStats.isPending },
   ];
 
   const runMenu = (fn: () => void) => {
@@ -240,7 +244,7 @@ const DistributorDetailPage = () => {
           sx={{ fontSize: 14, color: colors.interface.grey, cursor: 'pointer' }}
           onClick={() => navigate('/distributors')}
         >
-          Distributors
+          {t('breadcrumbs.distributors')}
         </Typography>
         <ChevronRightRoundedIcon sx={{ fontSize: 16, color: colors.interface.grey2 }} />
         <Typography sx={{ fontSize: 14, fontWeight: 600, color: colors.interface.black }}>
@@ -249,7 +253,7 @@ const DistributorDetailPage = () => {
         <Box sx={{ flex: 1 }} />
         <IconButton
           size="small"
-          aria-label="Distributor actions"
+          aria-label={t('aria.distributorActions')}
           onClick={(e) => setMenuAnchor(e.currentTarget)}
           sx={{ border: `1px solid ${colors.interface.grey3}`, borderRadius: '8px' }}
         >
@@ -260,13 +264,13 @@ const DistributorDetailPage = () => {
             <MenuItem
               onClick={() => runMenu(() => deactivate.mutate(d.id, { onError: toastErr }))}
             >
-              Deactivate
+              {t('actions.deactivate')}
             </MenuItem>
           ) : (
             <MenuItem
               onClick={() => runMenu(() => activate.mutate(d.id, { onError: toastErr }))}
             >
-              Activate
+              {t('actions.activate')}
             </MenuItem>
           )}
           <MenuItem
@@ -280,7 +284,7 @@ const DistributorDetailPage = () => {
             }
             sx={{ color: colors.supportive.red }}
           >
-            Remove
+            {t('actions.remove')}
           </MenuItem>
         </Menu>
       </Box>
@@ -314,19 +318,19 @@ const DistributorDetailPage = () => {
               bgcolor: colors.interface.white,
             }}
           >
-            <InfoRow label="Name">
+            <InfoRow label={t('info.name')}>
               <TruncatedText
                 text={d.displayName}
                 sx={{ color: colors.brand.main, fontWeight: 500 }}
               />
             </InfoRow>
-            <InfoRow label="Email">
+            <InfoRow label={t('info.email')}>
               <TruncatedText text={d.email} />
             </InfoRow>
-            <InfoRow label="Status">
+            <InfoRow label={t('info.status')}>
               <MemberStatusChip status={d.status} isActive={d.isActive} />
             </InfoRow>
-            <InfoRow label="Joined">
+            <InfoRow label={t('info.joined')}>
               <DateLabel from={d.createdAt} withIcon={false} />
             </InfoRow>
           </Paper>
@@ -372,20 +376,20 @@ const DistributorDetailPage = () => {
             }}
           >
             <DonutCard
-              title="Devices"
+              title={t('sections.devices')}
               loading={devices.isPending}
               items={devices.data?.items ?? []}
-              labelFor={(k) => deviceLabels[k] ?? k}
+              labelFor={(k) => (deviceLabelKeys[k] ? t(deviceLabelKeys[k]) : k)}
             />
             <DonutCard
-              title="Countries"
+              title={t('sections.countries')}
               loading={countries.isPending}
               items={countries.data?.items ?? []}
               labelFor={(k) => k.toUpperCase()}
             />
           </Box>
 
-          <Section title="Description">
+          <Section title={t('sections.description')}>
             <EditableTextarea
               value={d.description ?? ''}
               saving={updateDetail.isPending}
@@ -399,13 +403,13 @@ const DistributorDetailPage = () => {
           </Section>
 
           <Section
-            title="Campaign"
+            title={t('sections.campaign')}
             action={
               <Typography
                 sx={{ fontSize: 14, fontWeight: 500, color: colors.brand.main, cursor: 'pointer' }}
                 onClick={() => navigate(`/distributors/${d.id}/campaigns`)}
               >
-                See all
+                {t('actions.seeAll')}
               </Typography>
             }
           >
@@ -414,35 +418,35 @@ const DistributorDetailPage = () => {
               getRowKey={(r) => r.campaignId}
               loading={breakdown.isPending}
               onRowClick={(r) => navigate(`/campaigns/${r.campaignId}`)}
-              emptyContent="Not assigned to any campaign yet"
+              emptyContent={t('empty.notAssignedToCampaign')}
               columns={[
-                { id: 'name', header: 'Name', cell: (r) => r.name },
+                { id: 'name', header: t('columns.name'), cell: (r) => r.name },
                 {
                   id: 'generated',
-                  header: 'Generated',
+                  header: t('columns.generated'),
                   align: 'right',
-                  help: 'Promo codes generated',
+                  help: t('help.generated'),
                   cell: (r) => numberFmt.format(r.generated),
                 },
                 {
                   id: 'redeemed',
-                  header: 'Redeemed',
+                  header: t('columns.redeemed'),
                   align: 'right',
-                  help: 'Successfully redeemed codes',
+                  help: t('help.redeemed'),
                   cell: (r) => numberFmt.format(r.redeemed),
                 },
                 {
                   id: 'actions',
-                  header: 'Actions',
+                  header: t('columns.actions'),
                   align: 'right',
-                  help: 'All code lookups (validate + redeem), not only successful redemptions',
+                  help: t('help.actions'),
                   cell: (r) => numberFmt.format(r.actions),
                 },
                 {
                   id: 'newUsers',
-                  header: 'New Users',
+                  header: t('columns.newUsers'),
                   align: 'right',
-                  help: 'Customers whose first-ever activity was a code from this campaign',
+                  help: t('help.newUsersCampaign'),
                   cell: (r) => numberFmt.format(r.newUsers),
                 },
               ]}
@@ -450,13 +454,13 @@ const DistributorDetailPage = () => {
           </Section>
 
           <Section
-            title="Codes"
+            title={t('sections.codes')}
             action={
               <Typography
                 sx={{ fontSize: 14, fontWeight: 500, color: colors.brand.main, cursor: 'pointer' }}
                 onClick={() => navigate(`/distributors/${d.id}/codes`)}
               >
-                See all
+                {t('actions.seeAll')}
               </Typography>
             }
           >
@@ -465,11 +469,11 @@ const DistributorDetailPage = () => {
               getRowKey={(r) => r.id}
               loading={codes.isPending}
               onRowClick={(r) => navigate(`/codes/${r.id}`)}
-              emptyContent="No codes generated yet"
+              emptyContent={t('empty.noCodesGenerated')}
               columns={[
                 {
                   id: 'code',
-                  header: 'Name',
+                  header: t('columns.name'),
                   cell: (r) => (
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                       <ContentCopyRoundedIcon sx={{ fontSize: 16, color: colors.interface.grey }} />
@@ -479,26 +483,26 @@ const DistributorDetailPage = () => {
                 },
                 {
                   id: 'status',
-                  header: 'Status',
+                  header: t('columns.status'),
                   cell: (r) => <PromoCodeDisplayStatusChip status={r.displayStatus} />,
                 },
                 {
                   id: 'actions',
-                  header: 'Actions',
+                  header: t('columns.actions'),
                   align: 'right',
-                  help: 'All code lookups (validate + redeem)',
+                  help: t('help.actionsShort'),
                   cell: (r) => numberFmt.format(r.actions),
                 },
                 {
                   id: 'newUsers',
-                  header: 'New users',
+                  header: t('columns.newUsersLower'),
                   align: 'right',
-                  help: 'Customers whose first-ever activity was this code',
+                  help: t('help.newUsersCode'),
                   cell: (r) => numberFmt.format(r.newUsers),
                 },
                 {
                   id: 'lifetime',
-                  header: 'Lifetime',
+                  header: t('columns.lifetime'),
                   align: 'right',
                   cell: (r) => (r.lifetime ? <DateLabel from={r.lifetime} withIcon={false} /> : '∞'),
                 },

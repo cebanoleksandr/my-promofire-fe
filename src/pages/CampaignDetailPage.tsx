@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import {
   Box,
   CircularProgress,
@@ -62,19 +63,6 @@ import type { AssignedDistributor } from '../types/campaign';
 const numberFmt = new Intl.NumberFormat('en-US');
 const PAGE_SIZE = 8;
 
-const deviceLabels: Record<string, string> = {
-  ios: 'iOS',
-  android: 'Android',
-  web: 'Web',
-  unknown: 'Unknown',
-};
-
-const statusChip: Record<CampaignStatusFilter, { label: string; tone: StatusTone }> = {
-  [CampaignStatusFilter.ACTIVE]: { label: 'Active', tone: 'success' },
-  [CampaignStatusFilter.DEACTIVATED]: { label: 'Deactivated', tone: 'neutral' },
-  [CampaignStatusFilter.ARCHIVED]: { label: 'Archived', tone: 'warning' },
-};
-
 function InfoRow({ label, hint, children }: { label: string; hint?: string; children: React.ReactNode }) {
   return (
     <Box sx={{ display: 'flex', alignItems: 'baseline', gap: 2, py: 0.75 }}>
@@ -119,6 +107,7 @@ function EditableTextarea({
   saving?: boolean;
   onSave: (next: string) => void;
 }) {
+  const { t } = useTranslation('campaigns');
   const [draft, setDraft] = useState(value);
   const [editing, setEditing] = useState(false);
 
@@ -143,15 +132,15 @@ function EditableTextarea({
       <Box sx={{ position: 'absolute', right: 8, bottom: helperText ? 28 : 8, display: 'flex', gap: 0.5 }}>
         {editing ? (
           <>
-            <IconButton size="small" aria-label="Save" disabled={saving} onClick={confirm}>
+            <IconButton size="small" aria-label={t('detail.editable.save')} disabled={saving} onClick={confirm}>
               <CheckRoundedIcon sx={{ fontSize: 18, color: colors.brand.main }} />
             </IconButton>
-            <IconButton size="small" aria-label="Cancel" disabled={saving} onClick={cancel}>
+            <IconButton size="small" aria-label={t('detail.editable.cancel')} disabled={saving} onClick={cancel}>
               <CloseRoundedIcon sx={{ fontSize: 18, color: colors.interface.grey }} />
             </IconButton>
           </>
         ) : (
-          <IconButton size="small" aria-label="Edit" onClick={() => setEditing(true)}>
+          <IconButton size="small" aria-label={t('detail.editable.edit')} onClick={() => setEditing(true)}>
             <BorderColorOutlinedIcon sx={{ fontSize: 16, color: colors.interface.grey }} />
           </IconButton>
         )}
@@ -161,9 +150,23 @@ function EditableTextarea({
 }
 
 const CampaignDetailPage = () => {
+  const { t } = useTranslation('campaigns');
   const { campaignId } = useParams<{ campaignId: string }>();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+
+  const deviceLabels: Record<string, string> = {
+    ios: 'iOS',
+    android: 'Android',
+    web: 'Web',
+    unknown: t('detail.devices.unknown'),
+  };
+
+  const statusChip: Record<CampaignStatusFilter, { label: string; tone: StatusTone }> = {
+    [CampaignStatusFilter.ACTIVE]: { label: t('detail.status.active'), tone: 'success' },
+    [CampaignStatusFilter.DEACTIVATED]: { label: t('detail.status.deactivated'), tone: 'neutral' },
+    [CampaignStatusFilter.ARCHIVED]: { label: t('detail.status.archived'), tone: 'warning' },
+  };
 
   const [period, setPeriod] = useState<DateRangeParams>({ period: StatsPeriod.MONTH });
   const [page, setPage] = useState(1);
@@ -213,9 +216,9 @@ const CampaignDetailPage = () => {
   if (!c) {
     return (
       <Box sx={{ maxWidth: 1100, mx: 'auto', py: 6 }}>
-        <Typography>Campaign not found.</Typography>
+        <Typography>{t('detail.notFound.title')}</Typography>
         <Button sx={{ mt: 2 }} variant="white" onClick={() => navigate('/campaigns')}>
-          Back to campaigns
+          {t('detail.notFound.back')}
         </Button>
       </Box>
     );
@@ -226,11 +229,11 @@ const CampaignDetailPage = () => {
   const ut = usersStats.data?.totals;
 
   const kpis = [
-    { label: 'Actions', value: ct?.actions ?? 0, changePct: ct?.actionsChangePct, loading: codesStats.isPending },
-    { label: 'Generated', value: ct?.generated ?? 0, changePct: ct?.generatedChangePct, loading: codesStats.isPending },
-    { label: 'Redeemed', value: ct?.redeemed ?? 0, changePct: ct?.redeemedChangePct, loading: codesStats.isPending },
-    { label: 'Expired', value: ct?.expired ?? 0, changePct: ct?.expiredChangePct, loading: codesStats.isPending },
-    { label: 'New users', value: ut?.new ?? 0, changePct: ut?.newChangePct, loading: usersStats.isPending },
+    { label: t('detail.kpi.actions'), value: ct?.actions ?? 0, changePct: ct?.actionsChangePct, loading: codesStats.isPending },
+    { label: t('detail.kpi.generated'), value: ct?.generated ?? 0, changePct: ct?.generatedChangePct, loading: codesStats.isPending },
+    { label: t('detail.kpi.redeemed'), value: ct?.redeemed ?? 0, changePct: ct?.redeemedChangePct, loading: codesStats.isPending },
+    { label: t('detail.kpi.expired'), value: ct?.expired ?? 0, changePct: ct?.expiredChangePct, loading: codesStats.isPending },
+    { label: t('detail.kpi.newUsers'), value: ut?.new ?? 0, changePct: ut?.newChangePct, loading: usersStats.isPending },
   ];
 
   const runMenu = (fn: () => void) => {
@@ -248,7 +251,7 @@ const CampaignDetailPage = () => {
           sx={{ fontSize: 14, color: colors.interface.grey, cursor: 'pointer' }}
           onClick={() => navigate('/campaigns')}
         >
-          Campaign
+          {t('detail.breadcrumb.campaign')}
         </Typography>
         <ChevronRightRoundedIcon sx={{ fontSize: 16, color: colors.interface.grey2 }} />
         <Typography sx={{ fontSize: 14, fontWeight: 600, color: colors.interface.black }}>
@@ -257,7 +260,7 @@ const CampaignDetailPage = () => {
         <Box sx={{ flex: 1 }} />
         <IconButton
           size="small"
-          aria-label="Campaign actions"
+          aria-label={t('detail.actionsAria')}
           onClick={(e) => setMenuAnchor(e.currentTarget)}
           sx={{ border: `1px solid ${colors.interface.grey3}`, borderRadius: '8px' }}
         >
@@ -269,13 +272,13 @@ const CampaignDetailPage = () => {
               onClick={() =>
                 runMenu(() =>
                   restore.mutate(c.id, {
-                    onSuccess: () => toastOk('Campaign restored'),
+                    onSuccess: () => toastOk(t('detail.toast.restored')),
                     onError: toastErr,
                   }),
                 )
               }
             >
-              Restore
+              {t('detail.menu.restore')}
             </MenuItem>
           ) : (
             [
@@ -285,13 +288,13 @@ const CampaignDetailPage = () => {
                   onClick={() =>
                     runMenu(() =>
                       deactivate.mutate(c.id, {
-                        onSuccess: () => toastOk('Campaign deactivated'),
+                        onSuccess: () => toastOk(t('detail.toast.deactivated')),
                         onError: toastErr,
                       }),
                     )
                   }
                 >
-                  Deactivate
+                  {t('detail.menu.deactivate')}
                 </MenuItem>
               ) : (
                 <MenuItem
@@ -299,13 +302,13 @@ const CampaignDetailPage = () => {
                   onClick={() =>
                     runMenu(() =>
                       activate.mutate(c.id, {
-                        onSuccess: () => toastOk('Campaign activated'),
+                        onSuccess: () => toastOk(t('detail.toast.activated')),
                         onError: toastErr,
                       }),
                     )
                   }
                 >
-                  Activate
+                  {t('detail.menu.activate')}
                 </MenuItem>
               ),
               <MenuItem
@@ -314,7 +317,7 @@ const CampaignDetailPage = () => {
                   runMenu(() =>
                     archive.mutate(c.id, {
                       onSuccess: () => {
-                        toastOk('Campaign archived');
+                        toastOk(t('detail.toast.archived'));
                         navigate('/campaigns');
                       },
                       onError: toastErr,
@@ -323,7 +326,7 @@ const CampaignDetailPage = () => {
                 }
                 sx={{ color: colors.supportive.red }}
               >
-                Archive
+                {t('detail.menu.archive')}
               </MenuItem>,
             ]
           )}
@@ -353,7 +356,7 @@ const CampaignDetailPage = () => {
           }}
         />
         <Button disabled={isArchived} onClick={() => setGenerateOpen(true)}>
-          Generate code
+          {t('detail.generateCode')}
         </Button>
       </Box>
 
@@ -367,7 +370,7 @@ const CampaignDetailPage = () => {
             {
               onSuccess: () => {
                 setGenerateOpen(false);
-                dispatch(setAlertAC({ text: 'Code generated', mode: 'success' }));
+                dispatch(setAlertAC({ text: t('detail.toast.codeGenerated'), mode: 'success' }));
               },
               onError: toastErr,
             },
@@ -377,13 +380,13 @@ const CampaignDetailPage = () => {
 
       <ConfirmPopup
         isVisible={!!distributorToRemove}
-        title="Remove distributor?"
+        title={t('detail.confirmRemove.title')}
         description={
           distributorToRemove
-            ? `${distributorToRemove.displayName} will lose access to this campaign.`
+            ? t('detail.confirmRemove.description', { name: distributorToRemove.displayName })
             : undefined
         }
-        confirmLabel="Remove"
+        confirmLabel={t('detail.confirmRemove.confirm')}
         tone="danger"
         loading={unassign.isPending}
         onClose={() => setDistributorToRemove(null)}
@@ -412,7 +415,7 @@ const CampaignDetailPage = () => {
               bgcolor: colors.interface.white,
             }}
           >
-            <InfoRow label="Creator">
+            <InfoRow label={t('detail.info.creator')}>
               <Tooltip title={`${c.creator.displayName} (${c.creator.email})`}>
                 <Box
                   component="span"
@@ -431,30 +434,30 @@ const CampaignDetailPage = () => {
                 </Box>
               </Tooltip>
             </InfoRow>
-            <InfoRow label="Status">
+            <InfoRow label={t('detail.info.status')}>
               <StatusChip {...statusChip[c.displayStatus]} />
             </InfoRow>
-            <InfoRow label="Created">
+            <InfoRow label={t('detail.info.created')}>
               <DateLabel from={c.createdAt} withIcon={false} />
             </InfoRow>
-            <InfoRow label="Code lifetime" hint="Per-code TTL counted from generation">
+            <InfoRow label={t('detail.info.codeLifetime')} hint={t('detail.info.codeLifetimeHint')}>
               {c.ttlAmount && c.ttlUnit
                 ? `${c.ttlAmount} ${c.ttlUnit}${c.ttlAmount > 1 ? 's' : ''}`
                 : '—'}
             </InfoRow>
-            <InfoRow label="Redemption limit" hint="Default max redemptions per code">
-              {c.defaultMaxRedemptions ?? 'Unlimited'}
+            <InfoRow label={t('detail.info.redemptionLimit')} hint={t('detail.info.redemptionLimitHint')}>
+              {c.defaultMaxRedemptions ?? t('detail.unlimited')}
             </InfoRow>
-            <InfoRow label="Mutable" hint="Can code payload be edited after generation">
-              {c.payloadMutable ? 'Yes' : 'No'}
+            <InfoRow label={t('detail.info.mutable')} hint={t('detail.info.mutableHint')}>
+              {c.payloadMutable ? t('detail.yes') : t('detail.no')}
             </InfoRow>
-            <InfoRow label="Changed">
+            <InfoRow label={t('detail.info.changed')}>
               <DateLabel from={c.updatedAt} withIcon={false} />
             </InfoRow>
           </Paper>
 
           <Box>
-            <Typography sx={{ fontSize: 16, fontWeight: 600, mb: 1.5 }}>Distributors</Typography>
+            <Typography sx={{ fontSize: 16, fontWeight: 600, mb: 1.5 }}>{t('detail.distributors.title')}</Typography>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
               {(assigned.data ?? []).map((d) => (
                 <Box
@@ -474,7 +477,7 @@ const CampaignDetailPage = () => {
                   <Typography sx={{ fontSize: 14 }}>{d.displayName}</Typography>
                   <IconButton
                     size="small"
-                    aria-label={`Remove ${d.displayName}`}
+                    aria-label={t('detail.distributors.removeAria', { name: d.displayName })}
                     onClick={() => setDistributorToRemove(d)}
                   >
                     <DeleteOutlineRoundedIcon sx={{ fontSize: 18, color: colors.interface.grey }} />
@@ -485,8 +488,8 @@ const CampaignDetailPage = () => {
               <Select
                 options={assignableOptions}
                 value={null}
-                placeholder="Set distributor"
-                emptyText="No distributors to add"
+                placeholder={t('detail.distributors.placeholder')}
+                emptyText={t('detail.distributors.empty')}
                 onChange={(membershipId) =>
                   assign.mutate(
                     { campaignId: c.id, distributorMembershipId: membershipId },
@@ -530,13 +533,13 @@ const CampaignDetailPage = () => {
           </Box>
 
           <Section
-            title="Codes"
+            title={t('detail.codes.title')}
             action={
               <Typography
                 sx={{ fontSize: 14, fontWeight: 500, color: colors.brand.main, cursor: 'pointer' }}
                 onClick={() => navigate(`/campaigns/${c.id}/codes`)}
               >
-                See all
+                {t('detail.codes.seeAll')}
               </Typography>
             }
           >
@@ -545,11 +548,11 @@ const CampaignDetailPage = () => {
               getRowKey={(r) => r.id}
               loading={codes.isPending}
               onRowClick={(r) => navigate(`/codes/${r.id}`)}
-              emptyContent="No codes for this campaign yet"
+              emptyContent={t('detail.codes.empty')}
               columns={[
                 {
                   id: 'code',
-                  header: 'Name',
+                  header: t('detail.codes.table.name'),
                   cell: (r) => (
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                       <ContentCopyRoundedIcon sx={{ fontSize: 16, color: colors.interface.grey }} />
@@ -559,26 +562,26 @@ const CampaignDetailPage = () => {
                 },
                 {
                   id: 'status',
-                  header: 'Status',
+                  header: t('detail.codes.table.status'),
                   cell: (r) => <PromoCodeDisplayStatusChip status={r.displayStatus} />,
                 },
                 {
                   id: 'actions',
-                  header: 'Actions',
+                  header: t('detail.codes.table.actions'),
                   align: 'right',
-                  help: 'All code lookups (validate + redeem)',
+                  help: t('detail.codes.table.actionsHelp'),
                   cell: (r) => numberFmt.format(r.actions),
                 },
                 {
                   id: 'newUsers',
-                  header: 'New users',
+                  header: t('detail.codes.table.newUsers'),
                   align: 'right',
-                  help: 'Customers whose first-ever activity was this code',
+                  help: t('detail.codes.table.newUsersHelp'),
                   cell: (r) => numberFmt.format(r.newUsers),
                 },
                 {
                   id: 'lifetime',
-                  header: 'Lifetime',
+                  header: t('detail.codes.table.lifetime'),
                   align: 'right',
                   cell: (r) => (r.lifetime ? <DateLabel from={r.lifetime} withIcon={false} /> : '∞'),
                 },
@@ -600,20 +603,20 @@ const CampaignDetailPage = () => {
             }}
           >
             <DonutCard
-              title="Devices"
+              title={t('detail.devices.title')}
               loading={devices.isPending}
               items={devices.data?.items ?? []}
               labelFor={(k) => deviceLabels[k] ?? k}
             />
             <DonutCard
-              title="Countries"
+              title={t('detail.countries.title')}
               loading={countries.isPending}
               items={countries.data?.items ?? []}
               labelFor={(k) => k.toUpperCase()}
             />
           </Box>
 
-          <Section title="Descriptions">
+          <Section title={t('detail.descriptions.title')}>
             <EditableTextarea
               value={c.description ?? ''}
               saving={updateCampaign.isPending}
@@ -626,17 +629,17 @@ const CampaignDetailPage = () => {
             />
           </Section>
 
-          <Section title="Initial payload">
+          <Section title={t('detail.payload.title')}>
             <EditableTextarea
               value={c.payload ? JSON.stringify(c.payload, null, 2) : ''}
-              helperText="You can change the code payload after creating a template if the mutable feature is enabled"
+              helperText={t('detail.payload.hint')}
               saving={updateCampaign.isPending}
               onSave={(raw) => {
                 let payload: Record<string, unknown>;
                 try {
                   payload = raw.trim() ? JSON.parse(raw) : {};
                 } catch {
-                  dispatch(setAlertAC({ text: 'Payload is not valid JSON', mode: 'error' }));
+                  dispatch(setAlertAC({ text: t('detail.payload.invalidJson'), mode: 'error' }));
                   return;
                 }
                 updateCampaign.mutate({ id: c.id, dto: { payload } }, { onError: toastErr });

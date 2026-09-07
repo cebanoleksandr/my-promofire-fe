@@ -1,4 +1,5 @@
 import { Box, type BoxProps } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 import RefreshRoundedIcon from '@mui/icons-material/RefreshRounded';
 import { StatsPeriod } from '../../types/stats';
 import type { DateRangeParams } from '../../types/date-range';
@@ -6,13 +7,13 @@ import { DatePicker } from './DatePicker';
 import { SegmentedControl } from './SegmentedControl';
 import { IconButton } from './IconButton';
 
-const presets: { value: StatsPeriod; label: string }[] = [
-  { value: StatsPeriod.DAY, label: '1D' },
-  { value: StatsPeriod.WEEK, label: '7D' },
-  { value: StatsPeriod.MONTH, label: '1M' },
-  { value: StatsPeriod.QUARTER, label: '3M' },
-  { value: StatsPeriod.YEAR, label: 'Year' },
-  { value: StatsPeriod.ALL, label: 'All' },
+const presetKeys: { value: StatsPeriod; labelKey: string }[] = [
+  { value: StatsPeriod.DAY, labelKey: 'periodControl.day' },
+  { value: StatsPeriod.WEEK, labelKey: 'periodControl.week' },
+  { value: StatsPeriod.MONTH, labelKey: 'periodControl.month' },
+  { value: StatsPeriod.QUARTER, labelKey: 'periodControl.quarter' },
+  { value: StatsPeriod.YEAR, labelKey: 'periodControl.year' },
+  { value: StatsPeriod.ALL, labelKey: 'periodControl.all' },
 ];
 
 export interface PeriodControlProps extends Omit<BoxProps, 'onChange'> {
@@ -31,6 +32,12 @@ export function PeriodControl({
   sx,
   ...rest
 }: PeriodControlProps) {
+  const { t } = useTranslation('common');
+  const presets = presetKeys.map(({ value: v, labelKey }) => ({
+    value: v,
+    label: t(labelKey),
+  }));
+
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, ...sx }} {...rest}>
       <DatePicker
@@ -51,7 +58,7 @@ export function PeriodControl({
       />
 
       {onRefresh && (
-        <IconButton size={40} bordered aria-label="Refresh" onClick={onRefresh}>
+        <IconButton size={40} bordered aria-label={t('periodControl.refresh')} onClick={onRefresh}>
           <RefreshRoundedIcon />
         </IconButton>
       )}

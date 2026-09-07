@@ -23,3 +23,5 @@ export * from './WorkspaceItem';
 export * from './NavItem';
 export * from './OptionRow';
 export * from './DateLabel';
+export * from './LanguageSwitcher';
+export * from './ThemeSwitcher';

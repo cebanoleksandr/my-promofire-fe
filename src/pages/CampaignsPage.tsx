@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Box, Tab, Tabs, Typography } from '@mui/material';
 import { useCampaigns, useCurrentWorkspace } from '../network/hooks';
 import { Button, Pagination, Table, type TableSort } from '../components/ui';
@@ -9,12 +10,6 @@ import {
   type CampaignListItem,
 } from '../types/campaign';
 import { Role } from '../types/membership';
-
-const TABS: { value: CampaignStatusFilter; label: string }[] = [
-  { value: CampaignStatusFilter.ACTIVE, label: 'Active' },
-  { value: CampaignStatusFilter.ARCHIVED, label: 'Archived' },
-  { value: CampaignStatusFilter.DEACTIVATED, label: 'Deactivated' },
-];
 
 const PAGE_SIZE = 20;
 
@@ -26,9 +21,16 @@ function distributorNames(row: CampaignListItem): string {
 }
 
 const CampaignsPage = () => {
+  const { t } = useTranslation('campaigns');
   const navigate = useNavigate();
   const workspace = useCurrentWorkspace();
   const canCreate = workspace.data?.role !== Role.DISTRIBUTOR;
+
+  const TABS: { value: CampaignStatusFilter; label: string }[] = [
+    { value: CampaignStatusFilter.ACTIVE, label: t('list.tabs.active') },
+    { value: CampaignStatusFilter.ARCHIVED, label: t('list.tabs.archived') },
+    { value: CampaignStatusFilter.DEACTIVATED, label: t('list.tabs.deactivated') },
+  ];
 
   const [status, setStatus] = useState<CampaignStatusFilter>(
     CampaignStatusFilter.ACTIVE,
@@ -70,10 +72,10 @@ const CampaignsPage = () => {
         }}
       >
         <Typography sx={{ fontSize: 24, fontWeight: 700, lineHeight: '32px' }}>
-          Campaigns
+          {t('list.title')}
         </Typography>
         {canCreate && (
-          <Button onClick={() => navigate('/campaigns/create')}>Create campaign</Button>
+          <Button onClick={() => navigate('/campaigns/create')}>{t('list.createButton')}</Button>
         )}
       </Box>
 
@@ -109,11 +111,11 @@ const CampaignsPage = () => {
         sort={sort}
         onSortChange={setSort}
         onRowClick={(r) => navigate(`/campaigns/${r.id}`)}
-        emptyContent="No campaigns here yet"
+        emptyContent={t('list.empty')}
         columns={[
           {
             id: 'name',
-            header: 'Name',
+            header: t('list.table.name'),
             sortable: true,
             cell: (r) => (
               <Box>
@@ -127,7 +129,7 @@ const CampaignsPage = () => {
                   {r.name}
                 </Typography>
                 <Typography sx={{ fontSize: 13, color: colors.interface.grey }}>
-                  Distributor:{' '}
+                  {t('list.distributor')}{' '}
                   <Box
                     component="span"
                     sx={{ color: colors.brand.main, fontWeight: 500 }}
@@ -140,34 +142,34 @@ const CampaignsPage = () => {
           },
           {
             id: 'generated',
-            header: 'Generated',
+            header: t('list.table.generated'),
             align: 'right',
             sortable: true,
-            help: 'Promo codes generated for this campaign',
+            help: t('list.table.generatedHelp'),
             cell: (r) => numberFmt.format(r.generated),
           },
           {
             id: 'redeemed',
-            header: 'Redeemed',
+            header: t('list.table.redeemed'),
             align: 'right',
             sortable: true,
-            help: 'Successfully redeemed codes',
+            help: t('list.table.redeemedHelp'),
             cell: (r) => numberFmt.format(r.redeemed),
           },
           {
             id: 'actions',
-            header: 'Actions',
+            header: t('list.table.actions'),
             align: 'right',
             sortable: true,
-            help: 'All code lookups (validate + redeem), not only successful redemptions',
+            help: t('list.table.actionsHelp'),
             cell: (r) => numberFmt.format(r.actions),
           },
           {
             id: 'newUsers',
-            header: 'New Users',
+            header: t('list.table.newUsers'),
             align: 'right',
             sortable: true,
-            help: 'Customers whose first-ever activity in the workspace was a code from this campaign',
+            help: t('list.table.newUsersHelp'),
             cell: (r) => numberFmt.format(r.newUsers),
           },
         ]}

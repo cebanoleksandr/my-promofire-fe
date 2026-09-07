@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Box, CircularProgress, Divider, IconButton, Typography } from '@mui/material';
 import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
@@ -65,6 +66,7 @@ function EditableField({
   saving?: boolean;
   onSave: (next: string) => void;
 }) {
+  const { t } = useTranslation('profile');
   const inputRef = useRef<HTMLInputElement>(null);
   const [draft, setDraft] = useState(value);
   const [editing, setEditing] = useState(false);
@@ -110,7 +112,7 @@ function EditableField({
         <>
           <IconButton
             size="small"
-            aria-label="Save"
+            aria-label={t('editableField.save')}
             disabled={saving}
             onClick={confirm}
             sx={{
@@ -122,7 +124,7 @@ function EditableField({
           </IconButton>
           <IconButton
             size="small"
-            aria-label="Cancel"
+            aria-label={t('editableField.cancel')}
             disabled={saving}
             onClick={cancel}
             sx={{
@@ -139,6 +141,7 @@ function EditableField({
 }
 
 const ProfilePage = () => {
+  const { t } = useTranslation('profile');
   const dispatch = useDispatch();
 
   const profile = useProfile();
@@ -170,7 +173,7 @@ const ProfilePage = () => {
       { email, role: Role.ADMIN },
       {
         onSuccess: () => {
-          dispatch(setAlertAC({ text: `Invitation sent to ${email}`, mode: 'success' }));
+          dispatch(setAlertAC({ text: t('team.invitationSent', { email }), mode: 'success' }));
           setInviteEmail('');
           setInviteOpen(false);
         },
@@ -193,23 +196,23 @@ const ProfilePage = () => {
   return (
     <Box sx={{ maxWidth: 1000, mx: 'auto' }}>
       <Typography sx={{ fontSize: 24, fontWeight: 700, lineHeight: '32px' }}>
-        Profile
+        {t('title')}
       </Typography>
       <Divider sx={{ mt: 2 }} />
 
-      <Row label="General">
+      <Row label={t('general.label')}>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-          <TextField label="Email" value={p?.email ?? ''} locked readOnly />
+          <TextField label={t('general.email')} value={p?.email ?? ''} locked readOnly />
           <EditableField
             key={`first-${p?.firstName ?? ''}`}
-            label="First name"
+            label={t('general.firstName')}
             value={p?.firstName ?? ''}
             saving={updateProfile.isPending}
             onSave={(firstName) => save({ firstName })}
           />
           <EditableField
             key={`last-${p?.lastName ?? ''}`}
-            label="Last name"
+            label={t('general.lastName')}
             value={p?.lastName ?? ''}
             saving={updateProfile.isPending}
             onSave={(lastName) => save({ lastName })}
@@ -221,14 +224,14 @@ const ProfilePage = () => {
         <>
           <Divider />
           <Row
-            label="Team"
-            description="All members have access to the same features as you"
+            label={t('team.label')}
+            description={t('team.description')}
           >
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
               <Typography
                 sx={{ fontSize: 14, fontWeight: 500, color: colors.interface.black2 }}
               >
-                Admin
+                {t('team.admin')}
               </Typography>
 
               {admins.map((m) => (
@@ -251,7 +254,7 @@ const ProfilePage = () => {
                   </Typography>
                   <IconButton
                     size="small"
-                    aria-label={`Remove ${m.displayName}`}
+                    aria-label={t('team.removeAria', { name: m.displayName })}
                     onClick={() => setAdminToRemove(m)}
                   >
                     <DeleteOutlineRoundedIcon
@@ -265,7 +268,7 @@ const ProfilePage = () => {
                 <Box sx={{ display: 'flex', gap: 1 }}>
                   <TextField
                     type="email"
-                    placeholder="admin@company.com"
+                    placeholder={t('team.invitePlaceholder')}
                     value={inviteEmail}
                     onChange={(e) => setInviteEmail(e.target.value)}
                     onKeyDown={(e) => e.key === 'Enter' && submitInvite()}
@@ -275,7 +278,7 @@ const ProfilePage = () => {
                     loading={inviteMember.isPending}
                     onClick={submitInvite}
                   >
-                    Send
+                    {t('team.send')}
                   </Button>
                   <Button
                     size="M"
@@ -285,7 +288,7 @@ const ProfilePage = () => {
                       setInviteEmail('');
                     }}
                   >
-                    Cancel
+                    {t('team.cancel')}
                   </Button>
                 </Box>
               ) : (
@@ -296,7 +299,7 @@ const ProfilePage = () => {
                   startIcon={<AddCircleOutlineRoundedIcon sx={{ fontSize: 18 }} />}
                   onClick={() => setInviteOpen(true)}
                 >
-                  Invite Admin
+                  {t('team.inviteAdmin')}
                 </Button>
               )}
             </Box>
@@ -306,13 +309,13 @@ const ProfilePage = () => {
 
       <ConfirmPopup
         isVisible={!!adminToRemove}
-        title="Remove admin?"
+        title={t('removeDialog.title')}
         description={
           adminToRemove
-            ? `${adminToRemove.displayName} will lose access to this workspace.`
+            ? t('removeDialog.description', { name: adminToRemove.displayName })
             : undefined
         }
-        confirmLabel="Remove"
+        confirmLabel={t('removeDialog.confirm')}
         tone="danger"
         loading={removeMember.isPending}
         onClose={() => setAdminToRemove(null)}

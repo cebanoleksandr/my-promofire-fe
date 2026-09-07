@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { Link as RouterLink, useMatch } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Box, List } from '@mui/material';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import CampaignOutlinedIcon from '@mui/icons-material/CampaignOutlined';
@@ -18,7 +19,7 @@ export const SIDEBAR_WIDTH = 260;
 
 interface NavLinkDef {
   to: string;
-  label: string;
+  labelKey: string;
   icon: ReactNode;
   /** Точное совпадение пути (для "/"). */
   end?: boolean;
@@ -29,42 +30,49 @@ interface NavLinkDef {
 }
 
 const mainLinks: NavLinkDef[] = [
-  { to: '/', label: 'Home', icon: <HomeOutlinedIcon />, end: true, discoveryTarget: 'nav-home' },
+  {
+    to: '/',
+    labelKey: 'sidebar.home',
+    icon: <HomeOutlinedIcon />,
+    end: true,
+    discoveryTarget: 'nav-home',
+  },
   {
     to: '/campaigns',
-    label: 'Campaigns',
+    labelKey: 'sidebar.campaigns',
     icon: <CampaignOutlinedIcon />,
     discoveryTarget: 'nav-campaigns',
   },
   {
     to: '/codes',
-    label: 'Codes',
+    labelKey: 'sidebar.codes',
     icon: <ConfirmationNumberOutlinedIcon />,
     discoveryTarget: 'nav-codes',
   },
   {
     to: '/distributors',
-    label: 'Distributors',
+    labelKey: 'sidebar.distributors',
     icon: <StorefrontOutlinedIcon />,
     hideFor: [Role.DISTRIBUTOR],
     discoveryTarget: 'nav-distributors',
   },
   {
     to: '/users',
-    label: 'Users',
+    labelKey: 'sidebar.users',
     icon: <GroupOutlinedIcon />,
     hideFor: [Role.DISTRIBUTOR],
     discoveryTarget: 'nav-users',
   },
 ];
 
-function SidebarLink({ to, label, icon, end, discoveryTarget }: NavLinkDef) {
+function SidebarLink({ to, labelKey, icon, end, discoveryTarget }: NavLinkDef) {
+  const { t } = useTranslation('layout');
   const match = useMatch({ path: to, end: end ?? false });
   return (
     <NavItem
       component={RouterLink}
       to={to}
-      label={label}
+      label={t(labelKey)}
       icon={icon}
       active={Boolean(match)}
       data-discovery-target={discoveryTarget}
@@ -103,7 +111,7 @@ export function Sidebar() {
       <List disablePadding sx={{ flexShrink: 0, '& > * + *': { mt: 0.5 } }}>
         <SidebarLink
           to="/settings"
-          label="Settings"
+          labelKey="sidebar.settings"
           icon={<SettingsOutlinedIcon />}
           discoveryTarget="nav-settings"
         />

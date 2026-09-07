@@ -1,4 +1,5 @@
 import { useState, type MouseEvent } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Box, ButtonBase, Divider, Popover } from '@mui/material';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import {
@@ -15,6 +16,7 @@ import { CreateWorkspacePopup } from './CreateWorkspacePopup';
  * воркспейсов и кнопкой «Add workspace».
  */
 export function WorkspaceSwitcher() {
+  const { t } = useTranslation('layout');
   const { data: current } = useCurrentWorkspace();
   const { data: workspaces } = useMyWorkspaces();
   const select = useSelectWorkspace();
@@ -32,7 +34,7 @@ export function WorkspaceSwitcher() {
   return (
     <>
       <WorkspaceItem
-        name={current?.name ?? 'No workspace'}
+        name={current?.name ?? t('workspaceSwitcher.noWorkspace')}
         caption={current?.role ?? ''}
         variant="main"
         onClick={(e: MouseEvent<HTMLElement>) => setAnchorEl(e.currentTarget)}
@@ -91,7 +93,7 @@ export function WorkspaceSwitcher() {
             }}
           >
             <AddRoundedIcon sx={{ fontSize: 18 }} />
-            Add workspace
+            {t('workspaceSwitcher.addWorkspace')}
           </ButtonBase>
         </Box>
       </Popover>

@@ -1,0 +1,38 @@
+{
+  "header": {
+    "profile": "Профіль",
+    "toggleTheme": "Перемкнути тему"
+  },
+  "search": {
+    "placeholder": "Пошук…",
+    "aria": "Пошук"
+  },
+  "sidebar": {
+    "home": "Головна",
+    "campaigns": "Кампанії",
+    "codes": "Коди",
+    "distributors": "Дистриб'ютори",
+    "users": "Користувачі",
+    "settings": "Налаштування"
+  },
+  "logout": {
+    "navLabel": "Вийти",
+    "title": "Вийти з акаунта?",
+    "description": "Щоб отримати доступ до свого воркспейсу, потрібно буде увійти знову.",
+    "confirm": "Вийти"
+  },
+  "workspaceSwitcher": {
+    "noWorkspace": "Немає воркспейсу",
+    "addWorkspace": "Додати воркспейс"
+  },
+  "createWorkspace": {
+    "title": "Новий воркспейс",
+    "subtitle": "Ви одразу перейдете до нього.",
+    "nameLabel": "Назва воркспейсу",
+    "namePlaceholder": "Acme Inc.",
+    "nameRequired": "Введіть назву воркспейсу",
+    "nameMin": "Щонайменше 2 символи",
+    "cancel": "Скасувати",
+    "create": "Створити"
+  }
+}

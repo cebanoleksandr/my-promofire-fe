@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Box, Paper, type PaperProps } from '@mui/material';
 import { colors, customShadows } from '../../theme';
 import { Button } from './Button';
@@ -40,6 +41,7 @@ export function DateRangePickerPanel({
   sx,
   ...rest
 }: DateRangePickerPanelProps) {
+  const { t } = useTranslation('common');
   const [from, setFrom] = useState(value?.from ?? '');
   const [to, setTo] = useState(value?.to ?? '');
   const valid = from !== '' && to !== '' && from <= to;
@@ -70,7 +72,7 @@ export function DateRangePickerPanel({
 
       <Box sx={{ display: 'flex', gap: 1, justifyContent: 'flex-end' }}>
         <Button variant="white" size="M" onClick={onCancel}>
-          Cancel
+          {t('dateRangePickerPanel.cancel')}
         </Button>
         <Button
           variant="main"
@@ -78,7 +80,7 @@ export function DateRangePickerPanel({
           disabled={!valid}
           onClick={() => onApply({ from, to })}
         >
-          Apply
+          {t('dateRangePickerPanel.apply')}
         </Button>
       </Box>
     </Paper>

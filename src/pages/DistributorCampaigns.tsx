@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Box, CircularProgress, Typography } from '@mui/material';
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
@@ -17,24 +18,25 @@ const numberFmt = new Intl.NumberFormat('en-US');
 
 type NumericCampaignKey = 'generated' | 'redeemed' | 'actions' | 'newUsers';
 
-const CAMPAIGN_COLUMNS: { id: NumericCampaignKey; header: string; help?: string }[] = [
-  { id: 'generated', header: 'Generated', help: 'Promo codes generated' },
-  { id: 'redeemed', header: 'Redeemed', help: 'Successfully redeemed codes' },
-  {
-    id: 'actions',
-    header: 'Actions',
-    help: 'All code lookups (validate + redeem), not only successful redemptions',
-  },
-  {
-    id: 'newUsers',
-    header: 'New Users',
-    help: 'Customers whose first-ever activity in the workspace was a code from this campaign',
-  },
-];
-
 const DistributorCampaigns = () => {
+  const { t } = useTranslation('distributors');
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+
+  const CAMPAIGN_COLUMNS: { id: NumericCampaignKey; header: string; help?: string }[] = [
+    { id: 'generated', header: t('columns.generated'), help: t('help.generated') },
+    { id: 'redeemed', header: t('columns.redeemed'), help: t('help.redeemed') },
+    {
+      id: 'actions',
+      header: t('columns.actions'),
+      help: t('help.actions'),
+    },
+    {
+      id: 'newUsers',
+      header: t('columns.newUsers'),
+      help: t('help.newUsersCampaign'),
+    },
+  ];
 
   const [period, setPeriod] = useState<DateRangeParams>({
     period: StatsPeriod.MONTH,
@@ -72,9 +74,9 @@ const DistributorCampaigns = () => {
   if (!d) {
     return (
       <Box sx={{ maxWidth: 1100, mx: 'auto', py: 6 }}>
-        <Typography>Distributor not found.</Typography>
+        <Typography>{t('notFound')}</Typography>
         <Button sx={{ mt: 2 }} variant="white" onClick={() => navigate('/distributors')}>
-          Back to distributors
+          {t('actions.backToDistributors')}
         </Button>
       </Box>
     );
@@ -88,7 +90,7 @@ const DistributorCampaigns = () => {
           sx={{ fontSize: 14, color: colors.interface.grey, cursor: 'pointer' }}
           onClick={() => navigate('/distributors')}
         >
-          Distributors
+          {t('breadcrumbs.distributors')}
         </Typography>
         <ChevronRightRoundedIcon sx={{ fontSize: 16, color: colors.interface.grey2 }} />
         <Typography
@@ -99,7 +101,7 @@ const DistributorCampaigns = () => {
         </Typography>
         <ChevronRightRoundedIcon sx={{ fontSize: 16, color: colors.interface.grey2 }} />
         <Typography sx={{ fontSize: 14, fontWeight: 600, color: colors.interface.black }}>
-          Campaigns
+          {t('breadcrumbs.campaigns')}
         </Typography>
       </Box>
 
@@ -118,11 +120,11 @@ const DistributorCampaigns = () => {
         sort={sort}
         onSortChange={setSort}
         onRowClick={(r) => navigate(`/campaigns/${r.campaignId}`)}
-        emptyContent="Not assigned to any campaign yet"
+        emptyContent={t('empty.notAssignedToCampaign')}
         columns={[
           {
             id: 'name',
-            header: 'Name',
+            header: t('columns.name'),
             sortable: true,
             cell: (r) => r.name,
           },

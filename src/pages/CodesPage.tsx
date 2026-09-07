@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Box, Typography } from '@mui/material';
 import ContentCopyRoundedIcon from '@mui/icons-material/ContentCopyRounded';
 import { StatsPeriod, type DateRangeParams } from '../types';
@@ -20,6 +21,7 @@ const numberFmt = new Intl.NumberFormat('en-US');
 
 const CodesPage = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation('codes');
 
   const [period, setPeriod] = useState<DateRangeParams>({
     period: StatsPeriod.MONTH,
@@ -69,7 +71,7 @@ const CodesPage = () => {
       <Typography
         sx={{ fontSize: 24, fontWeight: 700, lineHeight: '32px', mb: 3 }}
       >
-        Codes
+        {t('page.title')}
       </Typography>
 
       <Box sx={{ mb: 3 }}>
@@ -87,11 +89,11 @@ const CodesPage = () => {
         sort={sort}
         onSortChange={setSort}
         onRowClick={(r) => navigate(`/codes/${r.id}`)}
-        emptyContent="No codes here yet"
+        emptyContent={t('page.emptyCodes')}
         columns={[
           {
             id: 'code',
-            header: 'Name',
+            header: t('page.columns.name'),
             sortable: true,
             cell: (r) => (
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -112,32 +114,32 @@ const CodesPage = () => {
           },
           {
             id: 'status',
-            header: 'Status',
+            header: t('page.columns.status'),
             sortable: true,
             cell: (r) => <PromoCodeDisplayStatusChip status={r.displayStatus} />,
           },
           {
             id: 'actions',
-            header: 'Actions',
+            header: t('page.columns.actions'),
             align: 'right',
             sortable: true,
-            help: 'All code lookups (validate + redeem), not only successful redemptions',
+            help: t('page.help.actions'),
             cell: (r) => numberFmt.format(r.actions),
           },
           {
             id: 'newUsers',
-            header: 'New users',
+            header: t('page.columns.newUsers'),
             align: 'right',
             sortable: true,
-            help: 'Customers whose first-ever activity in the workspace was this code',
+            help: t('page.help.newUsers'),
             cell: (r) => numberFmt.format(r.newUsers),
           },
           {
             id: 'lifetime',
-            header: 'Lifetime',
+            header: t('page.columns.lifetime'),
             align: 'right',
             sortable: true,
-            help: 'When the code stops working — its own expiry, or the campaign default',
+            help: t('page.help.lifetime'),
             cell: (r) =>
               r.lifetime ? (
                 <DateLabel from={r.lifetime} withIcon={false} />
